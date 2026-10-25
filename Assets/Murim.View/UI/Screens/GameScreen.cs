@@ -15,7 +15,8 @@ namespace Murim.View.UI.Screens
         string selectedRegion;
         SideMode mode = SideMode.Home;
         string selectedId;
-        bool chronicleOwnOnly;
+        ChronicleFilter chronicleFilter = ChronicleFilter.All;
+        RectTransform screenRoot;
 
         public GameScreen(Bootstrap app)
         {
@@ -30,7 +31,9 @@ namespace Murim.View.UI.Screens
             bar.anchorMax = new Vector2(1, 1);
             bar.pivot = new Vector2(0.5f, 1);
             bar.sizeDelta = new Vector2(0, 80);
-            TopBar.Build(bar, S, EndTurn, () => SaveLoadDialog.Show(app), () => app.Show(new TitleScreen(app)), app.Rebuild);
+            screenRoot = root;
+            TopBar.Build(bar, S, EndTurn, () => SaveLoadDialog.Show(app), () => app.Show(new TitleScreen(app)), app.Rebuild,
+                () => EventDialog.Show(app, this, root));
 
             var mapArea = UiFactory.Rect(root, "MapArea");
             mapArea.anchorMin = new Vector2(0, 0.3f);
@@ -44,9 +47,9 @@ namespace Murim.View.UI.Screens
             chronicle.anchorMax = new Vector2(0.62f, 0.3f);
             chronicle.offsetMin = new Vector2(16, 16);
             chronicle.offsetMax = new Vector2(-8, -8);
-            ChroniclePanel.Build(chronicle, S, chronicleOwnOnly, ownOnly =>
+            ChroniclePanel.Build(chronicle, S, chronicleFilter, filter =>
             {
-                chronicleOwnOnly = ownOnly;
+                chronicleFilter = filter;
                 app.Rebuild();
             });
 
@@ -59,6 +62,9 @@ namespace Murim.View.UI.Screens
             UiFactory.VStack(inner, 10);
             BuildTabs(inner);
             BuildSide(inner);
+
+            // 답을 기다리는 사건이 있으면 맨 위에 띄운다.
+            if (S.PendingEvents.Count > 0) EventDialog.Show(app, this, root);
         }
 
         /// <summary>어느 패널에 있든 "나"와 기본 패널로 바로 돌아오는 단추.</summary>

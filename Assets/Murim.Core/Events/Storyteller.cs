@@ -13,7 +13,6 @@ namespace Murim.Core.Events
         public const int MaxPerMonth = 2;
         /// <summary>두 번째 사건은 긴장도가 상한의 이 비율 이상일 때만 판정한다.</summary>
         public const double SecondEventRatio = 0.7;
-        const int PickTries = 8;
 
         public static StorytellerDef Def(Data.GameData d, EventState s) =>
             d.Storytellers.TryGetValue(s.StorytellerId ?? "", out var def) ? def
@@ -50,7 +49,7 @@ namespace Murim.Core.Events
                 var pool = t.Data.Events.Values.Where(e => IsCandidate(e, s, def, w.Month)
                     && !picked.Any(p => p.Def.Id == e.Id)).ToList();
                 var fixedRoles = new Dictionary<string, string>();
-                for (int tries = 0; tries < PickTries && pool.Count > 0; tries++)
+                while (pool.Count > 0)
                 {
                     var e = WeightedPick(pool, x => Weight(x, def), t.Rng);
                     pool.Remove(e);

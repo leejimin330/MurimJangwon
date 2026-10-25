@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Murim.Core.Actions;
 using Murim.Core.Data;
@@ -99,21 +100,30 @@ namespace Murim.Core.Events
                     if (c.OpinionOf.Max != null && op > c.OpinionOf.Max) return "조건이 맞지 않습니다";
                 }
             }
+            if (c.OppositeSexOf != null)
+            {
+                var other = ctx.Get(c.OppositeSexOf);
+                if (other == null ? !deferUnbound : other.Sex == ch.Sex) return "조건이 맞지 않습니다";
+            }
             if (c.Chance != null && !skipChance && !ctx.Rng.Chance(c.Chance.Value)) return "때가 아닙니다";
             return null;
         }
 
         public static bool Passes(Conditions c, Character ch, EventContext ctx) => Why(c, ch, ctx) == null;
 
-        /// <summary>조건에 맞는 기억. Target 역할이 아직 채워지지 않았으면 대상은 따지지 않는다.</summary>
-        public static bool Matches(MemoryCond m, Memory mem, EventContext ctx)
+        /// <summary>조건에 맞는 기억의 대상들. 같은 대상에 대한 기억은 강도를 합쳐 본다.
+        /// Target 역할이 아직 채워지지 않았으면 대상은 따지지 않는다.</summary>
+        public static IEnumerable<string> MatchingTargets(MemoryCond m, Character ch, EventContext ctx)
         {
-            if (mem.Kind != m.Kind || mem.Strength < m.MinStrength) return false;
-            if (m.Inherited != null && mem.Inherited != m.Inherited) return false;
-            if (m.Target != null && ctx.Roles.TryGetValue(m.Target, out var id) && mem.TargetId != id) return false;
-            return true;
+            string only = m.Target != null && ctx.Roles.TryGetValue(m.Target, out var id) ? id : null;
+            return ch.Memories
+                .Where(mem => mem.Kind == m.Kind && (m.Inherited == null || mem.Inherited == m.Inherited) && (only == null || mem.TargetId == only))
+                .GroupBy(mem => mem.TargetId)
+                .Where(g => g.Sum(mem => mem.Strength) >= m.MinStrength)
+                .Select(g => g.Key)
+                .OrderBy(t => t, System.StringComparer.Ordinal);
         }
 
-        static bool HasMemory(MemoryCond m, Character ch, EventContext ctx) => ch.Memories.Any(mem => Matches(m, mem, ctx));
+        static bool HasMemory(MemoryCond m, Character ch, EventContext ctx) => MatchingTargets(m, ch, ctx).Any();
     }
 }

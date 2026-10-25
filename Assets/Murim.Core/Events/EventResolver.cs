@@ -90,7 +90,13 @@ namespace Murim.Core.Events
             var e = ctx.Def;
             var w = ctx.W;
             var decider = ctx.Decider;
-            if (decider != null && e.CooldownMonths > 0) w.Events.SetCooldown(CooldownKey(e.Id, decider.Id), w.Month + e.CooldownMonths);
+            int cooldown = e.CooldownMonths;
+            if (ctx.IsPlayerDecider)
+            {
+                var teller = Storyteller.Def(ctx.D, w.Events);
+                if (teller != null) cooldown = (int)System.Math.Round(cooldown * teller.PlayerCooldownScale);
+            }
+            if (decider != null && cooldown > 0) w.Events.SetCooldown(CooldownKey(e.Id, decider.Id), w.Month + cooldown);
             if (e.GlobalCooldownMonths > 0) w.Events.SetCooldown(CooldownKey(e.Id, "*"), w.Month + e.GlobalCooldownMonths);
         }
 

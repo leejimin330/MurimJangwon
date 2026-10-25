@@ -150,9 +150,10 @@ namespace Murim.Core.Events
                 }
                 case "setAlignment":
                 {
+                    // 세력의 길은 수장만 바꿀 수 있다: 역할이 수장이 아니면 아무 일도 없다.
                     var x = (SetAlignmentFx)args;
                     var f = FactionOf(ctx, x.Faction);
-                    if (f == null || f.Alignment == x.Alignment) break;
+                    if (f == null || f.Alignment == x.Alignment || f.LeaderId != ctx.Get(x.Faction)?.Id) break;
                     var from = f.Alignment;
                     f.Alignment = x.Alignment;
                     f.Chivalry = x.Alignment == Alignment.Righteous ? SimConstants.RighteousStartChivalry
@@ -259,11 +260,34 @@ namespace Murim.Core.Events
                     w.Events.Scheduled.Add(s);
                     break;
                 }
+                case "marry":
+                {
+                    var x = (PairFx)args;
+                    var a = Alive(ctx, x.A);
+                    var b = Alive(ctx, x.B);
+                    if (a == null || b == null || !MarriageRules.Eligible(w, a, b).Ok) break;
+                    new Generation.CharacterGenerator(ctx.D, ctx.Rng).Marry(w, a, b);
+                    // 소속이 다르면 무소속 쪽이, 둘 다 소속이면 수장·후계자가 아닌 쪽이 상대 세력으로 옮긴다.
+                    if (a.FactionId != b.FactionId)
+                    {
+                        Character mover = null;
+                        if (b.FactionId == null) mover = b;
+                        else if (a.FactionId == null) mover = a;
+                        else if (!Heads(w, b)) mover = b;
+                        else if (!Heads(w, a)) mover = a;
+                        var stay = mover == a ? b : a;
+                        if (mover != null) FactionOps.MoveToFaction(w, mover, stay.FactionId, Role.Family);
+                    }
+                    Chronicle.Married(w, a, b);
+                    break;
+                }
                 case "chronicle":
                     ctx.Log.Add(EventText.Format(((ChronicleFx)args).Text, ctx));
                     break;
             }
         }
+
+        static bool Heads(WorldState w, Character c) => Wallet.LedFaction(w, c) != null || w.GetFaction(c.FactionId)?.HeirId == c.Id;
 
         static int DuelModifier(EventContext ctx, Character c)
         {

@@ -36,6 +36,7 @@ namespace Murim.Core.Events
         public ChanceFx Chance;
         public ScheduleFx Schedule;
         public ChronicleFx Chronicle;
+        public PairFx Marry;
         [JsonExtensionData] public IDictionary<string, JToken> Unknown;
 
         IEnumerable<(string name, FxArgs args)> All()
@@ -66,6 +67,7 @@ namespace Murim.Core.Events
             yield return ("chance", Chance);
             yield return ("schedule", Schedule);
             yield return ("chronicle", Chronicle);
+            yield return ("marry", Marry);
         }
 
         /// <summary>값이 있는 효과들 (정상이면 정확히 하나).</summary>
@@ -178,6 +180,13 @@ namespace Murim.Core.Events
         public string Faction;
         public Role Role = Data.Role.Disciple;
         public override IEnumerable<string> RoleRefs() { yield return Who; yield return Faction; }
+    }
+
+    public class PairFx : FxArgs
+    {
+        public string A;
+        public string B;
+        public override IEnumerable<string> RoleRefs() { yield return A; yield return B; }
     }
 
     public class PairAmountFx : FxArgs

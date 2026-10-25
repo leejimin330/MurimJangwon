@@ -154,7 +154,8 @@ namespace Murim.Core.Session
             return new EventOutcome { Ok = true, Text = text };
         }
 
-        void ResolveAllAuto()
+        /// <summary>대기 사건을 AI 방식으로 모두 답한다 (테스트·시뮬레이션용).</summary>
+        public void ResolveAllAuto()
         {
             while (World.Events.Pending.Count > 0)
             {

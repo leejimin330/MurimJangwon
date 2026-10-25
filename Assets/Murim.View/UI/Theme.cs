@@ -35,6 +35,19 @@ namespace Murim.View.UI
             _ => Demonic,
         };
 
+        /// <summary>사건 범주 색 (선택 창 띠, 연대기 점).</summary>
+        public static Color OfCategory(string category) => category switch
+        {
+            "grudge" => Hex("#B5544A"),
+            "debt" => Hex("#6FA37C"),
+            "demonic" => Demonic,
+            "faction" => Righteous,
+            "region" => Hex("#8C8A5A"),
+            "wanderer" => Hex("#7E9AA6"),
+            "trait" => Gold,
+            _ => InkDim,
+        };
+
         public static string AlignmentName(Alignment a) => a switch
         {
             Alignment.Righteous => "정파",

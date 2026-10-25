@@ -16,7 +16,7 @@ using UnityEngine.UI;
 namespace Murim.Editor
 {
     /// <summary>
-    /// Task 12 수동 확인 시나리오를 실제 UI 버튼을 눌러 재현한다 (개발 확인용).
+    /// Task 12(1단계)·Task 13(2단계 사건) 수동 확인 시나리오를 실제 UI 버튼을 눌러 재현한다 (개발 확인용).
     /// batchmode (그래픽 있음): -executeMethod Murim.Editor.UiScenario.RunTask12
     /// 결과: TestResults/snapshots/12_*.png, TestResults/snapshots/task12.txt
     /// 저장 칸 1·2는 실행 전에 백업하고 끝나면 되돌린다.
@@ -54,9 +54,146 @@ namespace Murim.Editor
             if (Application.isBatchMode) EditorApplication.Exit(failures == 0 ? 0 : 1);
         }
 
+        /// <summary>2단계: 사건 선택 창, 비활성 사유, 소식, 대기 중 저장·불러오기, 표식 칩, "사건만" 필터, 2년 진행.
+        /// -executeMethod Murim.Editor.UiScenario.RunTask13 → TestResults/snapshots/13_*.png, task13.txt</summary>
+        public static void RunTask13()
+        {
+            report.Clear();
+            failures = 0;
+            var backups = Backup(1);
+            try
+            {
+                app = UiSnapshot.CreateApp(out camera);
+                Events();
+            }
+            catch (Exception e)
+            {
+                Check(false, "예외: " + e);
+            }
+            finally
+            {
+                Restore(backups);
+            }
+            report.Add(failures == 0 ? "결과: 모두 통과" : $"결과: 실패 {failures}개");
+            var outPath = Path.Combine(Directory.GetCurrentDirectory(), "TestResults", "snapshots", "task13.txt");
+            File.WriteAllLines(outPath, report);
+            Debug.Log("[T13]\n" + string.Join("\n", report));
+            if (Application.isBatchMode) EditorApplication.Exit(failures == 0 ? 0 : 1);
+        }
+
+        static void Events()
+        {
+            var s = GameSession.NewGame(app.Data, new NewGameOptions
+            {
+                ScenarioId = "minor_sect", RegionId = "henan", Seed = 42, StorytellerId = "turbulent",
+            });
+            app.StartGame(s);
+            var w = s.World;
+            var me = s.Player;
+            var own = Wallet.LedFaction(w, me);
+            Check(w.Events.StorytellerId == "turbulent", "이야기꾼: 파란만장");
+
+            // 원한을 품은 이웃 수장 → 생사결 신청. 은자가 모자라 "달랜다"는 비활성이어야 한다.
+            var rival = w.Factions.Values.Where(f => f.Id != own.Id && !f.IsDissolved && f.HomeRegionId == own.HomeRegionId)
+                .Select(f => FactionOps.Leader(w, f)).First(c => c != null && c.IsAlive && c.AgeYears(w.Month) <= 70);
+            Opinion.AddMemory(rival, Murim.Core.Data.MemoryKind.Grudge, me.Id, "모욕", w.Month, 70);
+            own.Silver = 100;
+            var forced = s.ForceEvent("grudge_duel_challenge");
+            Check(forced.Ok, "생사결 신청 사건 강제: " + (forced.Reason ?? "성립"));
+            app.Rebuild();
+            var dialog = Find("EventDialog");
+            Check(dialog != null, "선택 창이 뜸: " + Texts(dialog).FirstOrDefault());
+            report.Add("    본문: " + s.PendingEvents.FirstOrDefault()?.Text);
+            var soothe = Named<Button>("Choice1");
+            var why = soothe?.GetComponent<Tooltip>()?.Text;
+            Check(soothe != null && !soothe.interactable && why == "은자 200냥이 필요합니다", "\"은자로 달랜다\" 비활성, 사유: " + why);
+            var seal = Find("Seal")?.GetComponent<Button>();
+            Check(seal != null && !seal.interactable && Find("Seal").GetComponent<Tooltip>()?.Text == "먼저 사건에 답해야 합니다",
+                "답하기 전 \"다음 달\" 비활성");
+            Check(Named<Button>("EventsButton") != null, "상단 바 \"사건 1\" 단추");
+            Shot("13_01_duel_challenge");
+
+            Press(Named<Button>("Choice2"), "거절하고 몸을 피한다");
+            var ok = Named<Button>("EventOk");
+            Check(ok != null, "결과 문장과 확인: " + Texts(Find("EventDialog")).Skip(2).FirstOrDefault());
+            Check(w.Events.Scheduled.Any(x => x.EventId == "grudge_ambush"), "몸을 피하자 암습이 예약됨");
+            Shot("13_02_result");
+            Press(ok, "확인");
+            Check(Find("EventDialog") == null && s.CanEndTurn, "확인 → 창 닫힘, 다음 달 가능");
+
+            // 소식: 원한 품은 이웃이 플레이어를 헐뜯는다 (결정자는 이웃).
+            var rumor = s.ForceEvent("grudge_rumor", new Dictionary<string, string> { ["spreader"] = rival.Id, ["target"] = me.Id });
+            app.Rebuild();
+            var notice = s.PendingEvents.FirstOrDefault();
+            Check(rumor.Ok && notice != null && notice.IsNotice, "소식: " + notice?.Text);
+            Shot("13_03_notice");
+            Press(Named<Button>("EventOk"), "소식 확인");
+
+            // 답을 기다리는 사건이 있는 채로 저장 → 처음 화면 → 불러오기
+            Check(s.ForceEvent("faction_volunteers").Ok, "입문 희망자 사건 강제");
+            app.Rebuild();
+            Click("저장");
+            ClickIn("SaveLoad", "저장", 0);
+            Click("처음 화면");
+            Click("불러오기 1번 칸");
+            var loaded = app.Session;
+            Check(loaded != s && loaded.PendingEvents.Count == 1 && Find("EventDialog") != null,
+                "불러오자 대기 사건 창이 다시 뜸: " + loaded.PendingEvents.FirstOrDefault()?.Title);
+            Shot("13_04_reloaded");
+            Press(Named<Button>("Choice0"), "받아들인다");
+            Press(Named<Button>("EventOk"), "확인");
+
+            // 표식 칩
+            loaded.Player.SetFlag("injured", loaded.World.Month, 6);
+            Click("나");
+            var chip = Canvas.GetComponentsInChildren<Tooltip>().FirstOrDefault(t => t.name == "Flag");
+            Check(chip != null, "인물 패널 표식 칩: " + chip?.Text);
+            Shot("13_05_flags");
+
+            // 2년 진행: 뜨는 창마다 고를 수 있는 첫 선택지
+            int dialogs = 0, start = loaded.World.Month;
+            var titles = new List<string>();
+            for (int m = 0; m < 24; m++)
+            {
+                for (int guard = 0; guard < 10 && loaded.PendingEvents.Count > 0; guard++)
+                {
+                    dialogs++;
+                    titles.Add(loaded.PendingEvents[0].Title);
+                    var first = Canvas.GetComponentsInChildren<Button>().FirstOrDefault(b => b.name.StartsWith("Choice") && b.interactable);
+                    if (first != null) Press(first, "첫 선택지");
+                    Press(Named<Button>("EventOk"), "확인");
+                }
+                if (dialogs == 1 && m == 0) Shot("13_06_first_storyteller_event");
+                Click("다음 달");
+            }
+            Check(loaded.World.Month == start + 24, $"2년 진행: {GameDate.Format(start)} → {GameDate.Format(loaded.World.Month)}");
+            Check(dialogs > 0, $"그동안 받은 창 {dialogs}개: {string.Join(", ", titles)}");
+            if (loaded.PendingEvents.Count > 0)
+            {
+                Shot("13_07_event_dialog");
+                var first = Canvas.GetComponentsInChildren<Button>().FirstOrDefault(b => b.name.StartsWith("Choice") && b.interactable);
+                if (first != null) Press(first, "첫 선택지");
+                Press(Named<Button>("EventOk"), "확인");
+            }
+
+            Click("사건만");
+            int rows = ChronicleRows();
+            int events = loaded.World.Chronicle.Count(e => e.Kind.StartsWith("Event:"));
+            Check(rows > 0 && rows == System.Math.Min(events, 300), $"연대기 \"사건만\": {rows}줄 (사건 기록 {events}개)");
+            Shot("13_08_chronicle_events");
+            Click("전체");
+        }
+
+        static T Named<T>(string name) where T : Component =>
+            Canvas.GetComponentsInChildren<T>().LastOrDefault(x => x.name == name);
+
+        static IEnumerable<string> Texts(Transform t) =>
+            t == null ? Enumerable.Empty<string>() : t.GetComponentsInChildren<Text>().Select(x => x.text);
+
         static void MinorSect()
         {
             var s = GameSession.NewGame(app.Data, new NewGameOptions { ScenarioId = "minor_sect", RegionId = "henan", Seed = 42 });
+            s.AutoResolveEvents = true; // 1단계 흐름만 본다 (사건 창은 RunTask13)
             app.StartGame(s);
             var gs = new GameScreen(app);
             app.Show(gs);
@@ -162,6 +299,7 @@ namespace Murim.Editor
         static void Wanderer()
         {
             var s = GameSession.NewGame(app.Data, new NewGameOptions { ScenarioId = "wandering_hero", RegionId = "sichuan", Seed = 7 });
+            s.AutoResolveEvents = true;
             app.StartGame(s);
             var gs = new GameScreen(app);
             app.Show(gs);

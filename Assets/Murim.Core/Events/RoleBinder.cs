@@ -113,10 +113,10 @@ namespace Murim.Core.Events
             {
                 case EventPicks.MemoryTarget:
                     var ofRole = ctx.Def.Roles.TryGetValue(role.Of, out var r) ? r : null;
-                    var cond = ofRole?.Memory != null && ofRole.Memory.Kind == role.MemoryKind ? ofRole.Memory : null;
-                    return of.Memories
-                        .Where(m => m.Kind == role.MemoryKind && (cond == null || ConditionCheck.Matches(cond, m, ctx)))
-                        .Select(m => m.TargetId).Distinct().OrderBy(id => id, StringComparer.Ordinal).Select(w.Get);
+                    var cond = ofRole?.Memory != null && ofRole.Memory.Kind == role.MemoryKind
+                        ? new MemoryCond { Kind = role.MemoryKind, MinStrength = ofRole.Memory.MinStrength, Inherited = ofRole.Memory.Inherited }
+                        : new MemoryCond { Kind = role.MemoryKind };
+                    return ConditionCheck.MatchingTargets(cond, of, ctx).Select(w.Get);
                 case EventPicks.Spouse:
                     return new[] { w.Get(of.SpouseId) };
                 case EventPicks.Child:

@@ -144,6 +144,8 @@ namespace Murim.Core.Events
             foreach (var f in new[] { c.HasFlag, c.NotFlag })
                 if (f != null && !d.Flags.ContainsKey(f)) errors.Add($"{at}: 알 수 없는 표식 '{f}'");
             if (c.Memory?.Target != null && !roles.ContainsKey(c.Memory.Target)) errors.Add($"{at}: 기억 대상 역할 '{c.Memory.Target}'이(가) 없습니다");
+            if (c.OppositeSexOf != null && !roles.ContainsKey(c.OppositeSexOf))
+                errors.Add($"{at}: 성별 비교 역할 '{c.OppositeSexOf}'이(가) 없습니다");
             if (c.OpinionOf != null && (c.OpinionOf.Role == null || !roles.ContainsKey(c.OpinionOf.Role)))
                 errors.Add($"{at}: 호감 대상 역할 '{c.OpinionOf.Role}'이(가) 없습니다");
         }

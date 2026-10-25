@@ -1,11 +1,5 @@
 [
-  {"id": "calm", "name": "평온", "description": "사건이 드물고 위기 사이가 넉넉하다. 세력을 차분히 키우고 싶을 때.",
-   "tensionGain": 2, "tensionMax": 60, "baseChance": 0.25, "crisisGapMonths": 18,
-   "categoryMultipliers": {"trait": 1.5, "debt": 1.5, "grudge": 0.7, "demonic": 0.5}},
-  {"id": "balanced", "name": "균형", "description": "기회와 위기가 고르게 온다.",
-   "tensionGain": 4, "tensionMax": 100, "baseChance": 0.35, "crisisGapMonths": 10,
-   "categoryMultipliers": {}},
-  {"id": "turbulent", "name": "파란만장", "description": "원한과 마도의 그림자가 끊이지 않는다. 강호는 결코 조용하지 않다.",
-   "tensionGain": 6, "tensionMax": 160, "baseChance": 0.45, "crisisGapMonths": 5,
-   "categoryMultipliers": {"grudge": 1.5, "demonic": 1.5}}
+  {"id": "calm", "name": "평온", "description": "사건이 드물고 위기 사이가 넉넉하다. 세력을 차분히 키우고 싶을 때.", "tensionGain": 2, "tensionMax": 60, "baseChance": 0.25, "crisisGapMonths": 18, "categoryMultipliers": {"trait": 1.5, "debt": 1.5, "grudge": 0.7, "demonic": 0.5}, "playerCooldownScale": 1.0},
+  {"id": "balanced", "name": "균형", "description": "기회와 위기가 고르게 온다.", "tensionGain": 4, "tensionMax": 100, "baseChance": 0.35, "crisisGapMonths": 10, "categoryMultipliers": {}, "playerCooldownScale": 0.6},
+  {"id": "turbulent", "name": "파란만장", "description": "원한과 마도의 그림자가 끊이지 않는다. 강호는 결코 조용하지 않다.", "tensionGain": 6, "tensionMax": 160, "baseChance": 0.45, "crisisGapMonths": 5, "categoryMultipliers": {"grudge": 1.5, "demonic": 1.5}, "playerCooldownScale": 0.35}
 ]

@@ -10,7 +10,8 @@ namespace Murim.View.UI.Panels
     /// <summary>연월, 자원, 남은 행동, 예약 목록, 저장, "다음 달" 인장.</summary>
     public static class TopBar
     {
-        public static void Build(RectTransform bar, GameSession s, Action onEndTurn, Action onSave, Action onTitle, Action onChanged)
+        public static void Build(RectTransform bar, GameSession s, Action onEndTurn, Action onSave, Action onTitle, Action onChanged,
+            Action onEvents = null)
         {
             var w = s.World;
             var p = s.Player;
@@ -32,17 +33,26 @@ namespace Murim.View.UI.Panels
 
             var pendingBtn = UiFactory.Button(bar, $"예약 {s.Pending.Count}", null, s.Pending.Count > 0, "예약한 행동이 없습니다", width: 110);
             pendingBtn.onClick.AddListener(() => ShowPending(bar, s, onChanged));
+            if (s.PendingEvents.Count > 0)
+            {
+                var ev = UiFactory.Button(bar, $"사건 {s.PendingEvents.Count}", onEvents, width: 110);
+                ev.GetComponent<Image>().color = Theme.Gold;
+                ev.GetComponentInChildren<Text>().color = Theme.Ground;
+                ev.name = "EventsButton";
+            }
             UiFactory.Button(bar, "저장", onSave, width: 90);
             UiFactory.Button(bar, "처음 화면", onTitle, width: 120);
 
-            var seal = UiFactory.Panel(bar, w.GameOver ? Theme.Disabled : Theme.Seal, "Seal");
+            bool canEnd = !w.GameOver && s.CanEndTurn;
+            var seal = UiFactory.Panel(bar, canEnd ? Theme.Seal : Theme.Disabled, "Seal");
             seal.Size(132, 60);
             seal.raycastTarget = true;
             var sealBtn = seal.gameObject.AddComponent<Button>();
-            sealBtn.interactable = !w.GameOver;
-            if (!w.GameOver) sealBtn.onClick.AddListener(() => onEndTurn());
+            sealBtn.interactable = canEnd;
+            if (canEnd) sealBtn.onClick.AddListener(() => onEndTurn());
+            else if (!w.GameOver) Tooltip.Attach(seal.gameObject, "먼저 사건에 답해야 합니다");
             var sealText = UiFactory.Label(seal.transform, w.GameOver ? "대가 끊김" : "다음 달", Theme.SubheadingSize,
-                w.GameOver ? Theme.InkFaint : Theme.SealInk, true, TextAnchor.MiddleCenter);
+                canEnd ? Theme.SealInk : Theme.InkFaint, true, TextAnchor.MiddleCenter);
             sealText.rectTransform.Fill();
             var frame = UiFactory.Panel(seal.transform, new Color(0, 0, 0, 0), "Frame");
             frame.rectTransform.Fill(5, 5, 5, 5);

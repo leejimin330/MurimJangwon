@@ -158,6 +158,16 @@ namespace Murim.View.UI.Screens
                 if (!blocked) Tooltip.Attach(b.gameObject, t.Description);
             }
 
+            Field(form, "이야기꾼", row =>
+            {
+                foreach (var id in new[] { "calm", "balanced", "turbulent" })
+                {
+                    if (!app.Data.Storytellers.TryGetValue(id, out var teller)) continue;
+                    var tid = id;
+                    var b = UiFactory.Choice(row, teller.Name, o.StorytellerId == id, () => { o.StorytellerId = tid; app.Rebuild(); }, width: 130);
+                    Tooltip.Attach(b.gameObject, teller.Description);
+                }
+            });
             Field(form, "시드", row => UiFactory.Input(row, seedText, "숫자", v => seedText = v, 260));
 
             var side = UiFactory.Panel(body, Theme.Panel, "Summary");

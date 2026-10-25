@@ -64,6 +64,8 @@ namespace Murim.Core.Events
         public MemoryCond Memory;
         public OpinionCond OpinionOf;
         public double? Chance;
+        /// <summary>이 역할과 성별이 달라야 한다.</summary>
+        public string OppositeSexOf;
         [JsonExtensionData] public IDictionary<string, JToken> Unknown;
     }
 
@@ -136,6 +138,8 @@ namespace Murim.Core.Events
         public int TensionMax;
         public double BaseChance;
         public int CrisisGapMonths;
+        /// <summary>플레이어가 결정자일 때 사건 쿨다운에 곱한다 (작을수록 같은 사건이 자주 온다).</summary>
+        public float PlayerCooldownScale = 1f;
         public Dictionary<string, float> CategoryMultipliers = new Dictionary<string, float>();
 
         public float Multiplier(string category) =>

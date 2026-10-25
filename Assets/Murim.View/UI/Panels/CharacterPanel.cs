@@ -52,6 +52,7 @@ namespace Murim.View.UI.Panels
                 FactionPanel.Info(list, $"은자 {Wallet.Silver(w, c):N0}냥, 명성 {Wallet.Fame(w, c)}");
 
             Traits(list, d, c);
+            Flags(list, s, c);
             if (player != null && player.Id != c.Id && c.IsAlive) OpinionLine(list, s, c, player);
             if (c.IsAlive) BuildActions(list, app, nav, c);
             Relations(list, w, nav, c);
@@ -74,6 +75,25 @@ namespace Murim.View.UI.Panels
                 UiFactory.Label(chip.transform, def?.Name ?? id, Theme.BodySize, Theme.Gold, align: TextAnchor.MiddleCenter)
                     .rectTransform.Fill(8, 0, 8, 0);
                 if (def != null && !string.IsNullOrEmpty(def.Description)) Tooltip.Attach(chip.gameObject, def.Description);
+            }
+        }
+
+        /// <summary>부상·수배 같은 기간제 표식. 보이는 것만 칩으로.</summary>
+        static void Flags(RectTransform list, Murim.Core.Session.GameSession s, Character c)
+        {
+            var w = s.World;
+            var shown = c.Flags.Keys.Where(id => c.HasFlag(id, w.Month) && s.Data.Flags.TryGetValue(id, out var f) && f.Visible).ToList();
+            if (shown.Count == 0) return;
+            FactionPanel.Heading(list, "상태");
+            var row = ActionMenu.Grid(list, 150);
+            foreach (var id in shown)
+            {
+                var def = s.Data.Flags[id];
+                var chip = UiFactory.Panel(row, Theme.PanelRaised, "Flag");
+                UiFactory.Label(chip.transform, def.Name, Theme.BodySize, Bad, align: TextAnchor.MiddleCenter).rectTransform.Fill(8, 0, 8, 0);
+                int until = c.Flags[id];
+                string left = until == 0 ? "" : $" (앞으로 {until - w.Month}개월)";
+                Tooltip.Attach(chip.gameObject, def.Description + left);
             }
         }
 
@@ -191,7 +211,8 @@ namespace Murim.View.UI.Panels
             {
                 bool grudge = m.Kind == MemoryKind.Grudge;
                 string target = w.Get(m.TargetId)?.FullName ?? w.GetFaction(m.TargetId)?.Name ?? "누군가";
-                FactionPanel.Info(list, $"{(grudge ? "원한" : "은혜")}  {target}: {m.Reason} (강도 {m.Strength}, {GameDate.Format(m.Month)})",
+                string from = m.Inherited ? ", 윗대에서 물려받음" : "";
+                FactionPanel.Info(list, $"{(grudge ? "원한" : "은혜")}  {target}: {m.Reason} (강도 {m.Strength}, {GameDate.Format(m.Month)}{from})",
                     grudge ? Bad : Good);
             }
         }

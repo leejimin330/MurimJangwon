@@ -1,0 +1,17 @@
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Bb]uild*/
+/*.csproj
+/*.sln
+/*.slnx
+*.pidb
+*.user
+.vs/
+.idea/
+dotnet/**/bin/
+dotnet/**/obj/
+TestResults/
+.superpowers/

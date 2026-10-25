@@ -17,10 +17,10 @@ namespace Murim.Core.Rules
         public const int MaxTraits = 4;
 
         // 수명: 연간 위험 = BaseHazard × exp(HazardGrowth × (나이 − 경지 × RealmLifespanYears))
-        public const double BaseHazard = 0.0003;
+        public const double BaseHazard = 0.0001;
         public const double HazardGrowth = 0.1;
         public const int RealmLifespanYears = 8;
-        public const double MonthlyAccidentChance = 0.0004;
+        public const double MonthlyAccidentChance = 0.0001;
         public const int OldAgeThreshold = 55;
 
         // 경지 단순 상승 (1단계 임시 규칙)

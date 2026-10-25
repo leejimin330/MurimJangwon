@@ -61,6 +61,36 @@ namespace Murim.Core.Story
         public static void LeftFaction(WorldState w, Character c, Faction f) =>
             Add(w, nameof(LeftFaction), 1, $"{Josa.IGa(c.FullName)} {Josa.EulReul(f?.Name ?? "세력")} 떠났다.", c.Id);
 
+        public static void Born(WorldState w, Character mother, Character father, Character child) =>
+            Add(w, nameof(Born), child.FactionId != null && child.FactionId == w.Player?.FactionId ? 1 : 0,
+                $"{Josa.WaGwa(father.FullName)} {mother.FullName} 사이에서 {Josa.IGa(child.FullName)} 태어났다.",
+                child.Id, father.Id, mother.Id);
+
+        public static void Died(WorldState w, Character c)
+        {
+            string how = c.DeathCause switch { "노환" => "노환으로", "사고" => "뜻밖의 사고로", _ => "병으로" };
+            int importance = c.Role == Data.Role.Leader || c.Id == w.PlayerCharacterId ? 2 : 1;
+            Add(w, nameof(Died), importance, $"{Josa.IGa(T(w, c))} {how} 세상을 떠났다. (향년 {c.AgeYears(w.Month)}세)", c.Id);
+        }
+
+        public static void Succeeded(WorldState w, Faction f, Character successor, Character previous) =>
+            Add(w, nameof(Succeeded), 2, previous == null
+                ? $"{Josa.IGa(successor.FullName)} {f.Name}의 새 {Titles.Role(f, Data.Role.Leader)}이(가) 되었다."
+                : $"{Josa.IGa(successor.FullName)} {previous.FullName}의 뒤를 이어 {f.Name}의 {Titles.Role(f, Data.Role.Leader)}이(가) 되었다.",
+                f.Id, successor.Id);
+
+        public static void Deserted(WorldState w, Faction f, Character deserter, Character newLeader) =>
+            Add(w, nameof(Deserted), 1, $"{Josa.IGa(deserter.FullName)} 새 {Titles.Role(f, Data.Role.Leader)} {newLeader.FullName}을(를) 따를 수 없다며 {Josa.EulReul(f.Name)} 떠났다.",
+                f.Id, deserter.Id);
+
+        public static void AlignmentShifted(WorldState w, Faction f) =>
+            Add(w, nameof(AlignmentShifted), 2, f.Alignment == Data.Alignment.Unorthodox
+                ? $"{Josa.IGa(f.Name)} 정도를 버리고 사파의 길로 들어섰다."
+                : $"{Josa.IGa(f.Name)} 과거를 씻고 정파로 거듭났다.", f.Id);
+
+        public static void GameOver(WorldState w, Character last) =>
+            Add(w, nameof(GameOver), 2, $"{Josa.EulReul(last.FullName)} 끝으로 가문의 대가 끊겼다.", last.Id);
+
         public static void ActionSkipped(WorldState w, Character actor, string description, string reason) =>
             Add(w, nameof(ActionSkipped), 1, $"{description} — 하지 못했다: {reason}", actor.Id);
     }

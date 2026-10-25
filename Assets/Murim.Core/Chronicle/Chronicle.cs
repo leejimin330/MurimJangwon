@@ -45,6 +45,22 @@ namespace Murim.Core.Story
         public static void Plundered(WorldState w, Faction f, string regionName) =>
             Add(w, nameof(Plundered), 1, $"{Josa.IGa(f.Name)} {regionName} 일대를 약탈하였다.", f.Id);
 
+        public static void Sparred(WorldState w, Character actor, Character target, bool won) =>
+            Add(w, nameof(Sparred), 0, won
+                ? $"{Josa.IGa(actor.FullName)} 비무에서 {Josa.EulReul(T(w, target))} 꺾었다."
+                : $"{Josa.IGa(actor.FullName)} 비무에서 {T(w, target)}에게 패하였다.", actor.Id, target.Id);
+
+        public static void GuestRequest(WorldState w, Character actor, Faction f, bool accepted) =>
+            Add(w, nameof(GuestRequest), accepted ? 1 : 0, accepted
+                ? $"{Josa.IGa(actor.FullName)} {f.Name}의 객경이 되었다."
+                : $"{Josa.EunNeun(f.Name)} {actor.FullName}의 의탁을 받아들이지 않았다.", actor.Id, f.Id);
+
+        public static void SectFounded(WorldState w, Character founder, Faction f) =>
+            Add(w, nameof(SectFounded), 2, $"{Josa.IGa(founder.FullName)} {Josa.EulReul(f.Name)} 세웠다.", founder.Id, f.Id);
+
+        public static void LeftFaction(WorldState w, Character c, Faction f) =>
+            Add(w, nameof(LeftFaction), 1, $"{Josa.IGa(c.FullName)} {Josa.EulReul(f?.Name ?? "세력")} 떠났다.", c.Id);
+
         public static void ActionSkipped(WorldState w, Character actor, string description, string reason) =>
             Add(w, nameof(ActionSkipped), 1, $"{description} — 하지 못했다: {reason}", actor.Id);
     }

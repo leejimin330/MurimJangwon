@@ -88,7 +88,7 @@ namespace Murim.View.UI.Panels
             var shade = UiFactory.Panel(canvas, new Color(0, 0, 0, 0.55f), "PickerShade");
             shade.rectTransform.Fill();
             shade.raycastTarget = true;
-            void Close() => UnityEngine.Object.Destroy(shade.gameObject);
+            void Close() => UiFactory.Remove(shade.gameObject);
             shade.gameObject.AddComponent<Button>().onClick.AddListener(Close);
 
             var box = UiFactory.Panel(shade.transform, Theme.Panel, "Picker");
@@ -121,7 +121,7 @@ namespace Murim.View.UI.Panels
             var shade = UiFactory.Panel(app.Root.parent, new Color(0, 0, 0, 0.55f), "PromptShade");
             shade.rectTransform.Fill();
             shade.raycastTarget = true;
-            void Close() => UnityEngine.Object.Destroy(shade.gameObject);
+            void Close() => UiFactory.Remove(shade.gameObject);
 
             var box = UiFactory.Panel(shade.transform, Theme.Panel, "Prompt");
             box.raycastTarget = true;

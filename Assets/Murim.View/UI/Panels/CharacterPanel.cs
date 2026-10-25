@@ -35,7 +35,7 @@ namespace Murim.View.UI.Panels
             UiFactory.Label(col, c.FullName + mark, Theme.HeadingSize + 4, c.IsAlive ? Theme.Ink : Theme.InkFaint, true).Size(-1, 50);
             string life = c.IsAlive
                 ? $"{c.AgeYears(w.Month)}세"
-                : $"향년 {c.AgeYears(w.Month)}세 ({GameDate.Year(c.BirthMonth)}년 ~ {GameDate.Year(c.DeathMonth.Value)}년, {c.DeathCause})";
+                : $"{GameDate.Format(c.DeathMonth.Value)} {Josa.EuroRo(c.DeathCause)} 별세, 향년 {c.AgeYears(w.Month)}세";
             UiFactory.Label(col, $"{(c.Sex == Sex.Male ? "남" : "여")}, {life}, {Titles.Realm(c.Realm)}", Theme.BodySize, Theme.InkDim)
                 .Size(-1, 30);
             UiFactory.Label(col, faction == null ? "무소속" : $"{faction.Name} {Titles.Role(faction, c.Role)}", Theme.BodySize, Theme.InkDim)

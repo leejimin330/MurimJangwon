@@ -75,12 +75,12 @@ namespace Murim.Core.Story
 
         public static void Succeeded(WorldState w, Faction f, Character successor, Character previous) =>
             Add(w, nameof(Succeeded), 2, previous == null
-                ? $"{Josa.IGa(successor.FullName)} {f.Name}의 새 {Titles.Role(f, Data.Role.Leader)}이(가) 되었다."
-                : $"{Josa.IGa(successor.FullName)} {previous.FullName}의 뒤를 이어 {f.Name}의 {Titles.Role(f, Data.Role.Leader)}이(가) 되었다.",
+                ? $"{Josa.IGa(successor.FullName)} {f.Name}의 새 {Josa.IGa(Titles.Role(f, Data.Role.Leader))} 되었다."
+                : $"{Josa.IGa(successor.FullName)} {previous.FullName}의 뒤를 이어 {f.Name}의 {Josa.IGa(Titles.Role(f, Data.Role.Leader))} 되었다.",
                 f.Id, successor.Id);
 
         public static void Deserted(WorldState w, Faction f, Character deserter, Character newLeader) =>
-            Add(w, nameof(Deserted), 1, $"{Josa.IGa(deserter.FullName)} 새 {Titles.Role(f, Data.Role.Leader)} {newLeader.FullName}을(를) 따를 수 없다며 {Josa.EulReul(f.Name)} 떠났다.",
+            Add(w, nameof(Deserted), 1, $"{Josa.IGa(deserter.FullName)} 새 {Titles.Role(f, Data.Role.Leader)} {Josa.EulReul(newLeader.FullName)} 따를 수 없다며 {Josa.EulReul(f.Name)} 떠났다.",
                 f.Id, deserter.Id);
 
         public static void AlignmentShifted(WorldState w, Faction f) =>

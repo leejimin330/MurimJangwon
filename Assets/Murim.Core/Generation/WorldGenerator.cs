@@ -95,12 +95,15 @@ namespace Murim.Core.Generation
                 budget--;
                 var mother = leaderSex == Sex.Female ? leader : spouse;
                 var father = leaderSex == Sex.Male ? leader : spouse;
-                int maxChildAge = Math.Min(mother.AgeYears(w.Month) - 17, 40);
+                // 어머니가 출산 가능 나이(FertileMinAge~FertileMaxAge)였을 때 태어난 자식만 만든다.
+                int motherAge = mother.AgeYears(w.Month);
+                int minChildAge = Math.Max(1, motherAge - SimConstants.FertileMaxAge);
+                int maxChildAge = Math.Min(motherAge - SimConstants.FertileMinAge - 1, 40);
                 int kids = rng.Next(0, 4);
-                for (int i = 0; i < kids && budget > 1 && maxChildAge >= 1; i++)
+                for (int i = 0; i < kids && budget > 1 && maxChildAge >= minChildAge; i++)
                 {
                     var child = gen.CreateChild(w, mother, father);
-                    int age = rng.Next(1, maxChildAge + 1);
+                    int age = rng.Next(minChildAge, maxChildAge + 1);
                     child.BirthMonth = w.Month - age * 12 - rng.Next(0, 12);
                     if (age >= SimConstants.AdultAge) child.Realm = rng.Next(0, Math.Max(1, leaderRealm));
                     budget--;

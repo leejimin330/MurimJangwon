@@ -78,13 +78,16 @@ namespace Murim.Core.Generation
             }
             var mother = leader.Sex == Sex.Female ? leader : spouse;
             var father = leader.Sex == Sex.Male ? leader : spouse;
-            int maxChildAge = mother == null ? 0 : Math.Min(mother.AgeYears(w.Month) - 17, 30);
+            // 어머니가 출산 가능 나이였을 때 태어난 자식만 만든다.
+            int motherAge = mother == null ? 0 : mother.AgeYears(w.Month);
+            int minChildAge = Math.Max(1, motherAge - SimConstants.FertileMaxAge);
+            int maxChildAge = mother == null ? 0 : Math.Min(motherAge - SimConstants.FertileMinAge - 1, 30);
             for (int i = 0; i < count; i++)
             {
-                if (spouse != null && maxChildAge >= 1)
+                if (spouse != null && maxChildAge >= minChildAge)
                 {
                     var child = gen.CreateChild(w, mother, father);
-                    child.BirthMonth = w.Month - rng.Next(1, maxChildAge + 1) * 12 - rng.Next(0, 12);
+                    child.BirthMonth = w.Month - rng.Next(minChildAge, maxChildAge + 1) * 12 - rng.Next(0, 12);
                 }
                 else
                 {

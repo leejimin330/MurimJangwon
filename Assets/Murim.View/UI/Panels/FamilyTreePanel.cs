@@ -10,7 +10,7 @@ namespace Murim.View.UI.Panels
     /// <summary>3대 가계도: 부모 / 본인·배우자 / 자식. 칸을 누르면 그 사람을 중심으로 다시 그린다.</summary>
     public static class FamilyTreePanel
     {
-        const float CellWidth = 200, CellHeight = 84;
+        const float CellWidth = 200, CellHeight = 96;
 
         public static void Build(RectTransform panel, Bootstrap app, INav nav, string characterId)
         {
@@ -73,9 +73,10 @@ namespace Murim.View.UI.Panels
             Color ink = center ? Theme.Ground : p.IsAlive ? Theme.Ink : Theme.InkFaint;
             Color dim = center ? Theme.Ground : p.IsAlive ? Theme.InkDim : Theme.InkFaint;
             UiFactory.Label(inner, p.FullName + (p.Sex == Sex.Male ? " ♂" : " ♀"), Theme.BodySize, ink).Size(-1, 30);
+            // 시작 전에 태어난 사람은 출생 연도가 0 이하라 나이로 보여 준다.
             string years = p.IsAlive
-                ? $"{GameDate.Year(p.BirthMonth)}년생, {p.AgeYears(w.Month)}세"
-                : $"{GameDate.Year(p.BirthMonth)} ~ {GameDate.Year(p.DeathMonth.Value)}년";
+                ? $"{p.AgeYears(w.Month)}세"
+                : $"{GameDate.Year(p.DeathMonth.Value)}년 몰, 향년 {p.AgeYears(w.Month)}세";
             UiFactory.Label(inner, years, Theme.SmallSize, dim).Size(-1, 24);
             var f = w.GetFaction(p.FactionId);
             if (f != null) UiFactory.Label(inner, f.Name, Theme.SmallSize, dim).Size(-1, 22);

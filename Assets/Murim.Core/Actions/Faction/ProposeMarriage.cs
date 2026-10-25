@@ -29,7 +29,7 @@ namespace Murim.Core.Actions
         }
 
         public string Describe(WorldState w) =>
-            $"{w.Get(OurMemberId)?.FullName}과(와) {w.Get(TheirMemberId)?.FullName}의 혼담";
+            $"{Josa.WaGwa(w.Get(OurMemberId)?.FullName)} {w.Get(TheirMemberId)?.FullName}의 혼담";
 
         public ActionCheck CanExecute(WorldState w, GameData d)
         {
@@ -116,7 +116,7 @@ namespace Murim.Core.Actions
         }
 
         public override string Key => ActionKeys.InternalMarriage;
-        public override string Describe(WorldState w) => $"{w.Get(AId)?.FullName}과(와) {w.Get(BId)?.FullName}의 혼인";
+        public override string Describe(WorldState w) => $"{Josa.WaGwa(w.Get(AId)?.FullName)} {w.Get(BId)?.FullName}의 혼인";
 
         protected override ActionCheck Check(WorldState w, GameData d, Character actor, Faction own)
         {

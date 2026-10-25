@@ -11,7 +11,7 @@ namespace Murim.View.UI.Panels
     /// <summary>13개 지역 노드와 길. 노드 색 = 그 지역 영향력 1위 세력의 성향.</summary>
     public static class MapView
     {
-        const float NodeSize = 64;
+        const float NodeSize = 52;
 
         public static void Build(RectTransform area, GameSession s, string selectedRegion, Action<string> onSelect)
         {
@@ -19,7 +19,10 @@ namespace Murim.View.UI.Panels
             var w = s.World;
             var map = UiFactory.Rect(area, "Map").Fill(60, 40, 60, 70);
 
-            var roads = UiFactory.Rect(map, "Roads").Fill().gameObject.AddComponent<RoadGraphic>();
+            // 직접 만든 Graphic에는 CanvasRenderer가 자동으로 붙지 않아 길이 그려지지 않았다.
+            var roadsGo = UiFactory.Rect(map, "Roads").Fill().gameObject;
+            roadsGo.AddComponent<CanvasRenderer>();
+            var roads = roadsGo.AddComponent<RoadGraphic>();
             roads.color = Theme.Line;
             roads.raycastTarget = false;
             var seen = new HashSet<string>();
@@ -27,6 +30,7 @@ namespace Murim.View.UI.Panels
                 foreach (var n in r.Neighbors)
                     if (seen.Add(string.CompareOrdinal(r.Id, n) < 0 ? r.Id + n : n + r.Id))
                         roads.Segments.Add((Pos(r.X, r.Y), Pos(d.Regions[n].X, d.Regions[n].Y)));
+            roads.SetVerticesDirty();
 
             string playerRegion = s.Player?.LocationRegionId;
             foreach (var r in d.Regions.Values)
@@ -59,6 +63,13 @@ namespace Murim.View.UI.Panels
                 sub.rectTransform.pivot = new Vector2(0.5f, 0);
                 sub.rectTransform.anchoredPosition = new Vector2(0, 0);
                 sub.rectTransform.sizeDelta = new Vector2(0, 24);
+                // 길이 이름표를 지나가도 읽히도록 바탕색 테두리.
+                foreach (var t in new[] { name, sub })
+                {
+                    var o = t.gameObject.AddComponent<Outline>();
+                    o.effectColor = Theme.Ground;
+                    o.effectDistance = new Vector2(2, -2);
+                }
             }
 
             var legend = UiFactory.Row(area, 20, 30);
@@ -89,33 +100,6 @@ namespace Murim.View.UI.Panels
             rt.sizeDelta = new Vector2(size, size);
             rt.anchoredPosition = Vector2.zero;
             return img;
-        }
-    }
-
-    /// <summary>지역 사이 길을 정규화 좌표 선분으로 그린다.</summary>
-    public class RoadGraphic : MaskableGraphic
-    {
-        public readonly List<(Vector2 a, Vector2 b)> Segments = new List<(Vector2, Vector2)>();
-        public float Thickness = 4;
-
-        protected override void OnPopulateMesh(VertexHelper vh)
-        {
-            vh.Clear();
-            var r = rectTransform.rect;
-            foreach (var (a, b) in Segments)
-            {
-                var p = new Vector2(r.xMin + a.x * r.width, r.yMin + a.y * r.height);
-                var q = new Vector2(r.xMin + b.x * r.width, r.yMin + b.y * r.height);
-                var n = (q - p).normalized;
-                var off = new Vector2(-n.y, n.x) * Thickness / 2;
-                int i = vh.currentVertCount;
-                vh.AddVert(p - off, color, Vector2.zero);
-                vh.AddVert(p + off, color, Vector2.zero);
-                vh.AddVert(q + off, color, Vector2.zero);
-                vh.AddVert(q - off, color, Vector2.zero);
-                vh.AddTriangle(i, i + 1, i + 2);
-                vh.AddTriangle(i, i + 2, i + 3);
-            }
         }
     }
 }

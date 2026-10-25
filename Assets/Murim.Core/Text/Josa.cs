@@ -26,5 +26,13 @@ namespace Murim.Core.Text
         public static string EunNeun(string word) => Attach(word, "은", "는");
         public static string EulReul(string word) => Attach(word, "을", "를");
         public static string WaGwa(string word) => Attach(word, "과", "와");
+
+        /// <summary>ㄹ 받침이나 받침 없음 = "로", 그 밖의 받침 = "으로".</summary>
+        public static string EuroRo(string word)
+        {
+            var has = HasFinal(word, out bool rieul);
+            if (has == null) return word + "(으)로";
+            return word + (has.Value && !rieul ? "으로" : "로");
+        }
     }
 }

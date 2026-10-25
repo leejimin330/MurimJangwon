@@ -32,6 +32,36 @@ namespace Murim.Core.Tests
         }
 
         [Test]
+        public void Generate_MothersWereFertileAgeAtEveryBirth()
+        {
+            foreach (var seed in new ulong[] { 1, 2, 3, 42 })
+                AssertFertileBirths(WorldGenerator.Generate(D, new GameRandom(seed), null, 0), "seed " + seed);
+        }
+
+        [Test]
+        public void Scenarios_MothersWereFertileAgeAtEveryBirth()
+        {
+            foreach (var scenario in D.Scenarios.Keys)
+                foreach (var seed in new ulong[] { 1, 7, 42 })
+                {
+                    var s = Session.GameSession.NewGame(D, new Session.NewGameOptions { ScenarioId = scenario, RegionId = "henan", Seed = seed });
+                    AssertFertileBirths(s.World, scenario + " seed " + seed);
+                }
+        }
+
+        static void AssertFertileBirths(WorldState w, string label)
+        {
+            foreach (var c in w.Characters.Values)
+            {
+                var mother = w.Get(c.MotherId);
+                if (mother == null) continue;
+                int ageAtBirth = (c.BirthMonth - mother.BirthMonth) / 12;
+                Assert.That(ageAtBirth, Is.InRange(Rules.SimConstants.FertileMinAge, Rules.SimConstants.FertileMaxAge),
+                    $"{label}: {mother.FullName} ({mother.AgeYears(w.Month)}세)이 {c.FullName} ({c.AgeYears(w.Month)}세)을 {ageAtBirth}세에 낳음");
+            }
+        }
+
+        [Test]
         public void Generate_ClanMembersMostlyFamilyWithLeaderSurname()
         {
             var w = WorldGenerator.Generate(D, new GameRandom(11), null, 0);

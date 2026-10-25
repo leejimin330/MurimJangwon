@@ -102,7 +102,7 @@ namespace Murim.View.UI.Screens
             app.Rebuild();
         }
 
-        void ShowHome() => Go(SideMode.Home, null);
+        public void ShowHome() => Go(SideMode.Home, null);
 
         public void ShowRegion(string regionId)
         {

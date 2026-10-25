@@ -4,6 +4,7 @@ using Murim.Core.Data;
 using Murim.Core.Random;
 using Murim.Core.Rules;
 using Murim.Core.Story;
+using Murim.Core.Text;
 using Murim.Core.World;
 
 namespace Murim.Core.Actions
@@ -62,7 +63,7 @@ namespace Murim.Core.Actions
         }
 
         public override string Key => ActionKeys.Travel;
-        public override string Describe(WorldState w) => $"{ToRegionName ?? ToRegionId}(으)로 이동";
+        public override string Describe(WorldState w) => $"{Josa.EuroRo(ToRegionName ?? ToRegionId)} 이동";
 
         protected override ActionCheck Check(WorldState w, GameData d, Character actor) =>
             PersonalRules.IsNeighbor(d, actor.LocationRegionId, ToRegionId) ? ActionCheck.Pass : ActionCheck.Fail("인접한 지역이 아닙니다");
@@ -164,7 +165,7 @@ namespace Murim.Core.Actions
         public Befriend(string actorId, string targetId) : base(actorId) => TargetId = targetId;
 
         public override string Key => ActionKeys.Befriend;
-        public override string Describe(WorldState w) => $"{w.Get(TargetId)?.FullName}과(와) 교분 쌓기";
+        public override string Describe(WorldState w) => $"{Josa.WaGwa(w.Get(TargetId)?.FullName)} 교분 쌓기";
 
         protected override ActionCheck Check(WorldState w, GameData d, Character actor)
         {
@@ -231,7 +232,7 @@ namespace Murim.Core.Actions
             if (string.IsNullOrEmpty(Name)) return ActionCheck.Fail("문파 이름을 정해야 합니다");
             if (w.Factions.Values.Any(f => !f.IsDissolved && f.Name == Name)) return ActionCheck.Fail("이미 있는 이름입니다");
             if (actor.Silver < Cost) return ActionCheck.Fail($"은자 {Cost}냥이 필요합니다");
-            if (actor.Fame < FameRequired) return ActionCheck.Fail($"명성 {FameRequired}이(가) 필요합니다");
+            if (actor.Fame < FameRequired) return ActionCheck.Fail($"명성 {FameRequired} 이상이 필요합니다");
             if (Followers(w, d, actor).Count < FollowersRequired) return ActionCheck.Fail($"따르는 사람이 {FollowersRequired}명 이상 필요합니다");
             return ActionCheck.Pass;
         }

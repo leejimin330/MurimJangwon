@@ -13,7 +13,7 @@ namespace Murim.View.UI.Panels
             var shade = UiFactory.Panel(app.Root.parent, new Color(0, 0, 0, 0.55f), "SaveShade");
             shade.rectTransform.Fill();
             shade.raycastTarget = true;
-            void Close() => Object.Destroy(shade.gameObject);
+            void Close() => UiFactory.Remove(shade.gameObject);
             shade.gameObject.AddComponent<Button>().onClick.AddListener(Close);
 
             var box = UiFactory.Panel(shade.transform, Theme.Panel, "SaveLoad");

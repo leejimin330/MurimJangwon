@@ -55,7 +55,7 @@ namespace Murim.View.UI.Panels
             var shade = UiFactory.Panel(canvas, new Color(0, 0, 0, 0.45f), "PendingShade");
             shade.rectTransform.Fill();
             shade.raycastTarget = true;
-            shade.gameObject.AddComponent<Button>().onClick.AddListener(() => UnityEngine.Object.Destroy(shade.gameObject));
+            shade.gameObject.AddComponent<Button>().onClick.AddListener(() => UiFactory.Remove(shade.gameObject));
             var box = UiFactory.Panel(shade.transform, Theme.Panel, "Pending");
             box.rectTransform.anchorMin = box.rectTransform.anchorMax = new Vector2(1, 1);
             box.rectTransform.pivot = new Vector2(1, 1);
@@ -72,7 +72,7 @@ namespace Murim.View.UI.Panels
                 UiFactory.Button(row, "취소", () =>
                 {
                     s.Unqueue(index);
-                    UnityEngine.Object.Destroy(shade.gameObject);
+                    UiFactory.Remove(shade.gameObject);
                     onChanged();
                 }, width: 80);
             }

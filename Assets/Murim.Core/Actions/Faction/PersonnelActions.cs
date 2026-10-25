@@ -5,6 +5,7 @@ using Murim.Core.Generation;
 using Murim.Core.Random;
 using Murim.Core.Rules;
 using Murim.Core.Story;
+using Murim.Core.Text;
 using Murim.Core.World;
 
 namespace Murim.Core.Actions
@@ -104,7 +105,7 @@ namespace Murim.Core.Actions
         public DesignateHeir(string actorId, string memberId) : base(actorId) => MemberId = memberId;
 
         public override string Key => ActionKeys.DesignateHeir;
-        public override string Describe(WorldState w) => $"{w.Get(MemberId)?.FullName}을(를) 후계자로 지정";
+        public override string Describe(WorldState w) => $"{Josa.EulReul(w.Get(MemberId)?.FullName)} 후계자로 지정";
 
         protected override ActionCheck Check(WorldState w, GameData d, Character actor, Faction own)
         {

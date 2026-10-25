@@ -25,16 +25,7 @@ namespace Murim.Editor
         {
             try
             {
-                Directory.CreateDirectory(OutDir);
-                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-                var camera = SceneBuilder.CreateCamera();
-                var rt = new RenderTexture(Width, Height, 24);
-                camera.targetTexture = rt;
-                var app = new GameObject("Bootstrap").AddComponent<Bootstrap>();
-                app.sansFont = AssetDatabase.LoadAssetAtPath<Font>(SceneBuilder.SansPath);
-                app.serifFont = AssetDatabase.LoadAssetAtPath<Font>(SceneBuilder.SerifPath);
-                app.uiCamera = camera;
-                app.Init(Path.Combine(Application.streamingAssetsPath, "Data"));
+                var app = CreateApp(out var camera);
                 Shot(app, camera, "01_title");
 
                 app.Show(new NewGameScreen(app));
@@ -62,6 +53,21 @@ namespace Murim.Editor
                 Debug.LogException(e);
                 if (Application.isBatchMode) EditorApplication.Exit(1);
             }
+        }
+
+        /// <summary>빈 씬에 카메라와 Bootstrap을 만들고 데이터를 읽는다.</summary>
+        public static Bootstrap CreateApp(out Camera camera)
+        {
+            Directory.CreateDirectory(OutDir);
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            camera = SceneBuilder.CreateCamera();
+            camera.targetTexture = new RenderTexture(Width, Height, 24);
+            var app = new GameObject("Bootstrap").AddComponent<Bootstrap>();
+            app.sansFont = AssetDatabase.LoadAssetAtPath<Font>(SceneBuilder.SansPath);
+            app.serifFont = AssetDatabase.LoadAssetAtPath<Font>(SceneBuilder.SerifPath);
+            app.uiCamera = camera;
+            app.Init(Path.Combine(Application.streamingAssetsPath, "Data"));
+            return app;
         }
 
         /// <summary>추가 화면을 찍는 훅 (패널 확인용).</summary>

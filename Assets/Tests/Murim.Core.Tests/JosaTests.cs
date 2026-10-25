@@ -16,6 +16,12 @@ namespace Murim.Core.Tests
             Assert.That(Josa.WaGwa("화산파"), Is.EqualTo("화산파와"));
             Assert.That(Josa.EunNeun("진룡"), Is.EqualTo("진룡은"));
             Assert.That(Josa.EunNeun("설화"), Is.EqualTo("설화는"));
+            Assert.That(Josa.EuroRo("사천"), Is.EqualTo("사천으로"));
+            Assert.That(Josa.EuroRo("감숙"), Is.EqualTo("감숙으로"));
+            Assert.That(Josa.EuroRo("하남"), Is.EqualTo("하남으로"));
+            Assert.That(Josa.EuroRo("호북"), Is.EqualTo("호북으로"));
+            Assert.That(Josa.EuroRo("광서"), Is.EqualTo("광서로"));
+            Assert.That(Josa.EuroRo("하늘"), Is.EqualTo("하늘로"));
         }
 
         [Test]

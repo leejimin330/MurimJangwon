@@ -77,9 +77,9 @@ namespace Murim.View.UI.Panels
             var grid = ActionMenu.Grid(list);
             if (f.Id == own.Id)
             {
-                ActionMenu.Add(grid, app, "제자 받아들이기 (20냥)", new RecruitNamed(me.Id));
-                ActionMenu.Add(grid, app, "문도 5명 모집 (25냥)", new RecruitUnnamed(me.Id, 5));
-                ActionMenu.Add(grid, app, "문도 10명 모집 (50냥)", new RecruitUnnamed(me.Id, 10));
+                ActionMenu.Add(grid, app, "제자 받기 (20냥)", new RecruitNamed(me.Id));
+                ActionMenu.Add(grid, app, "문도 5명 (25냥)", new RecruitUnnamed(me.Id, 5));
+                ActionMenu.Add(grid, app, "문도 10명 (50냥)", new RecruitUnnamed(me.Id, 10));
                 ActionMenu.Opener(grid, app, "영향력 확장 (100냥)", () => PickExpand(app));
                 ActionMenu.Add(grid, app, "의뢰 수행", new DoQuest(me.Id, false));
                 if (f.Alignment != Alignment.Righteous) ActionMenu.Add(grid, app, "약탈", new DoQuest(me.Id, true));

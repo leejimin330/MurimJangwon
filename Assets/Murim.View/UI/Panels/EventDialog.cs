@@ -39,7 +39,7 @@ namespace Murim.View.UI.Panels
                 align: TextAnchor.MiddleRight).Size(260, 48);
 
             if (ctx != null) People(inner, app, nav, ctx);
-            var body = UiFactory.Label(inner, p.Text, Theme.BodySize + 2, Theme.Ink);
+            var body = UiFactory.Label(inner, p.Text, Theme.BodySize + 2, Theme.Ink, align: TextAnchor.UpperLeft);
             body.Size(-1, -1).flexibleHeight = 1;
 
             var choices = UiFactory.Rect(inner, "Choices");

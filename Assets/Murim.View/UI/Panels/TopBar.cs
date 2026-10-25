@@ -15,14 +15,14 @@ namespace Murim.View.UI.Panels
         {
             var w = s.World;
             var p = s.Player;
-            UiFactory.HStack(bar, 28, 0).padding = new RectOffset(28, 20, 10, 10);
+            UiFactory.HStack(bar, 18, 0).padding = new RectOffset(28, 20, 10, 10);
 
             UiFactory.Label(bar, GameDate.Format(w.Month), Theme.HeadingSize, Theme.Ink, true).Size(190);
             if (p != null)
             {
-                UiFactory.Label(bar, Titles.Full(w, p), Theme.BodySize, Theme.InkDim).Size(420);
-                UiFactory.Label(bar, $"은자 {Wallet.Silver(w, p):N0}냥", Theme.BodySize, Theme.Gold).Size(170);
-                UiFactory.Label(bar, $"명성 {Wallet.Fame(w, p)}", Theme.BodySize, Theme.Ink).Size(110);
+                UiFactory.Label(bar, Titles.Full(w, p), Theme.BodySize, Theme.InkDim).Size(340);
+                UiFactory.Label(bar, $"은자 {Wallet.Silver(w, p):N0}냥", Theme.BodySize, Theme.Gold).Size(150);
+                UiFactory.Label(bar, $"명성 {Wallet.Fame(w, p)}", Theme.BodySize, Theme.Ink).Size(100);
             }
 
             UiFactory.Rect(bar, "Spacer").Size(-1, -1, 1);

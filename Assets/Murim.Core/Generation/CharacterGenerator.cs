@@ -26,7 +26,8 @@ namespace Murim.Core.Generation
         public string RandomGivenName(Sex sex) =>
             rng.Pick(sex == Sex.Male ? d.Names.MaleGivenNames : d.Names.FemaleGivenNames);
 
-        public Character Create(WorldState w, Sex sex, int ageYears, string factionId, Role role, int realm, string familyName = null)
+        public Character Create(WorldState w, Sex sex, int ageYears, string factionId, Role role, int realm, string familyName = null,
+            int statMaxExclusive = 15, int statBonus = 0)
         {
             var c = new Character
             {
@@ -36,10 +37,10 @@ namespace Murim.Core.Generation
                 Sex = sex,
                 BirthMonth = w.Month - ageYears * 12 - rng.Next(0, 12),
                 Realm = Math.Min(SimConstants.MaxRealm, Math.Max(0, realm)),
-                Constitution = rng.Next(1, 15),
-                Insight = rng.Next(1, 15),
-                Cunning = rng.Next(1, 15),
-                Charisma = rng.Next(1, 15),
+                Constitution = Clamp(rng.Next(1, statMaxExclusive) + statBonus),
+                Insight = Clamp(rng.Next(1, statMaxExclusive) + statBonus),
+                Cunning = Clamp(rng.Next(1, statMaxExclusive) + statBonus),
+                Charisma = Clamp(rng.Next(1, statMaxExclusive) + statBonus),
             };
             FillTraits(c, rng.Next(SimConstants.MinTraits, SimConstants.MaxTraits + 1), null);
             ApplyTraitMods(c, c.TraitIds, +1);

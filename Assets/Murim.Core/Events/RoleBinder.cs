@@ -18,12 +18,13 @@ namespace Murim.Core.Events
         /// <param name="sampleRoot">첫 뿌리 역할 후보를 최대 24명만 시도한다 (세계 사건).</param>
         /// <param name="excludeDeciderId">결정자가 되어서는 안 되는 인물 (세계 사건에서 플레이어).</param>
         public static EventContext TryBind(WorldState w, GameData d, GameRandom rng, EventDef e, IDictionary<string, string> fixedRoles,
-            CandidateIndex index, bool sampleRoot, string excludeDeciderId = null)
+            CandidateIndex index, bool sampleRoot, string excludeDeciderId = null, bool ignoreCooldown = false)
         {
             if (e.Month != 0 && w.Month % 12 + 1 != e.Month) return null;
+            if (!ignoreCooldown && w.Events.IsCooling(EventResolver.CooldownKey(e.Id, "*"), w.Month)) return null;
             if (e.BindOrder == null || e.BindOrder.Count == 0) return null;
             fixedRoles ??= new Dictionary<string, string>();
-            var ctx = new EventContext { W = w, D = d, Rng = rng, Def = e };
+            var ctx = new EventContext { W = w, D = d, Rng = rng, Def = e, IgnoreCooldown = ignoreCooldown };
             var root = e.BindOrder[0];
 
             // 뿌리 후보는 먼저 섞은 뒤 앞에서부터 조건을 본다 (전체를 다 걸러 보지 않는다).
@@ -93,6 +94,8 @@ namespace Murim.Core.Events
                 if (fixedId != null && c.Id != fixedId) continue;
                 if (fixedId == null && fixedRoles.Values.Contains(c.Id)) continue;
                 if (name == ctx.Def.Decider && excludeDeciderId != null && c.Id == excludeDeciderId) continue;
+                if (name == ctx.Def.Decider && !ctx.IgnoreCooldown
+                    && ctx.W.Events.IsCooling(EventResolver.CooldownKey(ctx.Def.Id, c.Id), ctx.W.Month)) continue;
                 ctx.Roles[name] = c.Id;
                 bool ok = ConditionCheck.Why(role, c, ctx, true, true) == null
                     && dependents.All(dep => Relative(ctx, dep.Value, c, index).Any(x => x != null && x.Id == fixedRoles[dep.Key]));

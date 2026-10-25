@@ -21,6 +21,8 @@ namespace Murim.Core.Events
         public HashSet<string> Keep = new HashSet<string>(StringComparer.Ordinal);
         /// <summary>효과가 덧붙인 결과 문장.</summary>
         public List<string> Log = new List<string>();
+        /// <summary>강제로 띄우는 사건 (테스트·에디터)은 쿨다운을 보지 않는다.</summary>
+        public bool IgnoreCooldown;
 
         public Character Get(string role)
         {

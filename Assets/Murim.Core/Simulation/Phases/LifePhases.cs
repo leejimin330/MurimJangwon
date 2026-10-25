@@ -183,6 +183,8 @@ namespace Murim.Core.Simulation
                 Opinion.DecayMemories(c);
                 foreach (var flag in c.Flags.Where(kv => kv.Value != 0 && kv.Value <= w.Month).Select(kv => kv.Key).ToList())
                     c.Flags.Remove(flag);
+                foreach (var flag in c.Flags.Keys)
+                    if (d.Flags.TryGetValue(flag, out var fd) && fd.YearlyChivalry != 0) Actions.Wallet.AddChivalry(w, c, fd.YearlyChivalry);
                 int age = c.AgeYears(w.Month);
                 if (age >= SimConstants.RealmGrowthMinAge && age <= SimConstants.RealmGrowthMaxAge && c.Realm < SimConstants.MaxRealm)
                 {
@@ -226,12 +228,12 @@ namespace Murim.Core.Simulation
                 if (f.Alignment == Alignment.Righteous && f.Chivalry < -SimConstants.AlignmentShiftThreshold)
                 {
                     f.Alignment = Alignment.Unorthodox;
-                    Chronicle.AlignmentShifted(ctx.World, f);
+                    Chronicle.AlignmentShifted(ctx.World, f, Alignment.Righteous);
                 }
                 else if (f.Alignment == Alignment.Unorthodox && f.Chivalry > SimConstants.AlignmentShiftThreshold)
                 {
                     f.Alignment = Alignment.Righteous;
-                    Chronicle.AlignmentShifted(ctx.World, f);
+                    Chronicle.AlignmentShifted(ctx.World, f, Alignment.Unorthodox);
                 }
             }
         }

@@ -118,6 +118,7 @@ namespace Murim.Core.Events
     {
         public string Holder;
         public string Target;
+        public MemoryKind Kind = MemoryKind.Grudge;
         public int Amount;
         public override IEnumerable<string> RoleRefs() { yield return Holder; yield return Target; }
     }

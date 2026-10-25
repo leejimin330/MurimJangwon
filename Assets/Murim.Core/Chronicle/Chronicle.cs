@@ -68,7 +68,10 @@ namespace Murim.Core.Story
 
         public static void Died(WorldState w, Character c)
         {
-            string how = c.DeathCause switch { "노환" => "노환으로", "사고" => "뜻밖의 사고로", _ => "병으로" };
+            string how = c.DeathCause switch
+            {
+                "노환" => "노환으로", "사고" => "뜻밖의 사고로", "병" => "병으로", null => "병으로", _ => Josa.EuroRo(c.DeathCause),
+            };
             int importance = c.Role == Data.Role.Leader || c.Id == w.PlayerCharacterId ? 2 : 1;
             Add(w, nameof(Died), importance, $"{Josa.IGa(T(w, c))} {how} 세상을 떠났다. (향년 {c.AgeYears(w.Month)}세)", c.Id);
         }
@@ -83,10 +86,23 @@ namespace Murim.Core.Story
             Add(w, nameof(Deserted), 1, $"{Josa.IGa(deserter.FullName)} 새 {Titles.Role(f, Data.Role.Leader)} {Josa.EulReul(newLeader.FullName)} 따를 수 없다며 {Josa.EulReul(f.Name)} 떠났다.",
                 f.Id, deserter.Id);
 
-        public static void AlignmentShifted(WorldState w, Faction f) =>
-            Add(w, nameof(AlignmentShifted), 2, f.Alignment == Data.Alignment.Unorthodox
-                ? $"{Josa.IGa(f.Name)} 정도를 버리고 사파의 길로 들어섰다."
-                : $"{Josa.IGa(f.Name)} 과거를 씻고 정파로 거듭났다.", f.Id);
+        public static void AlignmentShifted(WorldState w, Faction f, Data.Alignment from)
+        {
+            string text;
+            if (f.Alignment == Data.Alignment.Demonic) text = $"{Josa.IGa(f.Name)} 마도에 몸을 담갔다.";
+            else if (from == Data.Alignment.Demonic) text = $"{Josa.IGa(f.Name)} 마도를 버리고 {(f.Alignment == Data.Alignment.Righteous ? "정파" : "사파")}로 돌아섰다.";
+            else if (f.Alignment == Data.Alignment.Unorthodox) text = $"{Josa.IGa(f.Name)} 정도를 버리고 사파의 길로 들어섰다.";
+            else text = $"{Josa.IGa(f.Name)} 과거를 씻고 정파로 거듭났다.";
+            Add(w, nameof(AlignmentShifted), 2, text, f.Id);
+        }
+
+        public static void Usurped(WorldState w, Faction f, Character usurper, Character previous) =>
+            Add(w, nameof(Usurped), 2, $"{Josa.IGa(usurper.FullName)} {Josa.EulReul(previous.FullName)} 몰아내고 {f.Name}의 {Josa.IGa(Titles.Role(f, Data.Role.Leader))} 되었다.",
+                f.Id, usurper.Id, previous.Id);
+
+        /// <summary>사건 한 건의 기록. kind는 "Event:{사건 id}".</summary>
+        public static void EventLine(WorldState w, string kind, int importance, string text, params string[] involvedIds) =>
+            Add(w, kind, importance, text, involvedIds);
 
         public static void GameOver(WorldState w, Character last) =>
             Add(w, nameof(GameOver), 2, $"{Josa.EulReul(last.FullName)} 끝으로 가문의 대가 끊겼다.", last.Id);

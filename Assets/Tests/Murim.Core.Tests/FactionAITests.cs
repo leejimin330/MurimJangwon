@@ -185,5 +185,21 @@ namespace Murim.Core.Tests
             }
             Assert.That(drifter.FactionId, Is.Not.EqualTo("pl"));
         }
+
+        [Test]
+        public void AI_TenYears_InsultsPlayerAtMost5()
+        {
+            var data = TestPaths.LoadShippedData();
+            var s = Murim.Core.Session.GameSession.NewGame(data, new Murim.Core.Session.NewGameOptions
+            {
+                ScenarioId = "minor_sect", RegionId = "henan", Seed = 42,
+            }).Auto();
+            for (int i = 0; i < 120; i++) s.EndTurn();
+            var playerFaction = s.Player.FactionId;
+            var perInsulter = s.World.Chronicle.Where(e => e.Kind == "Insulted" && e.InvolvedIds.Length == 2
+                    && s.World.Get(e.InvolvedIds[1])?.FactionId == playerFaction)
+                .GroupBy(e => s.World.Get(e.InvolvedIds[0])?.FactionId ?? "?").Select(g => g.Count()).DefaultIfEmpty(0).Max();
+            Assert.That(perInsulter, Is.LessThanOrEqualTo(5));
+        }
     }
 }

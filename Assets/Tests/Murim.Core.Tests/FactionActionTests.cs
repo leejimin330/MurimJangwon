@@ -143,8 +143,28 @@ namespace Murim.Core.Tests
             Assert.That(w.AllianceScore("us", "them"), Is.EqualTo(-20));
             Assert.That(us.Fame, Is.EqualTo(20));
             us.Alignment = Alignment.Unorthodox;
+            w.Month += Insult.CooldownMonths;
             Run(new Insult(ourLeader.Id, "them"));
             Assert.That(us.Fame, Is.EqualTo(22));
+        }
+
+        [Test]
+        public void Insult_Twice_Within24Months_Fails()
+        {
+            Run(new Insult(ourLeader.Id, "them"));
+            w.Month += Insult.CooldownMonths - 1;
+            var check = new Insult(ourLeader.Id, "them").CanExecute(w, d);
+            Assert.That(check.Ok, Is.False);
+            Assert.That(check.Reason, Is.EqualTo("2년 안에 다시 모욕할 수 없습니다"));
+            Assert.That(new Insult(theirLeader.Id, "us").CanExecute(w, d).Ok, Is.True, "반대 방향은 따로 센다");
+        }
+
+        [Test]
+        public void Insult_After24Months_Ok()
+        {
+            Run(new Insult(ourLeader.Id, "them"));
+            w.Month += Insult.CooldownMonths;
+            Assert.That(new Insult(ourLeader.Id, "them").CanExecute(w, d).Ok, Is.True);
         }
 
         [Test]

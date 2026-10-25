@@ -102,6 +102,8 @@ namespace Murim.Core.Actions
     {
         /// <summary>true면 청부(사파 의뢰), false면 협행.</summary>
         public readonly bool Contract;
+        /// <summary>현상 수배 사건이 보는 보이지 않는 표식.</summary>
+        public const string RecentContractFlag = "recent_contract";
 
         public PersonalQuest(string actorId, bool contract) : base(actorId) => Contract = contract;
 
@@ -115,6 +117,7 @@ namespace Murim.Core.Actions
             int silver = rng.Next(20, 61);
             if (Contract)
             {
+                actor.SetFlag(RecentContractFlag, w.Month, 24);
                 actor.Silver += silver * 3 / 2;
                 actor.Chivalry = Wallet.ClampChivalry(actor.Chivalry - 4);
             }

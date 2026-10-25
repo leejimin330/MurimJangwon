@@ -63,7 +63,7 @@ namespace Murim.Core.Simulation
             if (ally != null) Consider(new ProposeAlliance(leader.Id, ally.Id), 12);
 
             var enemies = w.Factions.Values.Where(o => o.Id != f.Id && !o.IsDissolved && o.HomeRegionId == f.HomeRegionId
-                && Opposed(f.Alignment, o.Alignment)).ToList();
+                && Opposed(f.Alignment, o.Alignment) && !Insult.IsCooling(w, f.Id, o.Id)).ToList();
             if (enemies.Count > 0)
             {
                 var target = rng.Pick(enemies);

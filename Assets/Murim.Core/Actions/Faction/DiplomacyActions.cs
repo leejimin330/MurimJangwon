@@ -73,20 +73,32 @@ namespace Murim.Core.Actions
 
     public class Insult : FactionAction
     {
+        /// <summary>같은 세력을 다시 모욕하려면 이만큼 기다려야 한다.</summary>
+        public const int CooldownMonths = 24;
         public readonly string TargetFactionId;
+
+        public static string CooldownKey(string fromFactionId, string toFactionId) => "insult|" + fromFactionId + "|" + toFactionId;
+
+        public static bool IsCooling(WorldState w, string fromFactionId, string toFactionId) =>
+            w.Events.IsCooling(CooldownKey(fromFactionId, toFactionId), w.Month);
 
         public Insult(string actorId, string targetFactionId) : base(actorId) => TargetFactionId = targetFactionId;
 
         public override string Key => ActionKeys.Insult;
         public override string Describe(WorldState w) => $"{w.GetFaction(TargetFactionId)?.Name} 모욕";
 
-        protected override ActionCheck Check(WorldState w, GameData d, Character actor, Faction own) =>
-            OtherFaction(w, own, TargetFactionId, out _, out _);
+        protected override ActionCheck Check(WorldState w, GameData d, Character actor, Faction own)
+        {
+            var c = OtherFaction(w, own, TargetFactionId, out _, out _);
+            if (!c.Ok) return c;
+            return IsCooling(w, own.Id, TargetFactionId) ? ActionCheck.Fail("2년 안에 다시 모욕할 수 없습니다") : ActionCheck.Pass;
+        }
 
         protected override void Run(WorldState w, GameData d, GameRandom rng, Character actor, Faction own)
         {
             var target = w.GetFaction(TargetFactionId);
             var leader = FactionOps.Leader(w, target);
+            w.Events.SetCooldown(CooldownKey(own.Id, target.Id), w.Month + CooldownMonths);
             w.Opinions.Add(leader.Id, actor.Id, -30);
             Opinion.AddMemory(leader, MemoryKind.Grudge, actor.Id, "모욕", w.Month, 40);
             w.AddAllianceScore(own.Id, target.Id, -20);

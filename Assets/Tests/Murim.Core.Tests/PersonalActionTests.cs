@@ -46,6 +46,16 @@ namespace Murim.Core.Tests
         }
 
         [Test]
+        public void Contract_SetsRecentContractFlag()
+        {
+            Run(new PersonalQuest(hero.Id, false));
+            Assert.That(hero.HasFlag(PersonalQuest.RecentContractFlag, w.Month), Is.False);
+            Run(new PersonalQuest(hero.Id, true));
+            Assert.That(hero.HasFlag(PersonalQuest.RecentContractFlag, w.Month + 23), Is.True);
+            Assert.That(hero.HasFlag(PersonalQuest.RecentContractFlag, w.Month + 24), Is.False);
+        }
+
+        [Test]
         public void Travel_OnlyAdjacent_MovesLocation()
         {
             Assert.That(new Travel(hero.Id, "c").CanExecute(w, d).Ok, Is.False);

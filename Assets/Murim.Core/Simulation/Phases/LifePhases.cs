@@ -177,9 +177,12 @@ namespace Murim.Core.Simulation
             if (w.Month % 12 != 0) return;
             var d = ctx.Data;
 
+            w.Events.PruneExpired(w.Month);
             foreach (var c in w.Characters.Values.Where(c => c.IsAlive))
             {
                 Opinion.DecayMemories(c);
+                foreach (var flag in c.Flags.Where(kv => kv.Value != 0 && kv.Value <= w.Month).Select(kv => kv.Key).ToList())
+                    c.Flags.Remove(flag);
                 int age = c.AgeYears(w.Month);
                 if (age >= SimConstants.RealmGrowthMinAge && age <= SimConstants.RealmGrowthMaxAge && c.Realm < SimConstants.MaxRealm)
                 {

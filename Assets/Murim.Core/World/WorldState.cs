@@ -7,7 +7,8 @@ namespace Murim.Core.World
     /// <summary>저장되는 세계 전체 상태.</summary>
     public class WorldState
     {
-        public const int CurrentSaveVersion = 1;
+        public const int CurrentSaveVersion = 2;
+        public const int OldestLoadableVersion = 1;
 
         public int SaveVersion = CurrentSaveVersion;
         public int Month;
@@ -23,6 +24,7 @@ namespace Murim.Core.World
         public SortedDictionary<string, int> AllianceScores = new SortedDictionary<string, int>(StringComparer.Ordinal);
         public SortedSet<string> Alliances = new SortedSet<string>(StringComparer.Ordinal);
         public List<ChronicleEntry> Chronicle = new List<ChronicleEntry>();
+        public EventState Events = new EventState();
 
         public int NextCharacterNumber = 1;
         public int NextFactionNumber = 1;

@@ -41,9 +41,13 @@ namespace Murim.Core.Rules
             return v;
         }
 
-        public static void AddMemory(Character c, MemoryKind kind, string targetId, string reason, int month, int strength)
+        public static void AddMemory(Character c, MemoryKind kind, string targetId, string reason, int month, int strength,
+            bool inherited = false)
         {
-            c.Memories.Add(new Memory { Kind = kind, TargetId = targetId, Reason = reason, Month = month, Strength = strength });
+            c.Memories.Add(new Memory
+            {
+                Kind = kind, TargetId = targetId, Reason = reason, Month = month, Strength = strength, Inherited = inherited,
+            });
             int total = c.Memories.Where(m => m.Kind == kind && m.TargetId == targetId).Sum(m => m.Strength);
             if (kind == MemoryKind.Grudge && total >= SimConstants.NemesisThreshold) c.AddRelation(targetId, RelationTag.Nemesis);
             if (kind == MemoryKind.Debt && total >= SimConstants.BenefactorThreshold) c.AddRelation(targetId, RelationTag.Benefactor);
@@ -60,7 +64,7 @@ namespace Murim.Core.Rules
             var strong = deceased.Memories.Where(m => m.Strength >= SimConstants.MemoryInheritThreshold).ToList();
             foreach (var child in children)
                 foreach (var m in strong)
-                    AddMemory(child, m.Kind, m.TargetId, m.Reason, month, m.Strength / 2);
+                    AddMemory(child, m.Kind, m.TargetId, m.Reason, month, m.Strength / 2, true);
         }
     }
 }

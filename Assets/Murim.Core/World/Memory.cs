@@ -10,5 +10,7 @@ namespace Murim.Core.World
         public string Reason;
         public int Month;
         public int Strength;
+        /// <summary>부모에게서 물려받은 기억.</summary>
+        public bool Inherited;
     }
 }

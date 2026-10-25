@@ -47,6 +47,9 @@ namespace Murim.Core.World
         /// <summary>이 월 번호 전까지는 행동할 수 없다 (표국 호위 등).</summary>
         public int BusyUntilMonth;
 
+        /// <summary>표식 id → 만료 월 (0이면 영구). 만료 월부터는 없는 것으로 본다.</summary>
+        public SortedDictionary<string, int> Flags = new SortedDictionary<string, int>(StringComparer.Ordinal);
+
         [JsonIgnore] public string FullName => FamilyName + GivenName;
         [JsonIgnore] public bool IsAlive => DeathMonth == null;
         public int AgeYears(int month) => ((DeathMonth ?? month) - BirthMonth) / 12;
@@ -57,6 +60,13 @@ namespace Murim.Core.World
             if (!Relations.TryGetValue(otherId, out var list)) Relations[otherId] = list = new List<RelationTag>();
             if (!list.Contains(tag)) list.Add(tag);
         }
+
+        public bool HasFlag(string id, int month) => id != null && Flags.TryGetValue(id, out var until) && (until == 0 || month < until);
+
+        /// <summary>months가 0이면 영구.</summary>
+        public void SetFlag(string id, int month, int months) => Flags[id] = months <= 0 ? 0 : month + months;
+
+        public void ClearFlag(string id) => Flags.Remove(id);
 
         public bool HasRelation(string otherId, RelationTag tag) => Relations.TryGetValue(otherId, out var list) && list.Contains(tag);
     }

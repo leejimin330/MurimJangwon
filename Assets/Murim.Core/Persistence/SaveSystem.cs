@@ -68,8 +68,11 @@ namespace Murim.Core.Persistence
                 return Fail("저장 파일이 손상되었습니다: " + e.Message);
             }
             if (w == null) return Fail("저장 파일이 비어 있습니다");
-            if (w.SaveVersion != WorldState.CurrentSaveVersion)
+            if (w.SaveVersion < WorldState.OldestLoadableVersion || w.SaveVersion > WorldState.CurrentSaveVersion)
                 return Fail($"저장 파일 버전({w.SaveVersion})이 게임 버전({WorldState.CurrentSaveVersion})과 다릅니다");
+            // 버전 1에는 사건 상태가 없다: 기본값(이야기꾼 "균형", 빈 대기 목록)으로 채운다.
+            w.Events ??= new EventState();
+            w.SaveVersion = WorldState.CurrentSaveVersion;
             var problems = Validate(d, w);
             if (problems.Count > 0) return Fail("저장 파일이 현재 데이터와 맞지 않습니다: " + string.Join(", ", problems.Take(5)));
             return new ReadResult { Ok = true, World = w };

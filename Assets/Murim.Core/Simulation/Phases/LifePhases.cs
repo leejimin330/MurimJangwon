@@ -20,10 +20,21 @@ namespace Murim.Core.Simulation
                 if (age < SimConstants.FertileMinAge || age > SimConstants.FertileMaxAge) continue;
                 var father = w.Get(mother.SpouseId);
                 if (father == null || !father.IsAlive) continue;
-                if (!ctx.Rng.Chance(SimConstants.MonthlyBirthChance)) continue;
+                if (!ctx.Rng.Chance(BirthChance(w, mother))) continue;
                 var child = ctx.Generator.CreateChild(w, mother, father);
                 if (IsNotable(w, mother) || IsNotable(w, father)) Chronicle.Born(w, mother, father, child);
             }
+        }
+
+        /// <summary>월 출생 확률. 세력이 목표 규모보다 붐빌수록 줄고, 작을수록 조금 는다.</summary>
+        public static double BirthChance(WorldState w, Character mother)
+        {
+            var f = w.GetFaction(mother.FactionId);
+            if (f == null || f.IsDissolved || f.TargetNamedMembers <= 0) return SimConstants.MonthlyBirthChance;
+            int living = FactionOps.LivingMembers(w, f).Count();
+            double ratio = f.TargetNamedMembers * SimConstants.CrowdingFactor / System.Math.Max(1, living);
+            ratio = System.Math.Max(SimConstants.MinBirthMultiplier, System.Math.Min(SimConstants.MaxBirthMultiplier, ratio));
+            return SimConstants.MonthlyBirthChance * ratio;
         }
 
         /// <summary>연대기에 출생·사망을 남길 만한 인물.</summary>

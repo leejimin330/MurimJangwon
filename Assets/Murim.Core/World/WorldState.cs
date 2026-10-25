@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Murim.Core.World
 {
@@ -32,7 +33,7 @@ namespace Murim.Core.World
         public static string PairKey(string a, string b) =>
             string.CompareOrdinal(a, b) <= 0 ? a + "|" + b : b + "|" + a;
 
-        public Character Player => PlayerCharacterId != null && Characters.TryGetValue(PlayerCharacterId, out var c) ? c : null;
+        [JsonIgnore] public Character Player => PlayerCharacterId != null && Characters.TryGetValue(PlayerCharacterId, out var c) ? c : null;
 
         public Character Get(string characterId) =>
             characterId != null && Characters.TryGetValue(characterId, out var c) ? c : null;

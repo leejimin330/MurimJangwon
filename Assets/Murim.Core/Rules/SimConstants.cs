@@ -11,7 +11,11 @@ namespace Murim.Core.Rules
         public const int MarriageMinAge = 16;
         public const int FertileMinAge = 16;
         public const int FertileMaxAge = 45;
-        public const double MonthlyBirthChance = 0.015;
+        public const double MonthlyBirthChance = 0.01;
+        /// <summary>세력 인원이 목표 규모 × 이 값을 넘으면 출생 확률이 비례해 줄어든다.</summary>
+        public const double CrowdingFactor = 1.5;
+        public const double MinBirthMultiplier = 0.1;
+        public const double MaxBirthMultiplier = 1.5;
         public const double TraitInheritChance = 0.4;
         public const int MinTraits = 2;
         public const int MaxTraits = 4;

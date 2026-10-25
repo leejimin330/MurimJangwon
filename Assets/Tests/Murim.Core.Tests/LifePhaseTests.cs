@@ -95,6 +95,22 @@ namespace Murim.Core.Tests
         }
 
         [Test]
+        public void BirthChance_FallsWhenFactionOvercrowded()
+        {
+            var f = TestWorlds.AddFaction(w, "x", Alignment.Righteous, "a", 10);
+            f.TargetNamedMembers = 4;
+            var wife = TestWorlds.AddCharacter(w, "x", Role.Family, Sex.Female, 20);
+            var husband = TestWorlds.AddCharacter(w, "x", Role.Leader, Sex.Male, 22);
+            double small = BirthPhase.BirthChance(w, wife);
+            for (int i = 0; i < 20; i++) TestWorlds.AddCharacter(w, "x", Role.Disciple, Sex.Male, 20);
+            double crowded = BirthPhase.BirthChance(w, wife);
+            Assert.That(crowded, Is.LessThan(small / 2));
+            Assert.That(crowded, Is.GreaterThan(0));
+            var loner = TestWorlds.AddCharacter(w, null, Role.None, Sex.Female, 20);
+            Assert.That(BirthPhase.BirthChance(w, loner), Is.EqualTo(SimConstants.MonthlyBirthChance));
+        }
+
+        [Test]
         public void Yearly_DecaysMemories_OnlyInJanuary()
         {
             var a = TestWorlds.AddCharacter(w, null, Role.None, Sex.Male, 30);

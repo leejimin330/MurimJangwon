@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Murim.Core.Data;
+using Newtonsoft.Json;
 
 namespace Murim.Core.World
 {
@@ -46,8 +47,8 @@ namespace Murim.Core.World
         /// <summary>이 월 번호 전까지는 행동할 수 없다 (표국 호위 등).</summary>
         public int BusyUntilMonth;
 
-        public string FullName => FamilyName + GivenName;
-        public bool IsAlive => DeathMonth == null;
+        [JsonIgnore] public string FullName => FamilyName + GivenName;
+        [JsonIgnore] public bool IsAlive => DeathMonth == null;
         public int AgeYears(int month) => ((DeathMonth ?? month) - BirthMonth) / 12;
         public bool HasTrait(string id) => TraitIds.Contains(id);
 

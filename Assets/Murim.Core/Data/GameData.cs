@@ -12,6 +12,10 @@ namespace Murim.Core.Data
         public SortedDictionary<string, ScenarioDef> Scenarios = new SortedDictionary<string, ScenarioDef>(StringComparer.Ordinal);
         public NameData Names = new NameData();
         public FactionNameParts FactionNameParts = new FactionNameParts();
+        public SortedDictionary<string, global::Murim.Core.Events.EventDef> Events = new SortedDictionary<string, global::Murim.Core.Events.EventDef>(StringComparer.Ordinal);
+        public SortedDictionary<string, global::Murim.Core.Events.FlagDef> Flags = new SortedDictionary<string, global::Murim.Core.Events.FlagDef>(StringComparer.Ordinal);
+        public SortedDictionary<string, global::Murim.Core.Events.StorytellerDef> Storytellers =
+            new SortedDictionary<string, global::Murim.Core.Events.StorytellerDef>(StringComparer.Ordinal);
     }
 
     public class DataLoadResult

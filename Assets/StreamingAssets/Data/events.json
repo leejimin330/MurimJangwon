@@ -1,0 +1,29 @@
+{
+  "flags": [
+    {"id": "injured", "name": "부상", "description": "몸을 다쳐 제 실력을 내지 못한다. 결투 점수 −15.", "visible": true, "duelModifier": -15},
+    {"id": "sick", "name": "병상", "description": "병으로 자리에 누웠다.", "visible": true},
+    {"id": "wanted", "name": "수배", "description": "관부와 정파가 현상금을 걸었다.", "visible": true},
+    {"id": "scandal", "name": "추문", "description": "좋지 않은 소문이 돈다.", "visible": true},
+    {"id": "sworn_revenge", "name": "복수 맹세", "description": "원수를 갚기 전에는 눈을 감지 않겠다고 맹세했다.", "visible": true},
+    {"id": "demonic_art", "name": "마공 수련", "description": "마공을 익히고 있다. 매년 협의 −5.", "visible": true, "yearlyChivalry": -5},
+    {"id": "in_love", "name": "연정", "description": "마음에 둔 사람이 있다.", "visible": true},
+    {"id": "recent_contract", "name": "최근 청부", "description": "최근 2년 안에 청부를 맡았다.", "visible": false}
+  ],
+  "events": [
+    {"id": "wanderer_tavern_quarrel", "name": "주막의 시비", "category": "wanderer", "weight": 10, "tension": 5, "cooldownMonths": 24,
+     "decider": "hero", "importance": 0,
+     "roles": {
+       "hero": {"pick": "anyAdult", "roles": ["None"]},
+       "rival": {"pick": "sameRegion", "of": "hero", "ageMin": 16}
+     },
+     "text": "주막에서 술을 마시던 {hero:이} {rival}의 시비에 휘말렸다.",
+     "choices": [
+       {"text": "겨룬다", "hint": "목숨을 걸 정도는 아니다", "ai": 5, "aiTraits": {"hot_tempered": 10, "coward": -10},
+        "effects": [{"duel": {"a": "hero", "b": "rival", "deathChance": 0,
+          "win": [{"fame": {"who": "hero", "amount": 2}}, {"chronicle": {"text": "{hero:이} {rival:을} 꺾었다."}}],
+          "lose": [{"fame": {"who": "hero", "amount": -1}}, {"chronicle": {"text": "{hero:이} {rival}에게 졌다."}}]}}]},
+       {"text": "양보한다", "result": "{hero:은} 웃으며 자리를 피했다.", "ai": 5, "aiTraits": {"gentle": 10, "arrogant": -10},
+        "effects": [{"fame": {"who": "hero", "amount": -1}}]}
+     ]}
+  ]
+}

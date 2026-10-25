@@ -24,6 +24,13 @@ namespace Murim.Core.Tests
                  ""unnamedDisciples"":10,""silver"":500,""fame"":10,""influence"":5,""realm"":1,""leaderAgeMin"":30,""leaderAgeMax"":45}]",
             ["names.json"] = @"{""familyNames"":[""장"",""남궁""],""maleGivenNames"":[""삼""],""femaleGivenNames"":[""설""]}",
             ["faction_name_parts.json"] = @"{""prefixes"":[""청운""],""righteousSuffixes"":[""검문""],""unorthodoxSuffixes"":[""채""]}",
+            ["events.json"] = @"{""flags"":[{""id"":""injured"",""name"":""부상"",""description"":""d"",""visible"":true,""duelModifier"":-15}],
+                ""events"":[{""id"":""quarrel"",""name"":""시비"",""category"":""wanderer"",""decider"":""hero"",
+                 ""roles"":{""hero"":{""pick"":""anyAdult""},""rival"":{""pick"":""sameRegion"",""of"":""hero""}},
+                 ""text"":""{hero:이} {rival}의 시비에 휘말렸다."",
+                 ""choices"":[{""text"":""겨룬다"",""effects"":[{""fame"":{""who"":""hero"",""amount"":1}}]}]}]}",
+            ["storytellers.json"] = @"[{""id"":""balanced"",""name"":""균형"",""description"":""d"",""tensionGain"":4,""tensionMax"":100,
+                ""baseChance"":0.35,""crisisGapMonths"":10}]",
         };
     }
 }

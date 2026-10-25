@@ -12,6 +12,7 @@ namespace Murim.Core.Data
         public static readonly string[] FileNames =
         {
             "regions.json", "factions.json", "traits.json", "scenarios.json", "names.json", "faction_name_parts.json",
+            "events.json", "storytellers.json",
         };
 
         public static JsonSerializerSettings Settings => new JsonSerializerSettings
@@ -52,6 +53,14 @@ namespace Murim.Core.Data
             LoadList(filesByName, "scenarios.json", result, (ScenarioDef x) => x.Id, d.Scenarios);
             d.Names = Parse<NameData>(filesByName, "names.json", result) ?? new NameData();
             d.FactionNameParts = Parse<FactionNameParts>(filesByName, "faction_name_parts.json", result) ?? new FactionNameParts();
+            var events = Parse<Events.EventFile>(filesByName, "events.json", result);
+            if (events != null)
+            {
+                AddAll("events.json", "표식", events.Flags, x => x.Id, d.Flags, result);
+                AddAll("events.json", "사건", events.Events, x => x.Id, d.Events, result);
+            }
+            LoadList(filesByName, "storytellers.json", result, (Events.StorytellerDef x) => x.Id, d.Storytellers);
+            Events.EventValidator.Prepare(d);
             return result;
         }
 
@@ -75,6 +84,18 @@ namespace Murim.Core.Data
                 result.Errors.Add($"{name}: 값 오류 - {e.Message}");
             }
             return null;
+        }
+
+        static void AddAll<T>(string file, string what, List<T> list, Func<T, string> id, IDictionary<string, T> target, DataLoadResult result)
+            where T : class
+        {
+            for (int i = 0; i < (list?.Count ?? 0); i++)
+            {
+                var key = list[i] == null ? null : id(list[i]);
+                if (string.IsNullOrEmpty(key)) result.Errors.Add($"{file}: {i}번째 {what}에 id가 없습니다");
+                else if (target.ContainsKey(key)) result.Errors.Add($"{file}: {what} id '{key}'가 중복됩니다");
+                else target[key] = list[i];
+            }
         }
 
         static void LoadList<T>(IReadOnlyDictionary<string, string> files, string name, DataLoadResult result,

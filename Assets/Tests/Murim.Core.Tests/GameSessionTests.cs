@@ -14,7 +14,7 @@ namespace Murim.Core.Tests
         static GameData D => TestPaths.LoadShippedData();
 
         static GameSession Wanderer() =>
-            GameSession.NewGame(D, new NewGameOptions { ScenarioId = "wandering_hero", RegionId = "henan", Seed = 11 });
+            GameSession.NewGame(D, new NewGameOptions { ScenarioId = "wandering_hero", RegionId = "henan", Seed = 11 }).Auto();
 
         [Test]
         public void NewGame_HasPlayerAndFullBudget()

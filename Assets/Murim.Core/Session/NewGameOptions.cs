@@ -17,5 +17,7 @@ namespace Murim.Core.Session
         public Alignment Alignment = Alignment.Righteous;
         /// <summary>최대 2개까지 적용된다.</summary>
         public List<string> ChosenTraitIds = new List<string>();
+        /// <summary>calm / balanced / turbulent.</summary>
+        public string StorytellerId = "balanced";
     }
 }

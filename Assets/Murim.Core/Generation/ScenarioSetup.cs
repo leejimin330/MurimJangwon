@@ -158,6 +158,7 @@ namespace Murim.Core.Generation
             int scale = Math.Max(4, s.NamedMembers + s.FamilyMax);
             var w = WorldGenerator.Generate(d, rng, o.RegionId, scale);
             ScenarioSetup.Apply(w, d, rng, o);
+            w.Events.StorytellerId = d.Storytellers.ContainsKey(o.StorytellerId ?? "") ? o.StorytellerId : "balanced";
             return w;
         }
     }

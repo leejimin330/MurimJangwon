@@ -46,7 +46,8 @@ namespace Murim.Core.Tests
             var log = new List<string>();
             var p = TurnProcessor.CreateDefault(new ITurnPhase[] { new Recorder(log, "act") });
             Assert.That(p.Phases[0], Is.InstanceOf<Recorder>());
-            Assert.That(p.Phases[1], Is.InstanceOf<BirthPhase>());
+            Assert.That(p.Phases[1], Is.InstanceOf<Murim.Core.Events.EventPhase>());
+            Assert.That(p.Phases[2], Is.InstanceOf<BirthPhase>());
             Assert.That(p.Phases[p.Phases.Count - 1], Is.InstanceOf<IncomePhase>());
         }
     }

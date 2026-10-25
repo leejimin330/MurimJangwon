@@ -26,7 +26,7 @@ namespace Murim.Core.Tests
         }
 
         static GameSession NewSession(ulong seed = 21) =>
-            GameSession.NewGame(D, new NewGameOptions { ScenarioId = "minor_sect", RegionId = "sichuan", Seed = seed });
+            GameSession.NewGame(D, new NewGameOptions { ScenarioId = "minor_sect", RegionId = "sichuan", Seed = seed }).Auto();
 
         [Test]
         public void SaveLoadSave_RoundTripIdentical()
@@ -47,7 +47,7 @@ namespace Murim.Core.Tests
             for (int i = 0; i < 120; i++) a.EndTurn();
             var path = Path.Combine(dir, "mid.json");
             a.Save(path);
-            var b = GameSession.Load(D, path).Session;
+            var b = GameSession.Load(D, path).Session.Auto();
             for (int i = 0; i < 120; i++) b.EndTurn();
 
             var c = NewSession(5);

@@ -21,6 +21,10 @@ namespace Murim.Core.Tests
                 new FlagDef { Id = "demonic_art", Name = "마공 수련", YearlyChivalry = -5, Visible = true },
                 new FlagDef { Id = "secret", Name = "비밀" },
             }) d.Flags[f.Id] = f;
+            d.Storytellers["balanced"] = new StorytellerDef
+            {
+                Id = "balanced", Name = "균형", TensionGain = 10, TensionMax = 100, BaseChance = 1, CrisisGapMonths = 10,
+            };
             return d;
         }
 

@@ -16,6 +16,7 @@ namespace Murim.Core.Tests
             var a = GameSession.NewGame(d, o);
             var b = GameSession.NewGame(d, o);
             a.IgnoreGameOver = b.IgnoreGameOver = true;
+            a.AutoResolveEvents = b.AutoResolveEvents = true;
             for (int i = 0; i < 600; i++) { a.EndTurn(); b.EndTurn(); }
             Assert.That(a.Serialize(), Is.EqualTo(b.Serialize()));
         }
@@ -30,6 +31,7 @@ namespace Murim.Core.Tests
             var d = TestPaths.LoadShippedData();
             var s = GameSession.NewGame(d, new NewGameOptions { ScenarioId = "minor_sect", RegionId = "henan", Seed = 12345 });
             s.IgnoreGameOver = true;
+            s.AutoResolveEvents = true;
             var report = new List<string>();
             for (int year = 1; year <= 200; year++)
             {
@@ -56,6 +58,7 @@ namespace Murim.Core.Tests
             var d = TestPaths.LoadShippedData();
             var s = GameSession.NewGame(d, new NewGameOptions { ScenarioId = scenarioId, RegionId = "hubei", Seed = 3 });
             s.IgnoreGameOver = true;
+            s.AutoResolveEvents = true;
             for (int i = 0; i < 600; i++) s.EndTurn();
             Assert.That(s.World.Month, Is.EqualTo(600));
         }

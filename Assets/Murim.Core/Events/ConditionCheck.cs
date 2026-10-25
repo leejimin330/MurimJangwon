@@ -26,7 +26,11 @@ namespace Murim.Core.Events
         static string TraitName(GameData d, string id) => d.Traits.TryGetValue(id, out var t) ? t.Name : id;
 
         /// <summary>null이면 통과. 아니면 화면에 보일 사유.</summary>
-        public static string Why(Conditions c, Character ch, EventContext ctx)
+        public static string Why(Conditions c, Character ch, EventContext ctx) => Why(c, ch, ctx, false, false);
+
+        /// <param name="deferUnbound">아직 채우지 않은 역할을 가리키는 조건은 통과로 본다 (역할 묶는 도중).</param>
+        /// <param name="skipChance">chance는 굴리지 않는다.</param>
+        public static string Why(Conditions c, Character ch, EventContext ctx, bool deferUnbound, bool skipChance)
         {
             if (c == null) return null;
             if (ch == null) return "조건이 맞지 않습니다";
@@ -84,12 +88,18 @@ namespace Murim.Core.Events
             if (c.OpinionOf != null)
             {
                 var other = ctx.Get(c.OpinionOf.Role);
-                if (other == null) return "조건이 맞지 않습니다";
-                int op = Opinion.Of(w, d, ch.Id, other.Id);
-                if (c.OpinionOf.Min != null && op < c.OpinionOf.Min) return "호감이 모자랍니다";
-                if (c.OpinionOf.Max != null && op > c.OpinionOf.Max) return "조건이 맞지 않습니다";
+                if (other == null)
+                {
+                    if (!deferUnbound) return "조건이 맞지 않습니다";
+                }
+                else
+                {
+                    int op = Opinion.Of(w, d, ch.Id, other.Id);
+                    if (c.OpinionOf.Min != null && op < c.OpinionOf.Min) return "호감이 모자랍니다";
+                    if (c.OpinionOf.Max != null && op > c.OpinionOf.Max) return "조건이 맞지 않습니다";
+                }
             }
-            if (c.Chance != null && !ctx.Rng.Chance(c.Chance.Value)) return "때가 아닙니다";
+            if (c.Chance != null && !skipChance && !ctx.Rng.Chance(c.Chance.Value)) return "때가 아닙니다";
             return null;
         }
 

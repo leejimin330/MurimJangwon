@@ -52,10 +52,17 @@ namespace Murim.Core.Actions
     {
         public readonly string ToRegionId;
 
-        public Travel(string actorId, string toRegionId) : base(actorId) => ToRegionId = toRegionId;
+        /// <summary>화면 표시용. 없으면 id를 쓴다.</summary>
+        public readonly string ToRegionName;
+
+        public Travel(string actorId, string toRegionId, string toRegionName = null) : base(actorId)
+        {
+            ToRegionId = toRegionId;
+            ToRegionName = toRegionName;
+        }
 
         public override string Key => ActionKeys.Travel;
-        public override string Describe(WorldState w) => $"{ToRegionId}(으)로 이동";
+        public override string Describe(WorldState w) => $"{ToRegionName ?? ToRegionId}(으)로 이동";
 
         protected override ActionCheck Check(WorldState w, GameData d, Character actor) =>
             PersonalRules.IsNeighbor(d, actor.LocationRegionId, ToRegionId) ? ActionCheck.Pass : ActionCheck.Fail("인접한 지역이 아닙니다");
@@ -68,10 +75,16 @@ namespace Murim.Core.Actions
         public const int Pay = 80;
         public readonly string ToRegionId;
 
-        public Escort(string actorId, string toRegionId) : base(actorId) => ToRegionId = toRegionId;
+        public readonly string ToRegionName;
+
+        public Escort(string actorId, string toRegionId, string toRegionName = null) : base(actorId)
+        {
+            ToRegionId = toRegionId;
+            ToRegionName = toRegionName;
+        }
 
         public override string Key => ActionKeys.Escort;
-        public override string Describe(WorldState w) => $"{ToRegionId}까지 표국 호위";
+        public override string Describe(WorldState w) => $"{ToRegionName ?? ToRegionId}까지 표국 호위";
 
         protected override ActionCheck Check(WorldState w, GameData d, Character actor) =>
             PersonalRules.IsNeighbor(d, actor.LocationRegionId, ToRegionId) ? ActionCheck.Pass : ActionCheck.Fail("인접한 지역이 아닙니다");

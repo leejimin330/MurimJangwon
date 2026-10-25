@@ -1,0 +1,15 @@
+[
+  {"id": "liaodong", "name": "요동", "neighbors": ["hebei"], "x": 0.88, "y": 0.12},
+  {"id": "hebei", "name": "하북", "neighbors": ["liaodong", "shandong", "henan", "shanxi"], "x": 0.70, "y": 0.22},
+  {"id": "shanxi", "name": "산서", "neighbors": ["hebei", "henan", "shaanxi"], "x": 0.58, "y": 0.28},
+  {"id": "shandong", "name": "산동", "neighbors": ["hebei", "henan", "jiangnan"], "x": 0.80, "y": 0.33},
+  {"id": "henan", "name": "하남", "neighbors": ["hebei", "shandong", "shanxi", "shaanxi", "hubei", "jiangnan"], "x": 0.64, "y": 0.40},
+  {"id": "shaanxi", "name": "섬서", "neighbors": ["shanxi", "henan", "hubei", "sichuan", "gansu"], "x": 0.46, "y": 0.40},
+  {"id": "gansu", "name": "감숙", "neighbors": ["shaanxi", "sichuan"], "x": 0.22, "y": 0.30},
+  {"id": "sichuan", "name": "사천", "neighbors": ["gansu", "shaanxi", "hubei", "hunan", "yunnan"], "x": 0.36, "y": 0.58},
+  {"id": "hubei", "name": "호북", "neighbors": ["henan", "shaanxi", "sichuan", "hunan", "jiangnan"], "x": 0.58, "y": 0.54},
+  {"id": "jiangnan", "name": "강남", "neighbors": ["shandong", "henan", "hubei", "hunan", "fujian"], "x": 0.78, "y": 0.52},
+  {"id": "hunan", "name": "호남", "neighbors": ["hubei", "sichuan", "yunnan", "fujian", "jiangnan"], "x": 0.56, "y": 0.70},
+  {"id": "fujian", "name": "복건", "neighbors": ["jiangnan", "hunan"], "x": 0.80, "y": 0.74},
+  {"id": "yunnan", "name": "운남", "neighbors": ["sichuan", "hunan"], "x": 0.30, "y": 0.82}
+]

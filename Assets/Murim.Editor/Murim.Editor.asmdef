@@ -1,0 +1,14 @@
+{
+    "name": "Murim.Editor",
+    "rootNamespace": "Murim.Editor",
+    "references": ["Murim.Core", "Murim.View", "UnityEngine.UI"],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": ["Newtonsoft.Json.dll"],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

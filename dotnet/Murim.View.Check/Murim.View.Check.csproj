@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Unity 라이선스 없이 View/Editor 코드 컴파일만 확인한다. 빌드 산출물은 쓰지 않는다. -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <NoWarn>CS0649;CS0414</NoWarn>
+    <UnityManaged>C:\Program Files\Unity\Hub\Editor\6000.3.23f1\Editor\Data\Managed</UnityManaged>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../Assets/Murim.View/**/*.cs" />
+    <Compile Include="../../Assets/Murim.Editor/**/*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Murim.Core/Murim.Core.csproj" />
+    <Reference Include="$(UnityManaged)\UnityEngine\*.dll" Private="false" />
+    <Reference Include="../../Library/ScriptAssemblies/UnityEngine.UI.dll" Private="false" />
+  </ItemGroup>
+</Project>

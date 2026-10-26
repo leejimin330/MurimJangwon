@@ -1,0 +1,2839 @@
+{
+ "arts": [
+  {
+   "id": "luohan_fist",
+   "name": "나한권",
+   "type": "Fist",
+   "grade": 2,
+   "alignment": "Righteous",
+   "description": "소림 제자가 처음 배우는 굳센 권법.",
+   "faction": "shaolin",
+   "cards": [
+    {
+     "id": "luohan_fist_1",
+     "name": "나한출동",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "luohan_fist_2",
+     "name": "금강호체",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "luohan_fist_3",
+     "name": "나한복호",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 16,
+     "cost": 6,
+     "masteryMin": 3
+    },
+    {
+     "id": "luohan_fist_4",
+     "name": "십팔나한진",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 26,
+     "cost": 12,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "damo_sword",
+   "name": "달마검법",
+   "type": "Sword",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "달마조사의 뜻을 담은 소림의 검.",
+   "faction": "shaolin",
+   "requires": {
+    "realmMin": 2
+   },
+   "cards": [
+    {
+     "id": "damo_sword_1",
+     "name": "일위도강",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "damo_sword_2",
+     "name": "면벽구년",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "damo_sword_3",
+     "name": "선종일검",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 20,
+     "cost": 8,
+     "masteryMin": 4
+    },
+    {
+     "id": "damo_sword_4",
+     "name": "달마삼검",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "yijin_jing",
+   "name": "역근경",
+   "type": "Inner",
+   "grade": 5,
+   "alignment": "Righteous",
+   "description": "근골을 바꾸는 소림 최고의 심법.",
+   "faction": "shaolin",
+   "requires": {
+    "realmMin": 3,
+    "insightMin": 12
+   },
+   "cards": []
+  },
+  {
+   "id": "taiji_sword",
+   "name": "태극검법",
+   "type": "Sword",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "부드러움으로 강함을 누르는 무당의 검.",
+   "faction": "wudang",
+   "requires": {
+    "realmMin": 2,
+    "insightMin": 12
+   },
+   "cards": [
+    {
+     "id": "taiji_sword_1",
+     "name": "운중월",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "taiji_sword_2",
+     "name": "태극원환",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "taiji_sword_3",
+     "name": "칠성연환",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 20,
+     "cost": 8,
+     "masteryMin": 4
+    },
+    {
+     "id": "taiji_sword_4",
+     "name": "태극혜검",
+     "kind": "Finisher",
+     "style": "Soft",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "taiji_fist",
+   "name": "태극권",
+   "type": "Fist",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "힘을 흘려 되돌리는 무당의 권.",
+   "faction": "wudang",
+   "cards": [
+    {
+     "id": "taiji_fist_1",
+     "name": "남작미",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "taiji_fist_2",
+     "name": "운수",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "taiji_fist_3",
+     "name": "단편",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "taiji_fist_4",
+     "name": "태극일기",
+     "kind": "Finisher",
+     "style": "Soft",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "chunyang_gong",
+   "name": "순양무극공",
+   "type": "Inner",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "맑은 양기를 쌓는 무당의 심법.",
+   "faction": "wudang",
+   "requires": {
+    "realmMin": 1
+   },
+   "cards": []
+  },
+  {
+   "id": "plum_sword",
+   "name": "매화검법",
+   "type": "Sword",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "스물네 송이 매화를 피워 내는 화산의 검.",
+   "faction": "huashan",
+   "requires": {
+    "realmMin": 2
+   },
+   "cards": [
+    {
+     "id": "plum_sword_1",
+     "name": "매화점점",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "plum_sword_2",
+     "name": "암향부동",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "plum_sword_3",
+     "name": "매화분분",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 20,
+     "cost": 8,
+     "masteryMin": 4
+    },
+    {
+     "id": "plum_sword_4",
+     "name": "이십사수매화",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "zixia_gong",
+   "name": "자하신공",
+   "type": "Inner",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "자줏빛 노을처럼 피어오르는 화산의 심법.",
+   "faction": "huashan",
+   "requires": {
+    "realmMin": 1,
+    "insightMin": 10
+   },
+   "cards": []
+  },
+  {
+   "id": "jinding_sword",
+   "name": "금정검법",
+   "type": "Sword",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "아미산 금정의 빛을 닮은 맑은 검.",
+   "faction": "emei",
+   "cards": [
+    {
+     "id": "jinding_sword_1",
+     "name": "금정조일",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "jinding_sword_2",
+     "name": "불광보조",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "jinding_sword_3",
+     "name": "아미월영",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "jinding_sword_4",
+     "name": "금정만광",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "yunlong_steps",
+   "name": "운룡대팔식",
+   "type": "Movement",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "구름 속 용처럼 몸을 꺾는 곤륜의 신법.",
+   "faction": "kunlun",
+   "cards": [
+    {
+     "id": "yunlong_steps_1",
+     "name": "운룡번신",
+     "kind": "Evade",
+     "style": "Fast",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "yunlong_steps_2",
+     "name": "용행구천",
+     "kind": "Evade",
+     "style": "Soft",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "yunlong_steps_3",
+     "name": "운룡탐조",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "yunlong_steps_4",
+     "name": "신룡출운",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "sunset_sword",
+   "name": "사일검법",
+   "type": "Sword",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "해를 쏘아 떨어뜨린다는 점창의 쾌검.",
+   "faction": "diancang",
+   "cards": [
+    {
+     "id": "sunset_sword_1",
+     "name": "사일",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "sunset_sword_2",
+     "name": "유성낙지",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "sunset_sword_3",
+     "name": "점창운무",
+     "kind": "Defense",
+     "style": "Fast",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "sunset_sword_4",
+     "name": "구일추락",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "qingcheng_sword",
+   "name": "청성검법",
+   "type": "Sword",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "청성산 푸른 숲처럼 촘촘한 검.",
+   "faction": "qingcheng",
+   "cards": [
+    {
+     "id": "qingcheng_sword_1",
+     "name": "송풍",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "qingcheng_sword_2",
+     "name": "청성낙엽",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "qingcheng_sword_3",
+     "name": "무영자",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "qingcheng_sword_4",
+     "name": "청성일검",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "thirtysix_sword",
+   "name": "천하삼십육검",
+   "type": "Sword",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "종남의 서른여섯 갈래 정검.",
+   "faction": "zhongnan",
+   "cards": [
+    {
+     "id": "thirtysix_sword_1",
+     "name": "천하제일식",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "thirtysix_sword_2",
+     "name": "종남중검",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "thirtysix_sword_3",
+     "name": "삼십육로",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "thirtysix_sword_4",
+     "name": "천하귀일",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "seven_wounds",
+   "name": "칠상권",
+   "type": "Fist",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "한 주먹에 일곱 갈래 경력을 싣는 공동의 권.",
+   "faction": "kongtong",
+   "requires": {
+    "constitutionMin": 10
+   },
+   "cards": [
+    {
+     "id": "seven_wounds_1",
+     "name": "일상",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "seven_wounds_2",
+     "name": "칠상호체",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "seven_wounds_3",
+     "name": "삼상연격",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "seven_wounds_4",
+     "name": "칠상귀원",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "dragon_palms",
+   "name": "항룡십팔장",
+   "type": "Fist",
+   "grade": 5,
+   "alignment": "Righteous",
+   "description": "개방 방주에게만 전하는 천하제일 장법.",
+   "faction": "beggars",
+   "requires": {
+    "realmMin": 3,
+    "constitutionMin": 12
+   },
+   "cards": [
+    {
+     "id": "dragon_palms_1",
+     "name": "견룡재전",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 18,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "dragon_palms_2",
+     "name": "비룡재천",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 18,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "dragon_palms_3",
+     "name": "항룡유회",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 22,
+     "cost": 9,
+     "masteryMin": 4
+    },
+    {
+     "id": "dragon_palms_4",
+     "name": "항룡십팔장 종식",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 32,
+     "cost": 15,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "dog_staff",
+   "name": "타구봉법",
+   "type": "Spear",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "개를 패는 막대로 천하를 누른다는 개방의 봉법.",
+   "faction": "beggars",
+   "requires": {
+    "realmMin": 2
+   },
+   "cards": [
+    {
+     "id": "dog_staff_1",
+     "name": "반",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "dog_staff_2",
+     "name": "전",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "dog_staff_3",
+     "name": "도",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 20,
+     "cost": 8,
+     "masteryMin": 4
+    },
+    {
+     "id": "dog_staff_4",
+     "name": "천하무구",
+     "kind": "Finisher",
+     "style": "Soft",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "skyline_sword",
+   "name": "창궁무애검",
+   "type": "Sword",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "하늘 끝까지 막힘이 없다는 남궁세가의 검.",
+   "faction": "namgung_clan",
+   "requires": {
+    "realmMin": 2
+   },
+   "cards": [
+    {
+     "id": "skyline_sword_1",
+     "name": "창궁일섬",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "skyline_sword_2",
+     "name": "무애호신",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "skyline_sword_3",
+     "name": "창궁낙뢰",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 20,
+     "cost": 8,
+     "masteryMin": 4
+    },
+    {
+     "id": "skyline_sword_4",
+     "name": "창궁무애",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "starshift",
+   "name": "두전성이",
+   "type": "Fist",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "상대의 힘으로 상대를 치는 모용세가의 절기.",
+   "faction": "murong_clan",
+   "requires": {
+    "realmMin": 2,
+    "insightMin": 12
+   },
+   "cards": [
+    {
+     "id": "starshift_1",
+     "name": "이형환위",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "starshift_2",
+     "name": "성이",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "starshift_3",
+     "name": "두전",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 20,
+     "cost": 8,
+     "masteryMin": 4
+    },
+    {
+     "id": "starshift_4",
+     "name": "이피지도환시피신",
+     "kind": "Finisher",
+     "style": "Soft",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "zhuge_devices",
+   "name": "제갈신기",
+   "type": "Hidden",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "진법과 기관을 품은 제갈세가의 암기술.",
+   "faction": "zhuge_clan",
+   "requires": {
+    "insightMin": 11
+   },
+   "cards": [
+    {
+     "id": "zhuge_devices_1",
+     "name": "팔진암전",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "zhuge_devices_2",
+     "name": "기문둔갑",
+     "kind": "Evade",
+     "style": "Soft",
+     "power": 9,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "zhuge_devices_3",
+     "name": "연노십발",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "zhuge_devices_4",
+     "name": "팔진도",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "rain_of_petals",
+   "name": "만천화우",
+   "type": "Hidden",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "하늘 가득 꽃비처럼 쏟아지는 당가의 암기.",
+   "faction": "tang_clan",
+   "requires": {
+    "realmMin": 1
+   },
+   "cards": [
+    {
+     "id": "rain_of_petals_1",
+     "name": "비황석",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "rain_of_petals_2",
+     "name": "독질려",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 20,
+     "cost": 8,
+     "masteryMin": 4
+    },
+    {
+     "id": "rain_of_petals_3",
+     "name": "수리검막",
+     "kind": "Defense",
+     "style": "Fast",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "rain_of_petals_4",
+     "name": "만천화우",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "five_tiger_saber",
+   "name": "오호단문도",
+   "type": "Saber",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "다섯 호랑이의 기세로 문을 끊는 팽가의 도.",
+   "faction": "paeng_clan",
+   "requires": {
+    "realmMin": 1,
+    "constitutionMin": 11
+   },
+   "cards": [
+    {
+     "id": "five_tiger_saber_1",
+     "name": "맹호출림",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "five_tiger_saber_2",
+     "name": "호보",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "five_tiger_saber_3",
+     "name": "오호쟁식",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 20,
+     "cost": 8,
+     "masteryMin": 4
+    },
+    {
+     "id": "five_tiger_saber_4",
+     "name": "오호단문",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "greenwood_saber",
+   "name": "녹림도법",
+   "type": "Saber",
+   "grade": 3,
+   "alignment": "Unorthodox",
+   "description": "산채에서 갈고닦은 거친 도법.",
+   "faction": "nokrim_hq",
+   "cards": [
+    {
+     "id": "greenwood_saber_1",
+     "name": "산적출몰",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "greenwood_saber_2",
+     "name": "막고베기",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "greenwood_saber_3",
+     "name": "녹림쇄골",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "greenwood_saber_4",
+     "name": "녹림대참",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "haomun_stealth",
+   "name": "하오은신술",
+   "type": "Movement",
+   "grade": 2,
+   "alignment": "Unorthodox",
+   "description": "그림자에 몸을 숨기는 하오문의 비술.",
+   "faction": "haomun",
+   "cards": [
+    {
+     "id": "haomun_stealth_1",
+     "name": "암영",
+     "kind": "Evade",
+     "style": "Fast",
+     "power": 8,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "haomun_stealth_2",
+     "name": "은신",
+     "kind": "Evade",
+     "style": "Soft",
+     "power": 8,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "haomun_stealth_3",
+     "name": "등뒤찌르기",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "haomun_stealth_4",
+     "name": "하오일격",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 26,
+     "cost": 12,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "water_flight",
+   "name": "수상비",
+   "type": "Movement",
+   "grade": 2,
+   "alignment": "Unorthodox",
+   "description": "물 위를 걷는 장강수로채의 신법.",
+   "faction": "yangtze_pirates",
+   "cards": [
+    {
+     "id": "water_flight_1",
+     "name": "답랑",
+     "kind": "Evade",
+     "style": "Fast",
+     "power": 8,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "water_flight_2",
+     "name": "물살타기",
+     "kind": "Evade",
+     "style": "Soft",
+     "power": 8,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "water_flight_3",
+     "name": "수중검",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "water_flight_4",
+     "name": "장강도해",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 26,
+     "cost": 12,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "heavenly_demon_art",
+   "name": "천마신공",
+   "type": "Inner",
+   "grade": 5,
+   "alignment": "Demonic",
+   "description": "천마신교 교주에게만 전하는 마공의 정점.",
+   "faction": "heavenly_demon",
+   "requires": {
+    "realmMin": 3
+   },
+   "cards": []
+  },
+  {
+   "id": "demon_steps",
+   "name": "천마군림보",
+   "type": "Movement",
+   "grade": 4,
+   "alignment": "Demonic",
+   "description": "한 걸음마다 땅을 울리는 천마의 보법.",
+   "faction": "heavenly_demon",
+   "requires": {
+    "realmMin": 2
+   },
+   "cards": [
+    {
+     "id": "demon_steps_1",
+     "name": "군림",
+     "kind": "Evade",
+     "style": "Hard",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "demon_steps_2",
+     "name": "마보",
+     "kind": "Evade",
+     "style": "Soft",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "demon_steps_3",
+     "name": "천마진각",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "demon_steps_4",
+     "name": "천마군림",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "demon_sword",
+   "name": "천마검법",
+   "type": "Sword",
+   "grade": 5,
+   "alignment": "Demonic",
+   "description": "핏빛 검기로 하늘을 가르는 천마의 검.",
+   "faction": "heavenly_demon",
+   "requires": {
+    "realmMin": 3
+   },
+   "cards": [
+    {
+     "id": "demon_sword_1",
+     "name": "마검출수",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 18,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "demon_sword_2",
+     "name": "혈막",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 18,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "demon_sword_3",
+     "name": "천마혈검",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 22,
+     "cost": 9,
+     "masteryMin": 4
+    },
+    {
+     "id": "demon_sword_4",
+     "name": "천마멸세",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 32,
+     "cost": 15,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "blood_demon_art",
+   "name": "혈마공",
+   "type": "Inner",
+   "grade": 4,
+   "alignment": "Demonic",
+   "description": "남의 피로 내공을 쌓는 혈교의 마공.",
+   "faction": "blood_cult",
+   "requires": {
+    "realmMin": 1
+   },
+   "cards": []
+  },
+  {
+   "id": "blood_shadow_steps",
+   "name": "혈영신법",
+   "type": "Movement",
+   "grade": 3,
+   "alignment": "Demonic",
+   "description": "핏빛 그림자만 남기는 혈교의 신법.",
+   "faction": "blood_cult",
+   "cards": [
+    {
+     "id": "blood_shadow_steps_1",
+     "name": "혈영",
+     "kind": "Evade",
+     "style": "Fast",
+     "power": 9,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "blood_shadow_steps_2",
+     "name": "잔영",
+     "kind": "Evade",
+     "style": "Soft",
+     "power": 9,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "blood_shadow_steps_3",
+     "name": "혈조",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "blood_shadow_steps_4",
+     "name": "혈영만상",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "taishan_eighteen",
+   "name": "태산십팔반",
+   "type": "Saber",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "태산처럼 무거운 열여덟 갈래 병기술.",
+   "faction": "taishan",
+   "cards": [
+    {
+     "id": "taishan_eighteen_1",
+     "name": "태산압정",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "taishan_eighteen_2",
+     "name": "반석",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "taishan_eighteen_3",
+     "name": "오악독존",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "taishan_eighteen_4",
+     "name": "태산붕괴",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "songyang_sword",
+   "name": "대숭양검법",
+   "type": "Sword",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "숭산 봉우리처럼 곧고 높은 검.",
+   "faction": "songshan",
+   "cards": [
+    {
+     "id": "songyang_sword_1",
+     "name": "숭양일검",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "songyang_sword_2",
+     "name": "숭산고정",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "songyang_sword_3",
+     "name": "천외삼봉",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "songyang_sword_4",
+     "name": "대숭양신검",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "wild_goose_sword",
+   "name": "회풍락안검",
+   "type": "Sword",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "바람을 돌려 기러기를 떨군다는 형산의 검.",
+   "faction": "hengshan",
+   "cards": [
+    {
+     "id": "wild_goose_sword_1",
+     "name": "회풍",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "wild_goose_sword_2",
+     "name": "락안",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "wild_goose_sword_3",
+     "name": "형산운무",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "wild_goose_sword_4",
+     "name": "백운출수",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "vajra_gong",
+   "name": "금강부동신공",
+   "type": "Inner",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "흔들림 없는 오대산 불문의 심법.",
+   "faction": "wutai",
+   "cards": []
+  },
+  {
+   "id": "changbai_sword",
+   "name": "장백검법",
+   "type": "Sword",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "눈보라를 가르는 장백파의 검.",
+   "faction": "changbai",
+   "cards": [
+    {
+     "id": "changbai_sword_1",
+     "name": "설풍",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "changbai_sword_2",
+     "name": "빙벽",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "changbai_sword_3",
+     "name": "천지설검",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "changbai_sword_4",
+     "name": "장백일휘",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "southern_fist",
+   "name": "소림남권",
+   "type": "Fist",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "남소림의 짧고 매서운 권.",
+   "faction": "south_shaolin",
+   "cards": [
+    {
+     "id": "southern_fist_1",
+     "name": "호권",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "southern_fist_2",
+     "name": "학권",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "southern_fist_3",
+     "name": "오형연환",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "southern_fist_4",
+     "name": "남권진산",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "wuyi_sword",
+   "name": "무이검법",
+   "type": "Sword",
+   "grade": 2,
+   "alignment": "Righteous",
+   "description": "아홉 굽이 계곡을 닮은 무이파의 검.",
+   "faction": "wuyi",
+   "cards": [
+    {
+     "id": "wuyi_sword_1",
+     "name": "구곡",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "wuyi_sword_2",
+     "name": "계류",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "wuyi_sword_3",
+     "name": "무이연봉",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 16,
+     "cost": 6,
+     "masteryMin": 3
+    },
+    {
+     "id": "wuyi_sword_4",
+     "name": "구곡귀일",
+     "kind": "Finisher",
+     "style": "Soft",
+     "power": 26,
+     "cost": 12,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "yiyang_finger",
+   "name": "일양지",
+   "type": "Finger",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "한 줄기 양기를 손끝에 모으는 대리단가의 지공.",
+   "faction": "dan_clan",
+   "requires": {
+    "realmMin": 1,
+    "insightMin": 12
+   },
+   "cards": [
+    {
+     "id": "yiyang_finger_1",
+     "name": "일양점혈",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "yiyang_finger_2",
+     "name": "양기호체",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "yiyang_finger_3",
+     "name": "일양관일",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 20,
+     "cost": 8,
+     "masteryMin": 4
+    },
+    {
+     "id": "yiyang_finger_4",
+     "name": "일양지 극의",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "five_poison_palm",
+   "name": "오독장",
+   "type": "Fist",
+   "grade": 3,
+   "alignment": "Demonic",
+   "description": "다섯 독을 손바닥에 품은 오독문의 장법.",
+   "faction": "five_poisons",
+   "cards": [
+    {
+     "id": "five_poison_palm_1",
+     "name": "독수",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "five_poison_palm_2",
+     "name": "독무",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "five_poison_palm_3",
+     "name": "오독연장",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "five_poison_palm_4",
+     "name": "오독귀원",
+     "kind": "Finisher",
+     "style": "Soft",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "myriad_poison_art",
+   "name": "만독심법",
+   "type": "Inner",
+   "grade": 4,
+   "alignment": "Demonic",
+   "description": "만 가지 독을 몸에 녹이는 만독문의 심법.",
+   "faction": "myriad_poison",
+   "requires": {
+    "realmMin": 1
+   },
+   "cards": []
+  },
+  {
+   "id": "ice_soul_art",
+   "name": "빙백신공",
+   "type": "Inner",
+   "grade": 4,
+   "alignment": "Demonic",
+   "description": "뼈까지 얼리는 북해빙궁의 심법.",
+   "faction": "north_ice_palace",
+   "requires": {
+    "realmMin": 1
+   },
+   "cards": []
+  },
+  {
+   "id": "holy_fire_art",
+   "name": "성화신공",
+   "type": "Inner",
+   "grade": 4,
+   "alignment": "Demonic",
+   "description": "성스러운 불을 몸에 일으키는 명교의 심법.",
+   "faction": "myeonggyo",
+   "requires": {
+    "realmMin": 1
+   },
+   "cards": []
+  },
+  {
+   "id": "white_lotus_art",
+   "name": "백련심법",
+   "type": "Inner",
+   "grade": 3,
+   "alignment": "Demonic",
+   "description": "흰 연꽃 아래 마음을 묶는 백련교의 심법.",
+   "faction": "white_lotus",
+   "cards": []
+  },
+  {
+   "id": "three_talent_sword",
+   "name": "삼재검법",
+   "type": "Sword",
+   "grade": 1,
+   "alignment": "Righteous",
+   "description": "하늘·땅·사람 세 자세로 된 기본 검법.",
+   "cards": [
+    {
+     "id": "three_talent_sword_1",
+     "name": "천",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "three_talent_sword_2",
+     "name": "지",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "three_talent_sword_3",
+     "name": "인",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 14,
+     "cost": 5,
+     "masteryMin": 3
+    },
+    {
+     "id": "three_talent_sword_4",
+     "name": "삼재합일",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 23,
+     "cost": 11,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "taizu_fist",
+   "name": "태조장권",
+   "type": "Fist",
+   "grade": 1,
+   "alignment": "Righteous",
+   "description": "어느 무관에서나 가르치는 기본 권법.",
+   "cards": [
+    {
+     "id": "taizu_fist_1",
+     "name": "직권",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "taizu_fist_2",
+     "name": "막기",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "taizu_fist_3",
+     "name": "연타",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 5,
+     "masteryMin": 3
+    },
+    {
+     "id": "taizu_fist_4",
+     "name": "장권일격",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 23,
+     "cost": 11,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "tiger_saber",
+   "name": "오호도법",
+   "type": "Saber",
+   "grade": 1,
+   "alignment": "Righteous",
+   "description": "표사와 낭인이 즐겨 쓰는 투박한 도법.",
+   "cards": [
+    {
+     "id": "tiger_saber_1",
+     "name": "내려베기",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "tiger_saber_2",
+     "name": "도배막기",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "tiger_saber_3",
+     "name": "호랑이발톱",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 14,
+     "cost": 5,
+     "masteryMin": 3
+    },
+    {
+     "id": "tiger_saber_4",
+     "name": "오호일도",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 23,
+     "cost": 11,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "escort_spear",
+   "name": "표국창법",
+   "type": "Spear",
+   "grade": 1,
+   "alignment": "Righteous",
+   "description": "표국에서 전해지는 실전 창법.",
+   "cards": [
+    {
+     "id": "escort_spear_1",
+     "name": "찌르기",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "escort_spear_2",
+     "name": "창대막기",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "escort_spear_3",
+     "name": "회창",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 14,
+     "cost": 5,
+     "masteryMin": 3
+    },
+    {
+     "id": "escort_spear_4",
+     "name": "표국일창",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 23,
+     "cost": 11,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "ronin_sword",
+   "name": "낭인검법",
+   "type": "Sword",
+   "grade": 2,
+   "alignment": "Righteous",
+   "description": "떠돌이 검객들이 싸우며 익힌 검.",
+   "cards": [
+    {
+     "id": "ronin_sword_1",
+     "name": "기습",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "ronin_sword_2",
+     "name": "물러서기",
+     "kind": "Evade",
+     "style": "Fast",
+     "power": 8,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "ronin_sword_3",
+     "name": "발검",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 16,
+     "cost": 6,
+     "masteryMin": 3
+    },
+    {
+     "id": "ronin_sword_4",
+     "name": "낭인일섬",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 26,
+     "cost": 12,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "flying_dagger",
+   "name": "비도술",
+   "type": "Hidden",
+   "grade": 1,
+   "alignment": "Righteous",
+   "description": "단도를 던져 맞히는 기초 암기술.",
+   "cards": [
+    {
+     "id": "flying_dagger_1",
+     "name": "비도",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "flying_dagger_2",
+     "name": "몸굴리기",
+     "kind": "Evade",
+     "style": "Fast",
+     "power": 7,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "flying_dagger_3",
+     "name": "쌍비도",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 5,
+     "masteryMin": 3
+    },
+    {
+     "id": "flying_dagger_4",
+     "name": "연환비도",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 23,
+     "cost": 11,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "basic_breathing",
+   "name": "기초토납법",
+   "type": "Inner",
+   "grade": 1,
+   "alignment": "Righteous",
+   "description": "숨을 고르며 기를 모으는 가장 기초적인 심법.",
+   "cards": []
+  },
+  {
+   "id": "hunyuan_gong",
+   "name": "혼원공",
+   "type": "Inner",
+   "grade": 2,
+   "alignment": "Righteous",
+   "description": "흩어진 기를 하나로 묶는 심법.",
+   "cards": []
+  },
+  {
+   "id": "breeze_sword",
+   "name": "청풍검법",
+   "type": "Sword",
+   "grade": 2,
+   "alignment": "Righteous",
+   "description": "맑은 바람처럼 가벼운 검법.",
+   "cards": [
+    {
+     "id": "breeze_sword_1",
+     "name": "청풍",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "breeze_sword_2",
+     "name": "유수",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "breeze_sword_3",
+     "name": "청풍명월",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 16,
+     "cost": 6,
+     "masteryMin": 3
+    },
+    {
+     "id": "breeze_sword_4",
+     "name": "청풍만리",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 26,
+     "cost": 12,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "six_harmony_fist",
+   "name": "육합권",
+   "type": "Fist",
+   "grade": 2,
+   "alignment": "Righteous",
+   "description": "몸과 마음 여섯을 하나로 모으는 권법.",
+   "cards": [
+    {
+     "id": "six_harmony_fist_1",
+     "name": "육합직권",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "six_harmony_fist_2",
+     "name": "육합보",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "six_harmony_fist_3",
+     "name": "육합연환",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 16,
+     "cost": 6,
+     "masteryMin": 3
+    },
+    {
+     "id": "six_harmony_fist_4",
+     "name": "육합귀일",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 26,
+     "cost": 12,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "mountain_saber",
+   "name": "개산도법",
+   "type": "Saber",
+   "grade": 2,
+   "alignment": "Righteous",
+   "description": "산도 가른다는 묵직한 도법.",
+   "cards": [
+    {
+     "id": "mountain_saber_1",
+     "name": "개산",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "mountain_saber_2",
+     "name": "횡도",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "mountain_saber_3",
+     "name": "벽산",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 16,
+     "cost": 6,
+     "masteryMin": 3
+    },
+    {
+     "id": "mountain_saber_4",
+     "name": "개천벽지",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 26,
+     "cost": 12,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "grass_flight",
+   "name": "초상비",
+   "type": "Movement",
+   "grade": 1,
+   "alignment": "Righteous",
+   "description": "풀잎 위를 스치는 가벼운 신법.",
+   "cards": [
+    {
+     "id": "grass_flight_1",
+     "name": "초상비",
+     "kind": "Evade",
+     "style": "Fast",
+     "power": 7,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "grass_flight_2",
+     "name": "부평초",
+     "kind": "Evade",
+     "style": "Soft",
+     "power": 7,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "grass_flight_3",
+     "name": "비각",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 10,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "grass_flight_4",
+     "name": "만리추풍",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 23,
+     "cost": 11,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "snow_steps",
+   "name": "답설무흔",
+   "type": "Movement",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "눈 위를 걸어도 자국이 없는 신법.",
+   "cards": [
+    {
+     "id": "snow_steps_1",
+     "name": "무흔",
+     "kind": "Evade",
+     "style": "Fast",
+     "power": 9,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "snow_steps_2",
+     "name": "부운",
+     "kind": "Evade",
+     "style": "Soft",
+     "power": 9,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "snow_steps_3",
+     "name": "답설",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "snow_steps_4",
+     "name": "무흔만리",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "flick_finger",
+   "name": "탄지신통",
+   "type": "Finger",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "손가락을 튕겨 기를 쏘는 지공.",
+   "requires": {
+    "insightMin": 11
+   },
+   "cards": [
+    {
+     "id": "flick_finger_1",
+     "name": "탄지",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "flick_finger_2",
+     "name": "지풍호신",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "flick_finger_3",
+     "name": "연환탄지",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "flick_finger_4",
+     "name": "탄지신통",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "vajra_palm",
+   "name": "대력금강장",
+   "type": "Fist",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "금강의 힘으로 내리치는 장법.",
+   "requires": {
+    "constitutionMin": 11
+   },
+   "cards": [
+    {
+     "id": "vajra_palm_1",
+     "name": "금강장",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "vajra_palm_2",
+     "name": "금강신",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "vajra_palm_3",
+     "name": "대력연장",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "vajra_palm_4",
+     "name": "금강파산",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "void_sword",
+   "name": "태허검법",
+   "type": "Sword",
+   "grade": 4,
+   "alignment": "Righteous",
+   "description": "이름 없는 고수가 남긴 허공의 검.",
+   "requires": {
+    "realmMin": 2,
+    "insightMin": 13
+   },
+   "cards": [
+    {
+     "id": "void_sword_1",
+     "name": "허초",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "void_sword_2",
+     "name": "태허",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "void_sword_3",
+     "name": "허실상생",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 20,
+     "cost": 8,
+     "masteryMin": 4
+    },
+    {
+     "id": "void_sword_4",
+     "name": "태허귀일",
+     "kind": "Finisher",
+     "style": "Soft",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "free_mind",
+   "name": "소요심법",
+   "type": "Inner",
+   "grade": 3,
+   "alignment": "Righteous",
+   "description": "얽매임 없이 기를 기르는 심법.",
+   "requires": {
+    "insightMin": 10
+   },
+   "cards": []
+  },
+  {
+   "id": "black_palm",
+   "name": "흑살장",
+   "type": "Fist",
+   "grade": 2,
+   "alignment": "Unorthodox",
+   "description": "검은 기운으로 내장을 상하게 하는 장법.",
+   "cards": [
+    {
+     "id": "black_palm_1",
+     "name": "흑살",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "black_palm_2",
+     "name": "흑막",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "black_palm_3",
+     "name": "흑살연장",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 16,
+     "cost": 6,
+     "masteryMin": 3
+    },
+    {
+     "id": "black_palm_4",
+     "name": "흑살천라",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 26,
+     "cost": 12,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "viper_sword",
+   "name": "독사검",
+   "type": "Sword",
+   "grade": 2,
+   "alignment": "Unorthodox",
+   "description": "독사처럼 틈을 파고드는 검.",
+   "cards": [
+    {
+     "id": "viper_sword_1",
+     "name": "사신",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "viper_sword_2",
+     "name": "사행",
+     "kind": "Evade",
+     "style": "Fast",
+     "power": 8,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "viper_sword_3",
+     "name": "독아",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 16,
+     "cost": 6,
+     "masteryMin": 3
+    },
+    {
+     "id": "viper_sword_4",
+     "name": "독사출동",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 26,
+     "cost": 12,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "bone_breaker",
+   "name": "쇄골수",
+   "type": "Fist",
+   "grade": 3,
+   "alignment": "Unorthodox",
+   "description": "뼈를 부수는 사파의 금나수.",
+   "cards": [
+    {
+     "id": "bone_breaker_1",
+     "name": "쇄골",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "bone_breaker_2",
+     "name": "금나",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "bone_breaker_3",
+     "name": "분근착골",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "bone_breaker_4",
+     "name": "쇄골만상",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "blood_wolf_saber",
+   "name": "혈랑도법",
+   "type": "Saber",
+   "grade": 3,
+   "alignment": "Unorthodox",
+   "description": "피 냄새를 쫓는 이리 떼의 도법.",
+   "cards": [
+    {
+     "id": "blood_wolf_saber_1",
+     "name": "혈랑",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "blood_wolf_saber_2",
+     "name": "이빨막기",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "blood_wolf_saber_3",
+     "name": "군랑",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "blood_wolf_saber_4",
+     "name": "혈랑광풍",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "shadow_dagger",
+   "name": "은형비도",
+   "type": "Hidden",
+   "grade": 2,
+   "alignment": "Unorthodox",
+   "description": "보이지 않게 날아드는 비도.",
+   "cards": [
+    {
+     "id": "shadow_dagger_1",
+     "name": "은형",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 12,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "shadow_dagger_2",
+     "name": "숨기",
+     "kind": "Evade",
+     "style": "Soft",
+     "power": 8,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "shadow_dagger_3",
+     "name": "쌍은형",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 16,
+     "cost": 6,
+     "masteryMin": 3
+    },
+    {
+     "id": "shadow_dagger_4",
+     "name": "은형만천",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 26,
+     "cost": 12,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "soul_snare",
+   "name": "섭혼술",
+   "type": "Finger",
+   "grade": 3,
+   "alignment": "Demonic",
+   "description": "눈빛으로 넋을 홀리는 마공.",
+   "requires": {
+    "insightMin": 10
+   },
+   "cards": [
+    {
+     "id": "soul_snare_1",
+     "name": "섭혼",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "soul_snare_2",
+     "name": "환영",
+     "kind": "Evade",
+     "style": "Soft",
+     "power": 9,
+     "cost": 2,
+     "masteryMin": 0
+    },
+    {
+     "id": "soul_snare_3",
+     "name": "탈혼",
+     "kind": "Attack",
+     "style": "Soft",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "soul_snare_4",
+     "name": "섭혼대법",
+     "kind": "Finisher",
+     "style": "Soft",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "star_absorb",
+   "name": "흡성대법",
+   "type": "Inner",
+   "grade": 4,
+   "alignment": "Demonic",
+   "description": "남의 내공을 빨아들이는 금단의 마공.",
+   "requires": {
+    "realmMin": 1
+   },
+   "cards": []
+  },
+  {
+   "id": "blood_hand",
+   "name": "혈수장",
+   "type": "Fist",
+   "grade": 4,
+   "alignment": "Demonic",
+   "description": "손바닥을 핏빛으로 물들이는 마공.",
+   "requires": {
+    "realmMin": 1
+   },
+   "cards": [
+    {
+     "id": "blood_hand_1",
+     "name": "혈수",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "blood_hand_2",
+     "name": "혈막",
+     "kind": "Defense",
+     "style": "Hard",
+     "power": 16,
+     "cost": 4,
+     "masteryMin": 0
+    },
+    {
+     "id": "blood_hand_3",
+     "name": "혈수천라",
+     "kind": "Attack",
+     "style": "Hard",
+     "power": 20,
+     "cost": 8,
+     "masteryMin": 4
+    },
+    {
+     "id": "blood_hand_4",
+     "name": "혈해무변",
+     "kind": "Finisher",
+     "style": "Hard",
+     "power": 32,
+     "cost": 14,
+     "masteryMin": 7
+    }
+   ]
+  },
+  {
+   "id": "corpse_blood_art",
+   "name": "시혈마공",
+   "type": "Inner",
+   "grade": 3,
+   "alignment": "Demonic",
+   "description": "죽은 자의 피로 기를 기르는 마공.",
+   "cards": []
+  },
+  {
+   "id": "demon_spirit_sword",
+   "name": "마령검",
+   "type": "Sword",
+   "grade": 3,
+   "alignment": "Demonic",
+   "description": "검에 깃든 원혼이 우는 마검.",
+   "cards": [
+    {
+     "id": "demon_spirit_sword_1",
+     "name": "마령",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "demon_spirit_sword_2",
+     "name": "귀막",
+     "kind": "Defense",
+     "style": "Soft",
+     "power": 14,
+     "cost": 3,
+     "masteryMin": 0
+    },
+    {
+     "id": "demon_spirit_sword_3",
+     "name": "원혼검",
+     "kind": "Attack",
+     "style": "Fast",
+     "power": 18,
+     "cost": 7,
+     "masteryMin": 4
+    },
+    {
+     "id": "demon_spirit_sword_4",
+     "name": "만귀곡",
+     "kind": "Finisher",
+     "style": "Fast",
+     "power": 29,
+     "cost": 13,
+     "masteryMin": 7
+    }
+   ]
+  }
+ ],
+ "narration": {
+  "open": [
+   "{a:와} {b:이} 서로 포권을 하고 자세를 잡았다.",
+   "{a:이} 먼저 {b}의 빈틈을 노렸다.",
+   "두 사람 사이로 바람 한 줄기가 지나갔다. {a:이} 먼저 움직였다.",
+   "{b:은} 말없이 {art}의 기수식을 취했고, {a:은} 숨을 골랐다.",
+   "{a:와} {b:은} 열 걸음을 사이에 두고 마주 섰다."
+  ],
+  "hit": [
+   "{a}의 {art} {card}에 {b:이} 크게 휘청였다.",
+   "{a:이} {card:으로} {b}의 어깨를 베었다.",
+   "{card:이} {b}의 가슴팍에 꽂혔다.",
+   "{a}의 {card:이} 정확히 {b}의 옆구리를 파고들었다.",
+   "{b:은} {card:을} 미처 보지 못하고 그대로 맞았다.",
+   "{a:은} {card:으로} {b:을} 몰아붙였다.",
+   "{card:을} 맞은 {b}의 입가에 피가 비쳤다."
+  ],
+  "graze": [
+   "{b:은} 몸을 틀었지만 {card}의 끝에 옷자락이 찢겼다.",
+   "{b:은} 반 박자 늦게 피했고, {card:이} 팔을 스쳤다.",
+   "{card:이} {b}의 뺨을 스치며 핏줄기를 남겼다.",
+   "{b:은} 가까스로 물러났으나 {card}의 여파까지 피하지는 못했다."
+  ],
+  "block": [
+   "{b:은} {guard:으로} {a}의 {card:을} 받아냈다.",
+   "{a}의 {card:은} {b}의 {guard}에 막혀 힘을 잃었다.",
+   "{b:은} {guard:으로} 굳게 버텨 한 걸음도 물러서지 않았다.",
+   "쇳소리가 울렸다. {guard:이} {card:을} 정면으로 막아섰다."
+  ],
+  "evade": [
+   "{b:은} {guard:으로} 바람처럼 몸을 빼 {card:을} 흘려보냈다.",
+   "{card:이} 허공을 갈랐다. {b:은} 이미 그 자리에 없었다.",
+   "{b:은} {guard:으로} 한 발 비켜서 {card:을} 피했다.",
+   "{b}의 신형이 흐릿해지더니 {card:이} 빗나갔다."
+  ],
+  "clash": [
+   "두 사람의 초식이 정면으로 부딪쳐 불꽃이 튀었다.",
+   "{card:와} 상대의 초식이 맞부딪쳐 둘 다 뒤로 밀려났다.",
+   "같은 기세가 맞부딪쳤다. 둘 다 손목이 저려 왔다.",
+   "{a:와} {b}의 초식이 한데 엉켜 굉음이 울렸다."
+  ],
+  "probe": [
+   "두 사람은 서로 빈틈을 노리며 거리를 쟀다.",
+   "누구도 먼저 나서지 않았다. 숨 막히는 탐색이 이어졌다.",
+   "{a:와} {b:은} 원을 그리며 돌았다.",
+   "잠시 손을 멈춘 두 사람이 내력을 고르며 서로를 노려보았다."
+  ],
+  "counter": [
+   "{card:은} 상성이 맞아 {b}의 {guard:을} 깨뜨렸다.",
+   "{a:은} {guard}의 흐름을 읽고 그 틈으로 {card:을} 밀어 넣었다.",
+   "{b}의 {guard:이} 무너졌다. {card:이} 그 상성을 꿰뚫었다.",
+   "{guard:은} {card} 앞에서 종이처럼 찢겼다."
+  ],
+  "finisher": [
+   "{a:이} 숨을 고르더니 절초 {card:을} 펼쳤다!",
+   "{a}의 기세가 한순간에 바뀌었다. 절초 {card}였다!",
+   "{a:이} 남은 내력을 끌어모아 {card:을} 날렸다!",
+   "주위가 고요해졌다. {a}의 손에서 {card:이} 피어났다!"
+  ],
+  "exhausted": [
+   "내력이 바닥난 {a:은} 숨을 헐떡였다.",
+   "{a:은} 내력이 다해 초식을 잇지 못했다.",
+   "{a}의 손끝이 떨렸다. 더 쓸 내력이 없었다."
+  ],
+  "win": [
+   "{loser:은} 무릎을 꿇었다. {winner}의 승리였다.",
+   "{winner:이} 검을 거두었다. 승부는 끝났다.",
+   "{loser:은} 더 버티지 못하고 쓰러졌다. {winner:이} 이겼다."
+  ],
+  "death": [
+   "{loser:은} 그 자리에서 숨을 거두었다.",
+   "{loser:은} 다시는 일어나지 못했다.",
+   "쓰러진 {loser}의 숨이 그대로 끊겼다."
+  ],
+  "timeout": [
+   "승부가 나지 않아 두 사람은 물러섰다. 판정은 {winner}의 우세였다.",
+   "끝내 결판은 나지 않았으나, 지켜보던 이들은 {winner:이} 앞섰다고 보았다."
+  ]
+ }
+}

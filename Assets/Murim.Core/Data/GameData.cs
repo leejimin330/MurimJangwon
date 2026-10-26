@@ -16,6 +16,10 @@ namespace Murim.Core.Data
         public SortedDictionary<string, global::Murim.Core.Events.FlagDef> Flags = new SortedDictionary<string, global::Murim.Core.Events.FlagDef>(StringComparer.Ordinal);
         public SortedDictionary<string, global::Murim.Core.Events.StorytellerDef> Storytellers =
             new SortedDictionary<string, global::Murim.Core.Events.StorytellerDef>(StringComparer.Ordinal);
+        public SortedDictionary<string, global::Murim.Core.Martial.ArtDef> Arts =
+            new SortedDictionary<string, global::Murim.Core.Martial.ArtDef>(StringComparer.Ordinal);
+        /// <summary>결투 문구: 상황 키 → 문장 목록.</summary>
+        public SortedDictionary<string, string[]> Narration = new SortedDictionary<string, string[]>(StringComparer.Ordinal);
     }
 
     public class DataLoadResult

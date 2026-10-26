@@ -5,6 +5,13 @@ namespace Murim.Core.Tests
     /// <summary>로더·검증기 테스트용 최소 JSON 데이터 묶음.</summary>
     public static class TestJson
     {
+        /// <summary>결투 문구 13개 키를 한 줄씩 채운 최소 묶음.</summary>
+        public const string MinimalNarration = @"{""open"":[""{a:와} {b:이} 마주 섰다.""],""hit"":[""{card:이} {b:을} 맞혔다.""],
+            ""graze"":[""{card:이} {b:을} 스쳤다.""],""block"":[""{b:은} {guard:으로} 막았다.""],""evade"":[""{b:은} {card:을} 피했다.""],
+            ""clash"":[""초식이 부딪쳤다.""],""probe"":[""거리를 쟀다.""],""counter"":[""{card:이} {guard:을} 깨뜨렸다.""],
+            ""finisher"":[""{a:이} 절초 {card:을} 펼쳤다!""],""exhausted"":[""{a:은} 내력이 다했다.""],""win"":[""{winner:이} 이겼다.""],
+            ""death"":[""{loser:은} 숨을 거두었다.""],""timeout"":[""판정은 {winner}의 우세였다.""]}";
+
         public static Dictionary<string, string> MinimalFiles() => new Dictionary<string, string>
         {
             ["regions.json"] = @"[

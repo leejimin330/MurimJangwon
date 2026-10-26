@@ -37,6 +37,7 @@ namespace Murim.Core.Data
                         errors.Add($"traits.json: 특성 '{t.Id}'의 반대 특성 '{o}'이(가) 없습니다");
             }
             errors.AddRange(Events.EventValidator.Validate(d));
+            errors.AddRange(Martial.ArtValidator.Validate(d));
             return errors;
         }
     }

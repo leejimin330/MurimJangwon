@@ -12,7 +12,7 @@ namespace Murim.Core.Data
         public static readonly string[] FileNames =
         {
             "regions.json", "factions.json", "traits.json", "scenarios.json", "names.json", "faction_name_parts.json",
-            "events.json", "storytellers.json",
+            "events.json", "storytellers.json", "martial_arts.json",
         };
 
         public static JsonSerializerSettings Settings => new JsonSerializerSettings
@@ -60,6 +60,16 @@ namespace Murim.Core.Data
                 AddAll("events.json", "사건", events.Events, x => x.Id, d.Events, result);
             }
             LoadList(filesByName, "storytellers.json", result, (Events.StorytellerDef x) => x.Id, d.Storytellers);
+            // 무공 파일은 없어도 된다 (1·2단계 테스트 데이터).
+            if (filesByName.ContainsKey("martial_arts.json"))
+            {
+                var arts = Parse<Martial.ArtFile>(filesByName, "martial_arts.json", result);
+                if (arts != null)
+                {
+                    AddAll("martial_arts.json", "무공", arts.Arts, x => x.Id, d.Arts, result);
+                    foreach (var kv in arts.Narration ?? new Dictionary<string, string[]>()) d.Narration[kv.Key] = kv.Value;
+                }
+            }
             Events.EventValidator.Prepare(d);
             return result;
         }

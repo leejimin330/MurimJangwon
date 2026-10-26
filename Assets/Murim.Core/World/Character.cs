@@ -50,6 +50,20 @@ namespace Murim.Core.World
         /// <summary>표식 id → 만료 월 (0이면 영구). 만료 월부터는 없는 것으로 본다.</summary>
         public SortedDictionary<string, int> Flags = new SortedDictionary<string, int>(StringComparer.Ordinal);
 
+        /// <summary>익힌 무공 (최대 6개, 내공심법 1개 포함).</summary>
+        public List<Martial.KnownArt> Arts = new List<Martial.KnownArt>();
+        /// <summary>내공. 단위는 개월 (화면에는 "내공 n년").</summary>
+        public int Qi;
+        /// <summary>깨달음 0~100. 돌파하면 0.</summary>
+        public int Enlightenment;
+        /// <summary>주로 쓰는 외공. null이면 성취가 가장 높은 외공.</summary>
+        public string MainArtId;
+        /// <summary>폐관이 끝나는 월 (이 월부터 출관). 0이면 폐관 중이 아님.</summary>
+        public int TrainingUntil;
+        public int TrainingMonths;
+        /// <summary>올해 이긴 결투 수. 1월 깨달음 계산 뒤 0.</summary>
+        public int DuelWinsThisYear;
+
         [JsonIgnore] public string FullName => FamilyName + GivenName;
         [JsonIgnore] public bool IsAlive => DeathMonth == null;
         public int AgeYears(int month) => ((DeathMonth ?? month) - BirthMonth) / 12;
@@ -67,6 +81,15 @@ namespace Murim.Core.World
         public void SetFlag(string id, int month, int months) => Flags[id] = months <= 0 ? 0 : month + months;
 
         public void ClearFlag(string id) => Flags.Remove(id);
+
+        public bool InTraining(int month) => month < TrainingUntil;
+
+        public Martial.KnownArt KnownArt(string artId)
+        {
+            foreach (var a in Arts)
+                if (a.ArtId == artId) return a;
+            return null;
+        }
 
         public bool HasRelation(string otherId, RelationTag tag) => Relations.TryGetValue(otherId, out var list) && list.Contains(tag);
     }

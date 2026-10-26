@@ -47,6 +47,7 @@ namespace Murim.Core.Generation
             w.Characters[c.Id] = c;
             if (factionId != null) FactionOps.MoveToFaction(w, c, factionId, role);
             else c.Role = role;
+            Martial.ArtGranting.Grant(w, d, rng, c);
             return c;
         }
 
@@ -76,8 +77,12 @@ namespace Murim.Core.Generation
             var factionId = mother.FactionId ?? father.FactionId;
             if (factionId != null) FactionOps.MoveToFaction(w, c, factionId, Role.Family);
             c.LocationRegionId = mother.LocationRegionId ?? father.LocationRegionId;
+            Martial.ArtGranting.Grant(w, d, rng, c);
             return c;
         }
+
+        /// <summary>나이·경지를 바꾼 뒤 무공을 다시 맞춘다.</summary>
+        public void Regrant(WorldState w, Character c) => Martial.ArtGranting.Regrant(w, d, rng, c);
 
         public void Marry(WorldState w, Character a, Character b)
         {

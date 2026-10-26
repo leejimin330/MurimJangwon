@@ -196,6 +196,8 @@ namespace Murim.Core.Session
             var r = SaveSystem.Read(d, path);
             if (!r.Ok) return new LoadResult { Ok = false, Error = r.Error };
             var random = new GameRandom(0) { State = r.World.RngState };
+            // 3단계 이전 저장: 모든 인물에게 무공·내공을 준다. 저장된 난수 상태에서 이어 쓰므로 결과가 같다.
+            if (r.LoadedVersion < 3) Martial.ArtGranting.Migrate(r.World, d, random);
             return new LoadResult { Ok = true, Session = new GameSession(d, r.World, random) };
         }
     }

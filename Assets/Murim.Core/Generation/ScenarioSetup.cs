@@ -88,6 +88,7 @@ namespace Murim.Core.Generation
                 {
                     var child = gen.CreateChild(w, mother, father);
                     child.BirthMonth = w.Month - rng.Next(minChildAge, maxChildAge + 1) * 12 - rng.Next(0, 12);
+                    gen.Regrant(w, child);
                 }
                 else
                 {

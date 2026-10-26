@@ -21,6 +21,8 @@ namespace Murim.Core.Persistence
         public bool Ok;
         public string Error;
         public WorldState World;
+        /// <summary>파일에 적혀 있던 저장 버전 (올리기 전).</summary>
+        public int LoadedVersion;
     }
 
     public static class SaveSystem
@@ -72,10 +74,11 @@ namespace Murim.Core.Persistence
                 return Fail($"저장 파일 버전({w.SaveVersion})이 게임 버전({WorldState.CurrentSaveVersion})과 다릅니다");
             // 버전 1에는 사건 상태가 없다: 기본값(이야기꾼 "균형", 빈 대기 목록)으로 채운다.
             w.Events ??= new EventState();
+            int loaded = w.SaveVersion;
             w.SaveVersion = WorldState.CurrentSaveVersion;
             var problems = Validate(d, w);
             if (problems.Count > 0) return Fail("저장 파일이 현재 데이터와 맞지 않습니다: " + string.Join(", ", problems.Take(5)));
-            return new ReadResult { Ok = true, World = w };
+            return new ReadResult { Ok = true, World = w, LoadedVersion = loaded };
         }
 
         static ReadResult Fail(string error) => new ReadResult { Ok = false, Error = error };
@@ -87,6 +90,9 @@ namespace Murim.Core.Persistence
             {
                 foreach (var t in c.TraitIds)
                     if (!d.Traits.ContainsKey(t)) problems.Add($"알 수 없는 특성 '{t}'");
+                foreach (var a in c.Arts ?? new List<Martial.KnownArt>())
+                    if (a == null || !d.Arts.ContainsKey(a.ArtId ?? "")) problems.Add($"알 수 없는 무공 '{a?.ArtId}'");
+                if (c.MainArtId != null && !d.Arts.ContainsKey(c.MainArtId)) problems.Add($"알 수 없는 무공 '{c.MainArtId}'");
                 if (c.LocationRegionId != null && !d.Regions.ContainsKey(c.LocationRegionId))
                     problems.Add($"알 수 없는 지역 '{c.LocationRegionId}'");
             }

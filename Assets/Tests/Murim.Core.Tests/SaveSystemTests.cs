@@ -84,7 +84,7 @@ namespace Murim.Core.Tests
 
             var old = Path.Combine(dir, "old.json");
             current.Save(old);
-            File.WriteAllText(old, File.ReadAllText(old).Replace("\"saveVersion\": 2", "\"saveVersion\": 99"));
+            File.WriteAllText(old, File.ReadAllText(old).Replace("\"saveVersion\": 3", "\"saveVersion\": 99"));
             var r2 = GameSession.Load(D, old);
             Assert.That(r2.Ok, Is.False);
             Assert.That(r2.Error, Does.Contain("버전"));

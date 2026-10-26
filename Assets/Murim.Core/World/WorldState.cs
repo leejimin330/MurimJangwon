@@ -7,7 +7,7 @@ namespace Murim.Core.World
     /// <summary>저장되는 세계 전체 상태.</summary>
     public class WorldState
     {
-        public const int CurrentSaveVersion = 2;
+        public const int CurrentSaveVersion = 3;
         public const int OldestLoadableVersion = 1;
 
         public int SaveVersion = CurrentSaveVersion;

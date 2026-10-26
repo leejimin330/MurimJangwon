@@ -106,6 +106,7 @@ namespace Murim.Core.Generation
                     int age = rng.Next(minChildAge, maxChildAge + 1);
                     child.BirthMonth = w.Month - age * 12 - rng.Next(0, 12);
                     if (age >= SimConstants.AdultAge) child.Realm = rng.Next(0, Math.Max(1, leaderRealm));
+                    gen.Regrant(w, child);
                     budget--;
                 }
             }

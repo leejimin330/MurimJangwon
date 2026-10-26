@@ -40,6 +40,8 @@ namespace Murim.Core.World
         public int Month;
         /// <summary>이 사건이 새로 만든 인물. 세계에는 아직 없다.</summary>
         public List<Character> Spawned = new List<Character>();
+        /// <summary>소식에 붙는 결투 경과. 없으면 null.</summary>
+        public string[] Detail;
     }
 
     public class ScheduledEvent

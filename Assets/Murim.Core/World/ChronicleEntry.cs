@@ -9,5 +9,7 @@ namespace Murim.Core.World
         public string[] InvolvedIds;
         /// <summary>0 낮음, 1 보통, 2 높음.</summary>
         public int Importance;
+        /// <summary>결투 경과 같은 펼쳐 볼 세부 줄. 없으면 null.</summary>
+        public string[] Detail;
     }
 }

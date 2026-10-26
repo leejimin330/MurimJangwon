@@ -105,7 +105,7 @@ namespace Murim.Core.Generation
                     var child = gen.CreateChild(w, mother, father);
                     int age = rng.Next(minChildAge, maxChildAge + 1);
                     child.BirthMonth = w.Month - age * 12 - rng.Next(0, 12);
-                    if (age >= SimConstants.AdultAge) child.Realm = rng.Next(0, Math.Max(1, leaderRealm));
+                    if (age >= SimConstants.AdultAge) child.Realm = LowRealm(rng, leaderRealm);
                     gen.Regrant(w, child);
                     budget--;
                 }
@@ -140,11 +140,15 @@ namespace Murim.Core.Generation
             {
                 bool kin = clan && rng.Chance(0.7);
                 var m = gen.Create(w, rng.Chance(0.25) ? Sex.Female : Sex.Male, rng.Next(16, 36), f.Id,
-                    kin ? Role.Family : Role.Disciple, rng.Next(0, Math.Max(1, leaderRealm)), kin ? surname : null);
+                    kin ? Role.Family : Role.Disciple, LowRealm(rng, leaderRealm), kin ? surname : null);
                 if (!kin) LinkDisciple(leader, m);
                 budget--;
             }
         }
+
+        /// <summary>평범한 문도의 경지: 0 ~ 장문인 경지 − 1, 낮은 쪽으로 치우친다 (둘 중 작은 값).</summary>
+        static int LowRealm(GameRandom rng, int leaderRealm) =>
+            Math.Min(rng.Next(0, Math.Max(1, leaderRealm)), rng.Next(0, Math.Max(1, leaderRealm)));
 
         static void LinkDisciple(Character master, Character disciple)
         {

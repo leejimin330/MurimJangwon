@@ -28,8 +28,9 @@ namespace Murim.View.UI.Panels
             UiFactory.Rect(bar, "Spacer").Size(-1, -1, 1);
 
             int max = p == null ? 0 : ActionBudget.Max(p);
-            string actions = p != null && p.BusyUntilMonth > w.Month ? "표국 호위 중" : $"남은 행동 {s.RemainingActions}/{max}";
-            UiFactory.Label(bar, actions, Theme.BodySize, Theme.Ink, align: TextAnchor.MiddleRight).Size(180);
+            string actions = p != null && p.InTraining(w.Month) ? $"폐관 중 ({p.TrainingUntil - w.Month}개월 남음)"
+                : p != null && p.BusyUntilMonth > w.Month ? "표국 호위 중" : $"남은 행동 {s.RemainingActions}/{max}";
+            UiFactory.Label(bar, actions, Theme.BodySize, p != null && p.InTraining(w.Month) ? Theme.Gold : Theme.Ink, align: TextAnchor.MiddleRight).Size(230).name = "ActionsLabel";
 
             var pendingBtn = UiFactory.Button(bar, $"예약 {s.Pending.Count}", null, s.Pending.Count > 0, "예약한 행동이 없습니다", width: 110);
             pendingBtn.onClick.AddListener(() => ShowPending(bar, s, onChanged));
@@ -50,7 +51,7 @@ namespace Murim.View.UI.Panels
             var sealBtn = seal.gameObject.AddComponent<Button>();
             sealBtn.interactable = canEnd;
             if (canEnd) sealBtn.onClick.AddListener(() => onEndTurn());
-            else if (!w.GameOver) Tooltip.Attach(seal.gameObject, "먼저 사건에 답해야 합니다");
+            else if (!w.GameOver) Tooltip.Attach(seal.gameObject, s.PendingRaid != null && s.PendingEvents.Count == 0 ? "먼저 습격을 막아야 합니다" : "먼저 사건에 답해야 합니다");
             var sealText = UiFactory.Label(seal.transform, w.GameOver ? "대가 끊김" : "다음 달", Theme.SubheadingSize,
                 canEnd ? Theme.SealInk : Theme.InkFaint, true, TextAnchor.MiddleCenter);
             sealText.rectTransform.Fill();

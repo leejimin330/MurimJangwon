@@ -38,6 +38,7 @@ namespace Murim.Core.Data
             }
             errors.AddRange(Events.EventValidator.Validate(d));
             errors.AddRange(Martial.ArtValidator.Validate(d));
+            errors.AddRange(Manor.BuildingValidator.Validate(d));
             return errors;
         }
     }

@@ -51,6 +51,7 @@ namespace Murim.View.UI.Panels
             if (faction == null || c.Role == Role.Leader)
                 FactionPanel.Info(list, $"은자 {Wallet.Silver(w, c):N0}냥, 명성 {Wallet.Fame(w, c)}");
 
+            ArtsSection.Build(list, app, c);
             Traits(list, d, c);
             Flags(list, s, c);
             if (player != null && player.Id != c.Id && c.IsAlive) OpinionLine(list, s, c, player);

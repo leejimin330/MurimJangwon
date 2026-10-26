@@ -97,7 +97,7 @@ namespace Murim.Core.Events
                 }
                 foreach (var t in c.AiTraits?.Keys ?? Enumerable.Empty<string>())
                     if (!d.Traits.ContainsKey(t)) errors.Add($"{ca}: 알 수 없는 특성 '{t}'");
-                ValidateEffects(d, c.Effects, roles, ca, errors, scheduled);
+                ValidateEffects(d, c.Effects, roles, ca, errors, scheduled, true);
             }
         }
 
@@ -153,7 +153,7 @@ namespace Murim.Core.Events
         }
 
         static void ValidateEffects(GameData d, List<EffectDef> effects, Dictionary<string, RoleDef> roles, string at,
-            List<string> errors, HashSet<string> scheduled)
+            List<string> errors, HashSet<string> scheduled, bool top = false)
         {
             foreach (var fx in effects ?? new List<EffectDef>())
             {
@@ -168,6 +168,7 @@ namespace Murim.Core.Events
                     continue;
                 }
                 var (name, args) = present[0];
+                if (name == "raid" && !top) errors.Add($"{at}: raid는 선택지 효과의 맨 위에만 둘 수 있습니다");
                 Unknown(args.Unknown, $"{at} {name}", "항목", errors);
                 foreach (var r in args.RoleRefs())
                     if (r == null || !roles.ContainsKey(r)) errors.Add($"{at} {name}: 역할 '{r}'이(가) 없습니다");

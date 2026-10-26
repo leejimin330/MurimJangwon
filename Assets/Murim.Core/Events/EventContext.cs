@@ -25,6 +25,9 @@ namespace Murim.Core.Events
         public List<string> DuelLines = new List<string>();
         /// <summary>강제로 띄우는 사건 (테스트·에디터)은 쿨다운을 보지 않는다.</summary>
         public bool IgnoreCooldown;
+        /// <summary>해결 중인 선택지와 최상위 효과 번호 (습격을 미룰 때 쓴다).</summary>
+        public int ChoiceIndex = -1;
+        public int EffectIndex = -1;
 
         public Character Get(string role)
         {

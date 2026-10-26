@@ -72,6 +72,19 @@ namespace Murim.Core.Tests
             Assert.That(child.Memories[0].Inherited, Is.True);
         }
 
+        [Test]
+        public void InheritMemories_SumsSameTarget()
+        {
+            var parent = TestWorlds.AddCharacter(w, null, Role.None, Sex.Male, 60);
+            var child = TestWorlds.AddCharacter(w, null, Role.None, Sex.Male, 30);
+            Opinion.AddMemory(parent, MemoryKind.Grudge, "x", "모욕", w.Month, 30);
+            Opinion.AddMemory(parent, MemoryKind.Grudge, "x", "파문", w.Month, 25);
+            Opinion.AddMemory(parent, MemoryKind.Grudge, "y", "모욕", w.Month, 30);
+            Opinion.InheritMemories(parent, new[] { child }, w.Month);
+            var m = System.Linq.Enumerable.Single(child.Memories);
+            Assert.That((m.TargetId, m.Strength, m.Reason), Is.EqualTo(("x", 27, "모욕")));
+        }
+
         static string SaveVersionedCopy(int version, bool dropEvents)
         {
             var d = TestPaths.LoadShippedData();
@@ -94,15 +107,15 @@ namespace Murim.Core.Tests
                 Assert.That(r.Ok, Is.True, r.Error);
                 Assert.That(r.Session.World.Events.StorytellerId, Is.EqualTo("balanced"));
                 Assert.That(r.Session.World.Events.Pending, Is.Empty);
-                Assert.That(r.Session.World.SaveVersion, Is.EqualTo(2));
+                Assert.That(r.Session.World.SaveVersion, Is.EqualTo(Murim.Core.World.WorldState.CurrentSaveVersion));
             }
             finally { File.Delete(path); }
         }
 
         [Test]
-        public void Load_Version3_Rejected()
+        public void Load_FutureVersion_Rejected()
         {
-            var path = SaveVersionedCopy(3, false);
+            var path = SaveVersionedCopy(Murim.Core.World.WorldState.CurrentSaveVersion + 1, false);
             try
             {
                 var r = GameSession.Load(TestPaths.LoadShippedData(), path);

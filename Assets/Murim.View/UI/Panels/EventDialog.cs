@@ -48,6 +48,7 @@ namespace Murim.View.UI.Panels
 
             if (ctx == null || p.IsNotice)
             {
+                if (p.Detail != null && p.Detail.Length > 0) InsertLog(app, choices, p.Detail);
                 Ok(choices, app, () => s.Choose(0, 0));
                 // 소식·흐지부지된 사건은 확인만 누르면 된다.
                 return;
@@ -64,7 +65,7 @@ namespace Murim.View.UI.Panels
                         app.Toast(outcome.Reason);
                         return;
                     }
-                    ShowResult(app, choices, body, outcome.Text);
+                    ShowResult(app, choices, body, outcome.Text, outcome.DuelLines);
                 }, check.Ok, check.Reason, height: 52);
                 b.name = "Choice" + i;
                 var hint = ctx.Def.Choices[i].Hint;
@@ -107,11 +108,19 @@ namespace Murim.View.UI.Panels
         }
 
         /// <summary>선택 결과를 보여 주고 "확인"을 기다린다.</summary>
-        static void ShowResult(Bootstrap app, RectTransform choices, Text body, string result)
+        static void ShowResult(Bootstrap app, RectTransform choices, Text body, string result, string[] duelLines)
         {
             UiFactory.Clear(choices);
             if (!string.IsNullOrEmpty(result)) body.text += "\n\n" + result;
+            if (duelLines != null && duelLines.Length > 0) InsertLog(app, choices, duelLines);
             Ok(choices, app, null);
+        }
+
+        /// <summary>선택지 칸 바로 위에 결투 경과를 넣는다.</summary>
+        static void InsertLog(Bootstrap app, RectTransform choices, string[] lines)
+        {
+            var log = DuelLogView.Build(choices.parent, app.Data, lines, 300);
+            log.SetSiblingIndex(choices.GetSiblingIndex());
         }
 
         static void Ok(RectTransform choices, Bootstrap app, System.Action before)

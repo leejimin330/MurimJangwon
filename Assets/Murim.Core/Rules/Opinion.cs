@@ -61,10 +61,14 @@ namespace Murim.Core.Rules
 
         public static void InheritMemories(Character deceased, IEnumerable<Character> children, int month)
         {
-            var strong = deceased.Memories.Where(m => m.Strength >= SimConstants.MemoryInheritThreshold).ToList();
+            // 같은 대상에 대한 기억을 합쳐 문턱을 넘으면 하나로 물려준다 (사유는 가장 강한 기억).
+            var strong = deceased.Memories.GroupBy(m => (m.Kind, m.TargetId))
+                .Select(g => (first: g.OrderByDescending(m => m.Strength).First(), total: g.Sum(m => m.Strength)))
+                .Where(x => x.total >= SimConstants.MemoryInheritThreshold)
+                .OrderBy(x => x.first.TargetId, System.StringComparer.Ordinal).ThenBy(x => x.first.Kind).ToList();
             foreach (var child in children)
-                foreach (var m in strong)
-                    AddMemory(child, m.Kind, m.TargetId, m.Reason, month, m.Strength / 2, true);
+                foreach (var (m, total) in strong)
+                    AddMemory(child, m.Kind, m.TargetId, m.Reason, month, total / 2, true);
         }
     }
 }

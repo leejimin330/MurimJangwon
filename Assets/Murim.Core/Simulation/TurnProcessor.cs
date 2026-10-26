@@ -28,11 +28,11 @@ namespace Murim.Core.Simulation
 
         public TurnProcessor(params ITurnPhase[] phases) => Phases = phases;
 
-        /// <summary>[행동 단계들…, 사건, 수련, 출생, 사망, 후계, 연간(1월), 성향, 수입].</summary>
+        /// <summary>[행동 단계들…, 사건, 수련, 장원, 출생, 사망, 후계, 연간(1월), 성향, 수입].</summary>
         public static TurnProcessor CreateDefault(IEnumerable<ITurnPhase> actionPhases) =>
             new TurnProcessor(actionPhases.Concat(new ITurnPhase[]
             {
-                new Events.EventPhase(), new Martial.CultivationPhase(), new BirthPhase(), new DeathPhase(), new SuccessionPhase(), new YearlyPhase(), new AlignmentPhase(), new IncomePhase(),
+                new Events.EventPhase(), new Martial.CultivationPhase(), new Manor.ManorPhase(), new BirthPhase(), new DeathPhase(), new SuccessionPhase(), new YearlyPhase(), new AlignmentPhase(), new IncomePhase(),
             }).ToArray());
 
         public void Advance(TurnContext ctx)

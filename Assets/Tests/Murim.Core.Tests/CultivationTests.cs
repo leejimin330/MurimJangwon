@@ -121,10 +121,10 @@ namespace Murim.Core.Tests
         {
             var c = Adult();
             c.Arts.Add(new KnownArt { ArtId = "hunyuan_gong", Mastery = 1 }); // 이류 심법
-            int normal = Cultivation.MonthlyQi(D, c, w.Month);
+            int normal = Cultivation.MonthlyQi(w, D, c);
             Assert.That(normal, Is.EqualTo(1 + (10 + 2 * 4) / 10));
             c.TrainingUntil = w.Month + 3;
-            Assert.That(Cultivation.MonthlyQi(D, c, w.Month), Is.EqualTo(normal * 3));
+            Assert.That(Cultivation.MonthlyQi(w, D, c), Is.EqualTo(normal * 3));
         }
 
         [Test]
@@ -133,9 +133,9 @@ namespace Murim.Core.Tests
             var c = Adult();
             c.Constitution = 4;
             c.Arts.Add(new KnownArt { ArtId = "corpse_blood_art", Mastery = 1 }); // 마공 3등급 → 4로 계산
-            Assert.That(Cultivation.MonthlyQi(D, c, w.Month), Is.EqualTo(1 + (4 + 16) / 10));
+            Assert.That(Cultivation.MonthlyQi(w, D, c), Is.EqualTo(1 + (4 + 16) / 10));
             var kid = TestWorlds.AddCharacter(w, null, Role.None, Sex.Male, 4);
-            Assert.That(Cultivation.MonthlyQi(D, kid, w.Month), Is.Zero);
+            Assert.That(Cultivation.MonthlyQi(w, D, kid), Is.Zero);
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace Murim.Core.Tests
                 if (c.Arts[0].Mastery == 2) raised++;
                 if (i == 0)
                 {
-                    Assert.That(c.Enlightenment, Is.EqualTo(5 + 2 * 3));
+                    Assert.That(c.Enlightenment, Is.EqualTo(10 * Cultivation.InsightPercent / 100 + 2 * 3));
                     Assert.That(c.DuelWinsThisYear, Is.Zero);
                 }
             }

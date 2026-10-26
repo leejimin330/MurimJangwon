@@ -10,6 +10,9 @@ namespace Murim.View.UI.Screens
     public abstract class UiScreen
     {
         public abstract void Build(RectTransform root);
+
+        /// <summary>매 프레임 (실시간 화면만 쓴다). dt는 실제 초.</summary>
+        public virtual void Tick(float dt) { }
     }
 
     public class ErrorScreen : UiScreen

@@ -77,6 +77,7 @@ namespace Murim.View.UI.Panels
             var grid = ActionMenu.Grid(list);
             if (f.Id == own.Id)
             {
+                if (f.Manor != null) UiFactory.Button(grid, "장원 보기", () => app.Show(new Screens.ManorScreen(app)));
                 ActionMenu.Add(grid, app, "제자 받기 (20냥)", new RecruitNamed(me.Id));
                 ActionMenu.Add(grid, app, "문도 5명 (25냥)", new RecruitUnnamed(me.Id, 5));
                 ActionMenu.Add(grid, app, "문도 10명 (50냥)", new RecruitUnnamed(me.Id, 10));

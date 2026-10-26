@@ -168,6 +168,11 @@ namespace Murim.Core.Events
                     var who = Alive(ctx, x.Who);
                     var f = FactionOf(ctx, x.Faction);
                     if (who == null || f == null || who.FactionId == f.Id) break;
+                    if (Manor.ManorOps.CapacityBlock(w, ctx.D, f) != null)
+                    {
+                        ctx.Log.Add($"숙소가 모자라 {Josa.EulReul(who.FullName)} 받아들이지 못했다.");
+                        break;
+                    }
                     if (ctx.IsSpawned(who))
                     {
                         w.Characters[who.Id] = who;
@@ -294,6 +299,9 @@ namespace Murim.Core.Events
                 case "breakthrough":
                 case "closedTraining":
                     ArtEffects.Apply(kind, args, ctx);
+                    break;
+                case "raid":
+                    Battle.RaidResolver.Begin(ctx, (RaidFx)args);
                     break;
             }
         }

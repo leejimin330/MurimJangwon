@@ -15,6 +15,9 @@ namespace Murim.View.UI.Panels
         /// <summary>한 번에 그리는 최대 줄 수. 오래 플레이해도 화면이 느려지지 않게.</summary>
         const int MaxRows = 300;
 
+        /// <summary>펼친 연대기 줄 (World.Chronicle 인덱스). 화면을 다시 그려도 유지한다.</summary>
+        public static readonly HashSet<int> Expanded = new HashSet<int>();
+
         public static void Build(RectTransform area, GameSession s, ChronicleFilter filter, Action<ChronicleFilter> onChange)
         {
             bool ownOnly = filter == ChronicleFilter.Own;
@@ -46,7 +49,29 @@ namespace Murim.View.UI.Panels
                 var dot = UiFactory.Panel(row, isEvent ? Theme.OfCategory(Category(s, e.Kind)) : new Color(0, 0, 0, 0), "Dot");
                 dot.sprite = UiFactory.Circle;
                 dot.Size(10, 10);
-                UiFactory.Label(row, $"{GameDate.Format(e.Month)}, {e.Text}", Theme.SmallSize + 1, color, style: style).Size(-1, -1, 1);
+                bool hasDetail = e.Detail != null && e.Detail.Length > 0;
+                bool open = hasDetail && Expanded.Contains(i);
+                string mark = hasDetail ? (open ? "<color=#C9A24A>[접기]</color> " : "<color=#C9A24A>[결투 경과]</color> ") : "";
+                var label = UiFactory.Label(row, $"{mark}{GameDate.Format(e.Month)}, {e.Text}", Theme.SmallSize + 1, color, style: style);
+                label.supportRichText = true;
+                label.Size(-1, -1, 1);
+                if (hasDetail)
+                {
+                    int index = i;
+                    row.name = "DetailRow";
+                    var hit = row.gameObject.AddComponent<UnityEngine.UI.Image>();
+                    hit.color = new Color(0, 0, 0, 0);
+                    row.gameObject.AddComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+                    {
+                        if (!Expanded.Remove(index)) Expanded.Add(index);
+                        onChange(filter);
+                    });
+                    if (open)
+                    {
+                        var log = DuelLogView.Build(list, s.Data, e.Detail);
+                        log.name = "ChronicleDuelLog";
+                    }
+                }
                 shown++;
             }
             if (shown == 0)

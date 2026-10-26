@@ -19,7 +19,7 @@ namespace Murim.Core.Martial
             var living = w.Characters.Values.Where(c => c.IsAlive).ToList();
             foreach (var c in living)
             {
-                c.Qi += Cultivation.MonthlyQi(d, c, w.Month);
+                c.Qi += Cultivation.MonthlyQi(w, d, c);
                 if (c.TrainingUntil > 0 && w.Month >= c.TrainingUntil - 1) FinishTraining(t, c);
             }
 

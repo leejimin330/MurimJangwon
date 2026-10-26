@@ -65,6 +65,7 @@ namespace Murim.View.UI.Screens
 
             // 답을 기다리는 사건이 있으면 맨 위에 띄운다.
             if (S.PendingEvents.Count > 0) EventDialog.Show(app, this, root);
+            else if (S.PendingRaid != null) RaidPrompt.Show(app, root);
         }
 
         /// <summary>어느 패널에 있든 "나"와 기본 패널로 바로 돌아오는 단추.</summary>

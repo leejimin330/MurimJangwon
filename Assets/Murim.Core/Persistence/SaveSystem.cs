@@ -97,10 +97,15 @@ namespace Murim.Core.Persistence
                     problems.Add($"알 수 없는 지역 '{c.LocationRegionId}'");
             }
             foreach (var f in w.Factions.Values)
+            {
                 if (!d.Regions.ContainsKey(f.HomeRegionId)) problems.Add($"알 수 없는 지역 '{f.HomeRegionId}'");
+                foreach (var b in f.Manor?.Buildings ?? new List<Manor.BuildingInstance>())
+                    if (!d.Buildings.ContainsKey(b.DefId ?? "")) problems.Add($"알 수 없는 건물 '{b.DefId}'");
+            }
             foreach (var r in d.Regions.Keys)
                 if (!w.Regions.ContainsKey(r)) problems.Add($"지역 '{r}' 상태 없음");
             if (w.PlayerCharacterId != null && !w.Characters.ContainsKey(w.PlayerCharacterId)) problems.Add("플레이어 인물 없음");
+            if (w.PendingRaid != null && !d.Events.ContainsKey(w.PendingRaid.EventId ?? "")) problems.Add($"알 수 없는 사건 '{w.PendingRaid.EventId}'");
             return problems.Distinct().ToList();
         }
     }

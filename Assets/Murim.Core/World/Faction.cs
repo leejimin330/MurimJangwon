@@ -23,5 +23,7 @@ namespace Murim.Core.World
         public bool IsRandomMinor;
         /// <summary>AI가 유지하려는 이름 있는 인물 수.</summary>
         public int TargetNamedMembers;
+        /// <summary>본거지 장원 (플레이어가 이끄는 세력만). 없으면 null.</summary>
+        public Manor.ManorState Manor;
     }
 }

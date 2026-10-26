@@ -19,7 +19,11 @@ namespace Murim.Core.Actions
         public override string Key => ActionKeys.RecruitNamed;
         public override string Describe(WorldState w) => "제자 받아들이기";
 
-        protected override ActionCheck Check(WorldState w, GameData d, Character actor, Faction own) => NeedSilver(own, Cost);
+        protected override ActionCheck Check(WorldState w, GameData d, Character actor, Faction own)
+        {
+            var full = Manor.ManorOps.CapacityBlock(w, d, own);
+            return full != null ? ActionCheck.Fail(full) : NeedSilver(own, Cost);
+        }
 
         protected override void Run(WorldState w, GameData d, GameRandom rng, Character actor, Faction own)
         {

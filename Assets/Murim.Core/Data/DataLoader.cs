@@ -12,7 +12,7 @@ namespace Murim.Core.Data
         public static readonly string[] FileNames =
         {
             "regions.json", "factions.json", "traits.json", "scenarios.json", "names.json", "faction_name_parts.json",
-            "events.json", "storytellers.json", "martial_arts.json",
+            "events.json", "storytellers.json", "martial_arts.json", "buildings.json",
         };
 
         public static JsonSerializerSettings Settings => new JsonSerializerSettings
@@ -70,6 +70,9 @@ namespace Murim.Core.Data
                     foreach (var kv in arts.Narration ?? new Dictionary<string, string[]>()) d.Narration[kv.Key] = kv.Value;
                 }
             }
+            // 건물 파일도 없어도 된다 (1~3단계 테스트 데이터).
+            if (filesByName.ContainsKey("buildings.json"))
+                LoadList(filesByName, "buildings.json", result, (Manor.BuildingDef x) => x.Id, d.Buildings);
             Events.EventValidator.Prepare(d);
             return result;
         }

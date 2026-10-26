@@ -18,6 +18,8 @@ namespace Murim.Core.Data
             new SortedDictionary<string, global::Murim.Core.Events.StorytellerDef>(StringComparer.Ordinal);
         public SortedDictionary<string, global::Murim.Core.Martial.ArtDef> Arts =
             new SortedDictionary<string, global::Murim.Core.Martial.ArtDef>(StringComparer.Ordinal);
+        public SortedDictionary<string, global::Murim.Core.Manor.BuildingDef> Buildings =
+            new SortedDictionary<string, global::Murim.Core.Manor.BuildingDef>(StringComparer.Ordinal);
         /// <summary>결투 문구: 상황 키 → 문장 목록.</summary>
         public SortedDictionary<string, string[]> Narration = new SortedDictionary<string, string[]>(StringComparer.Ordinal);
     }

@@ -115,7 +115,7 @@ namespace Murim.Core.Tests
                 Assert.That(a.Ok, a.Error);
                 Assert.That(a.Session.Serialize(), Is.EqualTo(b.Session.Serialize()));
                 Assert.That(a.Session.World.Characters.Values.Where(c => c.IsAlive).All(c => c.Arts.Count >= 1));
-                Assert.That(a.Session.World.SaveVersion, Is.EqualTo(3));
+                Assert.That(a.Session.World.SaveVersion, Is.EqualTo(Murim.Core.World.WorldState.CurrentSaveVersion));
             }
             finally
             {

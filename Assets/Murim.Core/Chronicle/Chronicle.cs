@@ -128,6 +128,12 @@ namespace Murim.Core.Story
         public static void TrainingEnded(WorldState w, Character c, int months) =>
             Add(w, nameof(TrainingEnded), 1, $"{Josa.IGa(c.FullName)} {months}개월의 폐관을 마치고 세상에 나왔다.", c.Id);
 
+        public static void BuildingCompleted(WorldState w, Faction f, string buildingName) =>
+            Add(w, nameof(BuildingCompleted), 1, $"{f.Name}의 장원에 {Josa.IGa(buildingName)} 들어섰다.", f.Id);
+
+        public static void RaidResolved(WorldState w, string text, string[] detail, params string[] involvedIds) =>
+            AddWithDetail(w, "Raid", 2, text, detail, involvedIds);
+
         public static void GameOver(WorldState w, Character last) =>
             Add(w, nameof(GameOver), 2, $"{Josa.EulReul(last.FullName)} 끝으로 가문의 대가 끊겼다.", last.Id);
 

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Murim.Core.Data;
+using Murim.Core.Manor;
 using Murim.Core.Random;
 using Murim.Core.Rules;
 using Murim.Core.Simulation;
@@ -33,6 +34,8 @@ namespace Murim.Core.Martial
         public const string DeviationFlag = "qi_deviation";
         public const string DeviationCause = "주화입마";
         public const int WinEnlightenment = 2;
+        /// <summary>해마다 깨달음 += 오성 × InsightPercent / 100 (설계는 50%).</summary>
+        public const int InsightPercent = 40;
         public const int MaxWinsCounted = 3;
         public const int QiStartAge = 6;
         public const int YouthAge = 10;
@@ -51,17 +54,22 @@ namespace Murim.Core.Martial
             c.Arts.Any(k => d.Arts.TryGetValue(k.ArtId, out var a) && a.Alignment == Alignment.Demonic);
 
         /// <summary>한 달에 쌓이는 내공(개월): 1 + ⌊(근골 + 심법 등급×4)/10⌋. 마공 심법은 등급 +1.</summary>
-        public static int MonthlyQi(GameData d, Character c, int month)
+        public static int MonthlyQi(WorldState w, GameData d, Character c)
         {
+            int month = w.Month;
             int age = c.AgeYears(month);
             if (age < QiStartAge) return 0;
             var inner = ArtGranting.Inner(d, c);
             int grade = inner == null ? 0 : inner.Grade + (inner.Alignment == Alignment.Demonic ? 1 : 0);
             int gain = 1 + (c.Constitution + grade * 4) / 10;
             if (age < YouthAge || age >= ElderAge) gain = Math.Max(1, gain / 2);
-            if (c.InTraining(month)) gain *= TrainingMultiplier;
+            if (c.InTraining(month)) gain *= TrainingMultiplier + ManorOps.BonusesFor(w, d, c).TrainingQiMultiplier;
             return gain;
         }
+
+        /// <summary>장원 보너스(석실)를 더한 돌파 확률.</summary>
+        public static double BreakthroughChance(WorldState w, GameData d, Character c, double bonus, bool closed) =>
+            BreakthroughChance(c, bonus + ManorOps.BonusesFor(w, d, c).BreakthroughBonus, closed);
 
         public static double BreakthroughChance(Character c, double bonus, bool closed)
         {
@@ -70,14 +78,15 @@ namespace Murim.Core.Martial
             return Math.Max(ChanceMin, Math.Min(ChanceMax, p));
         }
 
-        public static double DeviationChance(GameData d, Character c, bool closed) =>
-            Math.Max(0, DeviationBase + (KnowsDemonic(d, c) ? DeviationDemonic : 0) - (closed ? DeviationClosedReduction : 0));
+        public static double DeviationChance(WorldState w, GameData d, Character c, bool closed) =>
+            Math.Max(0, DeviationBase + (KnowsDemonic(d, c) ? DeviationDemonic : 0) - (closed ? DeviationClosedReduction : 0)
+                - ManorOps.BonusesFor(w, d, c).DeviationReduction);
 
         /// <summary>돌파를 시도한다. 조건을 채우지 못했으면 아무 일 없이 Failed.</summary>
         public static BreakthroughOutcome TryBreakthrough(WorldState w, GameData d, GameRandom rng, Character c, double bonus, bool closed)
         {
             if (!CanBreakthrough(c)) return BreakthroughOutcome.Failed;
-            if (rng.Chance(BreakthroughChance(c, bonus, closed)))
+            if (rng.Chance(BreakthroughChance(w, d, c, bonus, closed)))
             {
                 c.Realm++;
                 c.Enlightenment = 0;
@@ -86,13 +95,13 @@ namespace Murim.Core.Martial
             }
             c.Enlightenment = Math.Max(0, c.Enlightenment - FailEnlightenmentLoss);
             c.Qi -= c.Qi * FailQiLossPercent / 100;
-            if (!rng.Chance(DeviationChance(d, c, closed))) return BreakthroughOutcome.Failed;
+            if (!rng.Chance(DeviationChance(w, d, c, closed))) return BreakthroughOutcome.Failed;
 
             c.SetFlag(DeviationFlag, w.Month, DeviationMonths);
             int loss = rng.Next(1, 3);
             if (rng.Chance(0.5)) c.Constitution = Math.Max(SimConstants.StatMin, c.Constitution - loss);
             else c.Insight = Math.Max(SimConstants.StatMin, c.Insight - loss);
-            bool dies = rng.Chance(DeviationDeathChance);
+            bool dies = !ManorOps.BonusesFor(w, d, c).NoDeviationDeath && rng.Chance(DeviationDeathChance);
             if (BirthPhase.IsNotable(w, c)) Chronicle.QiDeviation(w, c, dies);
             if (!dies) return BreakthroughOutcome.Deviation;
             DeathPhase.Kill(w, c, DeviationCause);
@@ -105,13 +114,16 @@ namespace Murim.Core.Martial
             int wins = Math.Min(MaxWinsCounted, c.DuelWinsThisYear);
             c.DuelWinsThisYear = 0;
             if (c.AgeYears(w.Month) < YouthAge) return;
-            c.Enlightenment = Math.Min(EnlightenmentMax, c.Enlightenment + c.Insight / 2 + WinEnlightenment * wins);
+            var manor = ManorOps.BonusesFor(w, d, c);
+            c.Enlightenment = Math.Min(EnlightenmentMax, c.Enlightenment + c.Insight * InsightPercent / 100 + WinEnlightenment * wins
+                + manor.EnlightenmentPerYear);
             var main = ArtGranting.MainArt(d, c);
             foreach (var k in c.Arts)
             {
                 if (k.Mastery >= ArtGranting.MaxMastery || !d.Arts.TryGetValue(k.ArtId, out var a)) continue;
                 double p = (c.Insight + c.Constitution) / 40.0 * (6 - a.Grade) / 5.0;
                 if (main != null && main.Id == a.Id) p *= 1.5;
+                p *= 1 + manor.MasteryPercent / 100.0;
                 if (rng.Chance(p)) k.Mastery++;
             }
         }

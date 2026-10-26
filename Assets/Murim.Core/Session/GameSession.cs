@@ -42,7 +42,9 @@ namespace Murim.Core.Session
         public IReadOnlyList<IGameAction> Pending => pending;
         /// <summary>플레이어의 답을 기다리는 사건과 소식.</summary>
         public IReadOnlyList<PendingEvent> PendingEvents => World.Events.Pending;
-        public bool CanEndTurn => World.Events.Pending.Count == 0;
+        public bool CanEndTurn => World.Events.Pending.Count == 0 && World.PendingRaid == null;
+        /// <summary>플레이어 장원을 노린 습격 (전투를 기다린다).</summary>
+        public Battle.RaidState PendingRaid => World.PendingRaid;
         /// <summary>테스트·시뮬레이션 전용: 대기 사건을 AI 방식으로 바로 답한다.</summary>
         public bool AutoResolveEvents { get; set; }
 
@@ -64,6 +66,7 @@ namespace Murim.Core.Session
         public static GameSession NewGame(GameData d, NewGameOptions o)
         {
             var w = SimSetup.NewWorld(d, o, out var rng);
+            Manor.ManorOps.EnsurePlayerManor(w, d);
             return new GameSession(d, w, rng);
         }
 
@@ -88,6 +91,37 @@ namespace Murim.Core.Session
             if (!check.Ok) return check;
             pending.Add(a);
             return ActionCheck.Pass;
+        }
+
+        /// <summary>내가 이끄는 세력의 장원. 없으면 null.</summary>
+        public Faction OwnManorFaction
+        {
+            get
+            {
+                var p = Player;
+                var f = p == null ? null : Wallet.LedFaction(World, p);
+                return f?.Manor == null ? null : f;
+            }
+        }
+
+        /// <summary>건물 놓기. 행동을 쓰지 않고 은자는 바로 나간다.</summary>
+        public ActionCheck PlaceBuilding(string defId, int x, int y)
+        {
+            var p = Player;
+            var f = p == null ? null : Wallet.LedFaction(World, p);
+            var check = Manor.ManorOps.CanPlace(World, Data, f, defId, x, y);
+            if (check.Ok) Manor.ManorOps.Place(World, Data, f, defId, x, y);
+            return check;
+        }
+
+        /// <summary>건물 허물기. 미완공이면 전액, 완공이면 절반을 돌려받는다.</summary>
+        public ActionCheck Demolish(string buildingId, out int refund)
+        {
+            refund = 0;
+            var f = OwnManorFaction;
+            var check = Manor.ManorOps.CanDemolish(Data, f, buildingId);
+            if (check.Ok) refund = Manor.ManorOps.Demolish(World, Data, f, buildingId);
+            return check;
         }
 
         /// <summary>주무공 바꾸기. 행동을 쓰지 않는다.</summary>
@@ -122,6 +156,7 @@ namespace Murim.Core.Session
             }
             processor.Advance(NewTurnContext());
             pending.Clear();
+            Manor.ManorOps.EnsurePlayerManor(World, Data);
             if (AutoResolveEvents) ResolveAllAuto();
             if (AutosaveDirectory != null && World.Month % 12 == 0) Save(Path.Combine(AutosaveDirectory, "autosave.json"));
         }
@@ -165,6 +200,7 @@ namespace Murim.Core.Session
             var duelLines = ctx.DuelLines.ToArray();
             // 사건으로 수장이 죽었다면 다음 달을 기다리지 않고 바로 잇는다.
             new SuccessionPhase().Run(NewTurnContext());
+            Manor.ManorOps.EnsurePlayerManor(World, Data);
             if (World.PlayerCharacterId != playerBefore || World.GameOver) World.Events.Pending.Clear();
             return new EventOutcome { Ok = true, Text = text, DuelLines = duelLines };
         }
@@ -172,12 +208,68 @@ namespace Murim.Core.Session
         /// <summary>대기 사건을 AI 방식으로 모두 답한다 (테스트·시뮬레이션용).</summary>
         public void ResolveAllAuto()
         {
-            while (World.Events.Pending.Count > 0)
+            while (World.Events.Pending.Count > 0 || World.PendingRaid != null)
             {
+                if (World.Events.Pending.Count == 0)
+                {
+                    AutoResolveRaid();
+                    continue;
+                }
                 var ctx = Rebuild(World.Events.Pending[0]);
                 int choice = Stale(ctx) ? 0 : EventAI.Choose(ctx);
                 if (!Choose(0, choice).Ok) World.Events.Pending.RemoveAt(0);
             }
+        }
+
+        /// <summary>대기 습격의 전투를 만든다 (같은 습격이면 같은 시드). 습격이 없으면 null.</summary>
+        public Battle.BattleState StartBattle()
+        {
+            var r = World.PendingRaid;
+            if (r == null) return null;
+            var p = Player;
+            var f = p == null ? null : Wallet.LedFaction(World, p);
+            var manor = f?.Manor ?? Manor.ManorOps.CreateDefault(Data);
+            var defenders = f != null ? Battle.BattleSetup.PickDefenders(World, f)
+                : p != null && p.IsAlive ? new List<Character> { p } : new List<Character>();
+            var leader = World.Get(r.AttackerLeaderId);
+            if (leader != null && !leader.IsAlive) leader = null;
+            var allies = r.AttackerIds.Select(World.Get).Where(c => c != null && c.IsAlive).ToList();
+            int grunts = System.Math.Min(r.DefenderGrunts, f?.UnnamedDisciples ?? 0);
+            return Battle.BattleSetup.Create(World, Data, r.Seed, manor, f, defenders, grunts, leader, allies, r.AttackerGrunts);
+        }
+
+        /// <summary>끝난 전투의 결과를 적용한다: 사상자, 문도, 사건 갈래, 연대기. 대기 습격을 비운다.</summary>
+        public Battle.RaidOutcome FinishRaid(Battle.BattleState battle)
+        {
+            var r = World.PendingRaid;
+            if (r == null) return null;
+            World.PendingRaid = null;
+            if (!Data.Events.TryGetValue(r.EventId ?? "", out var def) || r.ChoiceIndex < 0 || r.ChoiceIndex >= def.Choices.Count) return null;
+            var effects = def.Choices[r.ChoiceIndex].Effects;
+            var fx = r.EffectIndex >= 0 && r.EffectIndex < effects.Count ? effects[r.EffectIndex].Raid : null;
+            if (fx == null) return null;
+            var ctx = new EventContext { W = World, D = Data, Rng = rng, Def = def };
+            foreach (var kv in r.Roles) ctx.Roles[kv.Key] = kv.Value;
+            var target = ctx.Get(fx.Target);
+            var defFaction = World.GetFaction(target?.FactionId);
+            var outcome = Battle.RaidResolver.Finish(ctx, fx, battle, defFaction, r.AttackerName);
+            var ids = ctx.Roles.Values.Where(id => World.Characters.ContainsKey(id)).ToList();
+            if (defFaction != null) ids.Add(defFaction.Id);
+            Chronicle.RaidResolved(World, outcome.Result, ctx.DuelLines.ToArray(), ids.Distinct().ToArray());
+            var playerBefore = World.PlayerCharacterId;
+            new SuccessionPhase().Run(NewTurnContext());
+            Manor.ManorOps.EnsurePlayerManor(World, Data);
+            if (World.PlayerCharacterId != playerBefore || World.GameOver) World.Events.Pending.Clear();
+            return outcome;
+        }
+
+        /// <summary>대기 습격을 명령 없이 끝까지 돌린다.</summary>
+        public Battle.RaidOutcome AutoResolveRaid()
+        {
+            var battle = StartBattle();
+            if (battle == null) return null;
+            Battle.BattleSim.RunToEnd(battle);
+            return FinishRaid(battle);
         }
 
         /// <summary>테스트·에디터 전용: 사건을 바로 일으킨다. 결정자 기본값은 플레이어.</summary>
@@ -213,6 +305,7 @@ namespace Murim.Core.Session
             var random = new GameRandom(0) { State = r.World.RngState };
             // 3단계 이전 저장: 모든 인물에게 무공·내공을 준다. 저장된 난수 상태에서 이어 쓰므로 결과가 같다.
             if (r.LoadedVersion < 3) Martial.ArtGranting.Migrate(r.World, d, random);
+            Manor.ManorOps.EnsurePlayerManor(r.World, d);
             return new LoadResult { Ok = true, Session = new GameSession(d, r.World, random) };
         }
     }

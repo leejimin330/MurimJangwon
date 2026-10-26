@@ -7,7 +7,7 @@ namespace Murim.Core.World
     /// <summary>저장되는 세계 전체 상태.</summary>
     public class WorldState
     {
-        public const int CurrentSaveVersion = 3;
+        public const int CurrentSaveVersion = 5;
         public const int OldestLoadableVersion = 1;
 
         public int SaveVersion = CurrentSaveVersion;
@@ -25,6 +25,8 @@ namespace Murim.Core.World
         public SortedSet<string> Alliances = new SortedSet<string>(StringComparer.Ordinal);
         public List<ChronicleEntry> Chronicle = new List<ChronicleEntry>();
         public EventState Events = new EventState();
+        /// <summary>플레이어 장원을 노린 습격 (전투를 기다린다). 없으면 null.</summary>
+        public Battle.RaidState PendingRaid;
 
         public int NextCharacterNumber = 1;
         public int NextFactionNumber = 1;

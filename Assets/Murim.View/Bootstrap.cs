@@ -53,6 +53,10 @@ namespace Murim.View
             Show(new TitleScreen(this));
         }
 
+        void Update() => current?.Tick(Time.unscaledDeltaTime);
+
+        public UiScreen Current => current;
+
         public void Show(UiScreen screen)
         {
             UiFactory.Clear(Root);

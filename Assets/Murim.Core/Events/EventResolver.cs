@@ -66,7 +66,13 @@ namespace Murim.Core.Events
             body ??= EventText.Format(ctx.Def.Text, ctx);
             ctx.Log.Clear();
             ctx.DuelLines.Clear();
-            Effects.Apply(choice.Effects, ctx);
+            ctx.ChoiceIndex = choiceIndex;
+            for (int i = 0; i < choice.Effects.Count; i++)
+            {
+                ctx.EffectIndex = i;
+                Effects.Apply(new[] { choice.Effects[i] }, ctx);
+            }
+            ctx.EffectIndex = -1;
 
             var parts = new List<string>();
             if (!string.IsNullOrEmpty(choice.Result)) parts.Add(EventText.Format(choice.Result, ctx));

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Murim.Core.Actions;
+using Murim.Core.Manor;
 using Murim.Core.Rules;
 using Murim.Core.Session;
 using Murim.Core.Text;
@@ -182,6 +183,383 @@ namespace Murim.Editor
             Check(rows > 0 && rows == System.Math.Min(events, 300), $"연대기 \"사건만\": {rows}줄 (사건 기록 {events}개)");
             Shot("13_08_chronicle_events");
             Click("전체");
+        }
+
+        /// <summary>3단계: 무공 영역, 주무공, 폐관, 출관, 사건 결투 경과, 연대기 펼침, 무공 전수, 비무 소식, 돌파의 기회.
+        /// -executeMethod Murim.Editor.UiScenario.RunTask14 → TestResults/snapshots/14_*.png, task14.txt</summary>
+        public static void RunTask14()
+        {
+            report.Clear();
+            failures = 0;
+            var backups = Backup(1);
+            try
+            {
+                app = UiSnapshot.CreateApp(out camera);
+                MartialArts();
+                Wandering();
+            }
+            catch (Exception e)
+            {
+                Check(false, "예외: " + e);
+            }
+            finally
+            {
+                Restore(backups);
+            }
+            report.Add(failures == 0 ? "결과: 모두 통과" : $"결과: 실패 {failures}개");
+            var outPath = Path.Combine(Directory.GetCurrentDirectory(), "TestResults", "snapshots", "task14.txt");
+            File.WriteAllLines(outPath, report);
+            Debug.Log("[T14]\n" + string.Join("\n", report));
+            if (Application.isBatchMode) EditorApplication.Exit(failures == 0 ? 0 : 1);
+        }
+
+        /// <summary>떠 있는 소식·사건 창을 모두 닫는다 (사건은 고를 수 있는 첫 선택지).</summary>
+        static void DismissAll()
+        {
+            for (int guard = 0; guard < 12 && app.Session.PendingEvents.Count > 0; guard++)
+            {
+                if (Find("EventDialog") == null) app.Rebuild();
+                var first = Canvas.GetComponentsInChildren<Button>().FirstOrDefault(b => b.name.StartsWith("Choice") && b.interactable);
+                if (first != null) first.onClick.Invoke();
+                var ok = Named<Button>("EventOk");
+                if (ok != null) ok.onClick.Invoke();
+            }
+        }
+
+        static void MartialArts()
+        {
+            var s = GameSession.NewGame(app.Data, new NewGameOptions { ScenarioId = "minor_sect", RegionId = "henan", Seed = 42 });
+            app.StartGame(s);
+            var gs = new GameScreen(app);
+            app.Show(gs);
+            var w = s.World;
+            var me = s.Player;
+            Murim.Core.Martial.ArtGranting.Learn(app.Data, me, "breeze_sword", 3);
+            DismissAll();
+
+            Click("나");
+            Check(Find("QiBar") != null && Find("InsightBar") != null, "무공 영역: 내공·깨달음 막대");
+            var artTips = Canvas.GetComponentsInChildren<Tooltip>().Where(t => t.name == "Art").ToList();
+            var cardTip = artTips.FirstOrDefault(t => t.Text.Contains("위력"));
+            Check(artTips.Count == me.Arts.Count && cardTip != null,
+                $"무공 줄 {artTips.Count}개, 카드 툴팁: {cardTip?.Text.Split('\n').Skip(1).FirstOrDefault()}");
+            Shot("14_01_arts");
+
+            var before = Murim.Core.Martial.ArtGranting.MainArt(app.Data, me)?.Id;
+            Click("주무공 바꾸기");
+            PickFirst("주무공");
+            var after = Murim.Core.Martial.ArtGranting.MainArt(app.Data, me)?.Id;
+            Check(after != null && after != before, $"주무공 바꾸기: {before} → {after}");
+
+            Click("폐관수련");
+            Shot("14_02_training_picker");
+            PickFirst("폐관 기간");
+            Check(s.Pending.Count == 1 && s.Pending[0] is ClosedTraining, "폐관 3개월 예약");
+            Click("다음 달");
+            var actions = Find("ActionsLabel")?.GetComponent<Text>()?.text;
+            Check(actions != null && actions.StartsWith("폐관 중"), "상단 바: " + actions);
+            Check(s.PendingEvents.All(p => p.IsNotice), "폐관 중 이야기꾼 사건 없음");
+            Shot("14_03_in_training");
+            DismissAll();
+            Click("다음 달");
+            DismissAll();
+            Click("다음 달");
+            var exit = s.PendingEvents.FirstOrDefault(p => p.EventId == "art_closed_training_end");
+            Check(exit != null && Find("EventDialog") != null, "출관 사건 창: " + exit?.Text);
+            Shot("14_04_training_end");
+            DismissAll();
+
+            // 사건 결투: 공개 시범
+            var forced = s.ForceEvent("art_rival_demonstration");
+            Check(forced.Ok, "공개 시범 사건: " + (forced.Reason ?? "성립"));
+            if (forced.Ok)
+            {
+                app.Rebuild();
+                Press(Named<Button>("Choice0"), "받아들인다");
+                var log = Find("DuelLog");
+                var duelLines = log == null ? new List<Text>() : log.GetComponentsInChildren<Text>().Where(t => t.name == "DuelLine").ToList();
+                Check(log != null && duelLines.Count >= 4, $"결과 창에 결투 경과 {duelLines.Count}줄");
+                foreach (var t in duelLines.Take(4)) report.Add("    " + t.text);
+                Shot("14_05_duel_result");
+                Press(Named<Button>("EventOk"), "확인");
+            }
+            DismissAll();
+
+            gs.ShowHome();
+            var detailRow = Canvas.GetComponentsInChildren<Button>().FirstOrDefault(b => b.name == "DetailRow");
+            Check(detailRow != null, "연대기에 [결투 경과] 줄");
+            Press(detailRow, "연대기 줄 펼치기");
+            Check(Find("ChronicleDuelLog") != null, "연대기 펼침");
+            Shot("14_06_chronicle_expanded");
+            Press(Canvas.GetComponentsInChildren<Button>().FirstOrDefault(b => b.name == "DetailRow"), "연대기 줄 접기");
+            Check(Find("ChronicleDuelLog") == null, "다시 누르면 접힘");
+
+            // 무공 전수: 조건이 맞는 제자에게
+            var own = Wallet.LedFaction(w, me);
+            var student = FactionOps.LivingMembers(w, own).FirstOrDefault(m => m.Id != me.Id && me.Arts.Any(k =>
+                new TeachArt(me.Id, m.Id, k.ArtId).CanExecute(w, app.Data).Ok));
+            Check(student != null, "전수할 수 있는 제자: " + student?.FullName);
+            if (student != null)
+            {
+                gs.ShowCharacter(student.Id);
+                Shot("14_07_student");
+                Click("무공 전수");
+                PickFirst("전수할 무공");
+                Check(s.Pending.Any(p => p is TeachArt), "무공 전수 예약: " + s.Pending.LastOrDefault()?.Describe(w));
+                Click("다음 달");
+                Check(w.Chronicle.Any(e => e.Kind == "ArtTaught"), "연대기: " + w.Chronicle.LastOrDefault(e => e.Kind == "ArtTaught")?.Text);
+                DismissAll();
+            }
+
+            // 돌파의 기회
+            me.Qi = Murim.Core.Martial.Cultivation.ThresholdYears[me.Realm] * 12;
+            me.Enlightenment = 100;
+            w.Events.Cooldowns.Clear();
+            gs.ShowHome();
+            Click("다음 달");
+            var chance = s.PendingEvents.FirstOrDefault(p => p.EventId == "art_breakthrough_chance");
+            Check(chance != null, "돌파의 기회 사건: " + chance?.Text);
+            if (chance != null)
+            {
+                while (s.PendingEvents.Count > 0 && s.PendingEvents[0].EventId != "art_breakthrough_chance")
+                {
+                    var first = Canvas.GetComponentsInChildren<Button>().FirstOrDefault(b => b.name.StartsWith("Choice") && b.interactable);
+                    if (first != null) first.onClick.Invoke();
+                    Press(Named<Button>("EventOk"), "앞선 창 확인");
+                }
+                Shot("14_08_breakthrough_chance");
+                int realm = me.Realm;
+                Press(Named<Button>("Choice0"), "지금 벽을 두드린다");
+                Check(Named<Button>("EventOk") != null, $"돌파 결과: 경지 {realm} → {me.Realm}");
+                Shot("14_09_breakthrough_result");
+                Press(Named<Button>("EventOk"), "확인");
+            }
+            DismissAll();
+            Click("나");
+            Shot("14_10_arts_after");
+        }
+
+        static void Wandering()
+        {
+            var s = GameSession.NewGame(app.Data, new NewGameOptions { ScenarioId = "wandering_hero", RegionId = "henan", Seed = 7 });
+            app.StartGame(s);
+            var gs = new GameScreen(app);
+            app.Show(gs);
+            DismissAll();
+            var spar = Buttons(null, "비무").FirstOrDefault();
+            Check(spar != null && spar.interactable, "비무 단추");
+            if (spar == null || !spar.interactable) return;
+            Click("비무");
+            PickFirst("비무 상대");
+            Click("다음 달");
+            var notice = s.PendingEvents.FirstOrDefault(p => p.IsNotice && p.Title == "비무");
+            Check(notice != null && notice.Detail != null, "비무 소식: " + notice?.Text);
+            while (s.PendingEvents.Count > 0 && !(s.PendingEvents[0].IsNotice && s.PendingEvents[0].Title == "비무"))
+            {
+                var first = Canvas.GetComponentsInChildren<Button>().FirstOrDefault(b => b.name.StartsWith("Choice") && b.interactable);
+                if (first != null) first.onClick.Invoke();
+                Press(Named<Button>("EventOk"), "앞선 창 확인");
+            }
+            Check(Find("DuelLog") != null, "소식 창에 결투 경과");
+            Shot("14_11_spar_notice");
+            DismissAll();
+        }
+
+        /// <summary>4단계: 장원 화면 진입, 연무장 놓기(미리보기), 완공, 실시간 일과, 일시정지, 허물기.
+        /// -executeMethod Murim.Editor.UiScenario.RunTask15 → TestResults/snapshots/15_*.png, task15.txt</summary>
+        public static void RunTask15()
+        {
+            report.Clear();
+            failures = 0;
+            try
+            {
+                app = UiSnapshot.CreateApp(out camera);
+                ManorFlow();
+            }
+            catch (Exception e)
+            {
+                Check(false, "예외: " + e);
+            }
+            report.Add(failures == 0 ? "결과: 모두 통과" : $"결과: 실패 {failures}개");
+            var outPath = Path.Combine(Directory.GetCurrentDirectory(), "TestResults", "snapshots", "task15.txt");
+            File.WriteAllLines(outPath, report);
+            Debug.Log("[T15]\n" + string.Join("\n", report));
+            if (Application.isBatchMode) EditorApplication.Exit(failures == 0 ? 0 : 1);
+        }
+
+        static void ManorFlow()
+        {
+            var s = GameSession.NewGame(app.Data, new NewGameOptions { ScenarioId = "minor_sect", RegionId = "henan", Seed = 42 });
+            app.StartGame(s);
+            var w = s.World;
+            var own = Wallet.LedFaction(w, s.Player);
+            own.Silver = 2000;
+            DismissAll();
+            var gs = new GameScreen(app);
+            app.Show(gs);
+            gs.ShowFaction(own.Id);
+            Click("장원 보기");
+            var manor = app.Current as ManorScreen;
+            Check(manor != null && Find("ManorGrid") != null, "장원 화면: " + Find("TopBar")?.GetComponentInChildren<Text>()?.text);
+            Shot("15_01_manor");
+
+            Press(Named<Button>("연무장"), "연무장");
+            Check(manor.Placing == "training_ground", "연무장 고름");
+            bool ok = manor.HoverCell(2, 2);
+            var ghost = Find("Ghost")?.GetComponent<Image>();
+            Check(ok && ghost != null && ghost.color.g > ghost.color.r, "빈 땅 (2,2) 미리보기 초록");
+            Shot("15_02_ghost_ok");
+            bool bad = manor.HoverCell(10, 6);
+            ghost = Find("Ghost")?.GetComponent<Image>();
+            Check(!bad && ghost.color.r > ghost.color.g, "본당 자리 (10,6) 미리보기 빨강");
+            Shot("15_03_ghost_blocked");
+            manor.ClickCell(2, 2);
+            Check(own.Silver == 1700 && own.Manor.Buildings.Any(b => b.DefId == "training_ground"), $"연무장 공사 시작, 은자 {own.Silver}");
+            Shot("15_04_under_construction");
+
+            Click("지도로");
+            for (int i = 0; i < 3; i++)
+            {
+                DismissAll();
+                Click("다음 달");
+            }
+            DismissAll();
+            var done = w.Chronicle.LastOrDefault(e => e.Kind == "BuildingCompleted");
+            Check(done != null, "완공 연대기: " + done?.Text);
+
+            gs = new GameScreen(app);
+            app.Show(gs);
+            gs.ShowFaction(own.Id);
+            Click("장원 보기");
+            manor = (ManorScreen)app.Current;
+            Check(Find("Building:" + own.Manor.Buildings.First(b => b.DefId == "training_ground").Id) != null, "완공된 연무장");
+            var disciple = ManorLife.Residents(w, own).First(c => c.Id != s.Player.Id && !c.InTraining(w.Month));
+            float h0 = manor.Hour;
+            manor.Advance(10f);
+            Check(manor.Hour > h0, $"시계 {h0:0.0}시 → {manor.Hour:0.0}시");
+            // 6~8시는 수련 시간: 연무장으로 걸어간다.
+            while ((int)manor.Hour != 6) manor.Advance(0.2f);
+            manor.Advance(4f);
+            var cell = manor.DotCell(disciple.Id);
+            var tg = own.Manor.Buildings.First(b => b.DefId == "training_ground");
+            Check(cell.x >= tg.X && cell.x <= tg.X + 3 && cell.y >= tg.Y && cell.y <= tg.Y + 3,
+                $"{disciple.FullName} {(int)manor.Hour}시에 연무장 안 ({cell.x:0.0},{cell.y:0.0})");
+            int activities = Canvas.GetComponentsInChildren<Text>().Count(t => t.name == "Activity" && t.text.Contains("연무장에서 수련"));
+            Check(activities > 0, $"일과 목록에 연무장 수련 {activities}명");
+            Shot("15_05_morning_training");
+
+            Click("일시정지");
+            manor = (ManorScreen)app.Current;
+            float paused = manor.Hour;
+            manor.Advance(5f);
+            Check(manor.Hour == paused && Find("Clock").GetComponent<Text>().text.Contains("멈춤"), "일시정지: 시계 멈춤");
+            Click("1배");
+            manor = (ManorScreen)app.Current;
+
+            Click("허물기");
+            int before = own.Silver;
+            manor.ClickCell(tg.X, tg.Y);
+            Check(own.Silver == before + 150 && own.Manor.Buildings.All(b => b.DefId != "training_ground"), $"허물기: 환불 {own.Silver - before}냥");
+            Shot("15_06_demolished");
+            Click("지도로");
+            Check(app.Current is GameScreen, "지도로 돌아옴");
+        }
+
+        /// <summary>5단계: 습격 사건 → 습격 창 → 직접 지휘(고르기·이동·공격·진행) → 결과 → 연대기, 그리고 자동으로 맞서기.
+        /// -executeMethod Murim.Editor.UiScenario.RunTask16 → TestResults/snapshots/16_*.png, task16.txt</summary>
+        public static void RunTask16()
+        {
+            report.Clear();
+            failures = 0;
+            try
+            {
+                app = UiSnapshot.CreateApp(out camera);
+                RaidFlow();
+            }
+            catch (Exception e)
+            {
+                Check(false, "예외: " + e);
+            }
+            report.Add(failures == 0 ? "결과: 모두 통과" : $"결과: 실패 {failures}개");
+            var outPath = Path.Combine(Directory.GetCurrentDirectory(), "TestResults", "snapshots", "task16.txt");
+            File.WriteAllLines(outPath, report);
+            Debug.Log("[T16]\n" + string.Join("\n", report));
+            if (Application.isBatchMode) EditorApplication.Exit(failures == 0 ? 0 : 1);
+        }
+
+        static void RaidFlow()
+        {
+            var s = GameSession.NewGame(app.Data, new NewGameOptions { ScenarioId = "minor_sect", RegionId = "henan", Seed = 42 });
+            app.StartGame(s);
+            DismissAll();
+            var w = s.World;
+            var own = Wallet.LedFaction(w, s.Player);
+            own.Silver = 2000;
+            // 담장 몇 칸과 망루를 세워 둔다.
+            foreach (var x in new[] { 8, 9, 10, 13, 14, 15 }) s.PlaceBuilding("wall", x, 12);
+            s.PlaceBuilding("watchtower", 11, 11);
+            foreach (var b in own.Manor.Buildings) b.CompleteMonth = w.Month;
+            w.Regions[own.HomeRegionId].Stability = 30;
+
+            Check(s.ForceEvent("raid_bandits").Ok, "산적떼 습격 사건");
+            app.Rebuild();
+            Shot("16_01_raid_event");
+            Press(Named<Button>("Choice0"), "맞서 싸운다");
+            Press(Named<Button>("EventOk"), "확인");
+            Check(s.PendingRaid != null && Find("RaidPrompt") != null, "습격 창: " + s.PendingRaid?.AttackerName);
+            var seal = Find("Seal")?.GetComponent<Button>();
+            Check(seal != null && !seal.interactable, "습격 중에는 다음 달 불가");
+            Shot("16_02_raid_prompt");
+
+            Click("직접 지휘한다");
+            var bs = app.Current as BattleScreen;
+            Check(bs != null && Find("BattleGrid") != null, "전투 화면");
+            var battle = bs.Battle;
+            Check(battle.Units.Count(u => u.Side == Murim.Core.Battle.BattleSide.Attacker) == 9, "습격자 9 (두목 + 졸개 8)");
+            Shot("16_03_battle_start");
+
+            var hero = battle.Units.First(u => u.Side == Murim.Core.Battle.BattleSide.Defender && u.Named);
+            bs.ClickUnit(hero.Id);
+            Check(bs.Selected.Contains(hero.Id), "아군 고르기: " + hero.Name);
+            bs.ClickCell(11, 11);
+            Check(hero.Order != null && !hero.Order.Attack && hero.Order.X == 11 && hero.Order.Y == 11, "망루로 이동 명령");
+            var second = battle.Units.First(u => u.Side == Murim.Core.Battle.BattleSide.Defender && u.Named && u.Id != hero.Id);
+            bs.ClickUnit(second.Id);
+            var boss = battle.Units.First(u => u.Side == Murim.Core.Battle.BattleSide.Attacker && u.IsLeader);
+            bs.ClickUnit(boss.Id);
+            Check(second.Order != null && second.Order.Attack && second.Order.TargetId == boss.Id, $"{second.Name} → 두목 {boss.Name} 공격 명령");
+            Shot("16_04_orders");
+
+            int tick = battle.Tick;
+            bs.Advance(3f);
+            Check(battle.Tick == tick, "멈춤 상태에서는 시간이 흐르지 않는다");
+            Click("1배");
+            bs = (BattleScreen)app.Current;
+            bs.Advance(6f);
+            Check(battle.Tick > tick, $"진행: {battle.Tick}틱");
+            Check(hero.CellX == 11 && hero.CellY == 11, $"{hero.Name} 망루 위 ({hero.CellX},{hero.CellY})");
+            Shot("16_05_battle_mid");
+
+            Click("자동으로 끝내기");
+            var result = Find("BattleResult")?.GetComponent<Text>()?.text;
+            Check(result != null && s.PendingRaid == null, "결과: " + result);
+            foreach (var t in Canvas.GetComponentsInChildren<Text>().Where(t => t.name == "DuelLine").Take(5)) report.Add("    " + t.text);
+            Shot("16_06_battle_result");
+            Click("확인");
+            Check(app.Current is GameScreen && w.Chronicle.Any(e => e.Kind == "Raid" && e.Detail != null), "연대기에 습격 기록과 경과");
+            DismissAll();
+
+            // 자동으로 맞서기
+            w.Events.Cooldowns.Clear();
+            Check(s.ForceEvent("raid_bandits").Ok, "두 번째 습격");
+            app.Rebuild();
+            Press(Named<Button>("Choice0"), "맞서 싸운다");
+            Press(Named<Button>("EventOk"), "확인");
+            Click("자동으로 맞선다");
+            Check(Find("BattleResult") != null && s.PendingRaid == null, "자동 결과: " + Find("BattleResult")?.GetComponent<Text>()?.text);
+            Shot("16_07_auto_result");
+            Click("확인");
+            Check(Find("RaidPrompt") == null && s.CanEndTurn, "확인 → 다음 달 가능");
         }
 
         static T Named<T>(string name) where T : Component =>

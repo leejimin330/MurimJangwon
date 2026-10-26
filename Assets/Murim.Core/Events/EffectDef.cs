@@ -43,6 +43,7 @@ namespace Murim.Core.Events
         public WhoAmountFx Enlighten;
         public BreakthroughFx Breakthrough;
         public ClosedTrainingFx ClosedTraining;
+        public RaidFx Raid;
         [JsonExtensionData] public IDictionary<string, JToken> Unknown;
 
         IEnumerable<(string name, FxArgs args)> All()
@@ -80,6 +81,7 @@ namespace Murim.Core.Events
             yield return ("enlighten", Enlighten);
             yield return ("breakthrough", Breakthrough);
             yield return ("closedTraining", ClosedTraining);
+            yield return ("raid", Raid);
         }
 
         /// <summary>값이 있는 효과들 (정상이면 정확히 하나).</summary>
@@ -302,6 +304,19 @@ namespace Murim.Core.Events
     public class ClosedTrainingFx : WhoFx
     {
         public int Months = 6;
+    }
+
+    /// <summary>습격전 (5단계). 선택지 효과의 맨 위에만 둘 수 있다. Win은 방어자(target)가 이겼을 때.</summary>
+    public class RaidFx : FxArgs
+    {
+        public string Attacker;
+        public string Target;
+        public int Grunts = 6;
+        public int Allies = 2;
+        public List<EffectDef> Win = new List<EffectDef>();
+        public List<EffectDef> Lose = new List<EffectDef>();
+        public override IEnumerable<string> RoleRefs() { yield return Attacker; yield return Target; }
+        public override IEnumerable<List<EffectDef>> Branches() { yield return Win; yield return Lose; }
     }
 
     public static class Stats

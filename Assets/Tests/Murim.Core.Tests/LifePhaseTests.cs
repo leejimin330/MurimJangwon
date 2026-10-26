@@ -187,15 +187,12 @@ namespace Murim.Core.Tests
         }
 
         [Test]
-        public void Yearly_RealmGrowth_OnlyForYoungAdults()
+        public void YearlyPhase_NoRandomRealmGain()
         {
             var young = TestWorlds.AddCharacter(w, null, Role.None, Sex.Male, 20);
-            var old = TestWorlds.AddCharacter(w, null, Role.None, Sex.Male, 70);
             young.Constitution = 20; young.Insight = 20;
-            old.Constitution = 20; old.Insight = 20;
             for (int i = 0; i < 100; i++) new YearlyPhase().Run(ctx);
-            Assert.That(young.Realm, Is.GreaterThan(0));
-            Assert.That(old.Realm, Is.EqualTo(0));
+            Assert.That(young.Realm, Is.EqualTo(0), "경지는 돌파로만 오른다");
         }
 
         [Test]

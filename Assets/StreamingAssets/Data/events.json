@@ -1,5 +1,6 @@
 {
   "flags": [
+    {"id": "qi_deviation", "name": "주화입마", "description": "돌파에 실패해 기혈이 뒤틀렸다. 결투에서 힘을 제대로 쓰지 못한다.", "visible": true, "duelModifier": -25},
     {"id": "injured", "name": "부상", "description": "몸을 다쳐 제 실력을 내지 못한다. 결투 점수 −15.", "visible": true, "duelModifier": -15},
     {"id": "sick", "name": "병상", "description": "병으로 자리에 누웠다.", "visible": true},
     {"id": "wanted", "name": "수배", "description": "관부와 정파가 현상금을 걸었다.", "visible": true},

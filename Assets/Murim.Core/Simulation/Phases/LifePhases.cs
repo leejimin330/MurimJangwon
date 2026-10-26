@@ -185,12 +185,6 @@ namespace Murim.Core.Simulation
                     c.Flags.Remove(flag);
                 foreach (var flag in c.Flags.Keys)
                     if (d.Flags.TryGetValue(flag, out var fd) && fd.YearlyChivalry != 0) Actions.Wallet.AddChivalry(w, c, fd.YearlyChivalry);
-                int age = c.AgeYears(w.Month);
-                if (age >= SimConstants.RealmGrowthMinAge && age <= SimConstants.RealmGrowthMaxAge && c.Realm < SimConstants.MaxRealm)
-                {
-                    double p = (c.Constitution + c.Insight) / SimConstants.RealmGrowthDivisor * Math.Pow(0.5, c.Realm);
-                    if (ctx.Rng.Chance(p)) c.Realm++;
-                }
                 if (c.FactionId == null) c.Chivalry = Actions.Wallet.ClampChivalry(c.Chivalry + YearlyChivalry(d, c));
             }
 

@@ -27,11 +27,6 @@ namespace Murim.Core.Rules
         public const double MonthlyAccidentChance = 0.0001;
         public const int OldAgeThreshold = 55;
 
-        // 경지 단순 상승 (1단계 임시 규칙)
-        public const int RealmGrowthMinAge = 15;
-        public const int RealmGrowthMaxAge = 60;
-        public const double RealmGrowthDivisor = 200.0;
-
         // 호감도·기억
         public const int OpinionMin = -100;
         public const int OpinionMax = 100;

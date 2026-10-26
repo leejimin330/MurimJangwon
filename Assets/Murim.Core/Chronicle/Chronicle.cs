@@ -104,6 +104,18 @@ namespace Murim.Core.Story
         public static void EventLine(WorldState w, string kind, int importance, string text, params string[] involvedIds) =>
             Add(w, kind, importance, text, involvedIds);
 
+        public static void Breakthrough(WorldState w, Character c) =>
+            Add(w, nameof(Breakthrough), c.Realm >= 4 || c.Id == w.PlayerCharacterId ? 2 : 1,
+                $"{Josa.IGa(c.FullName)} {Titles.Realm(c.Realm)}의 경지에 올랐다.", c.Id);
+
+        public static void QiDeviation(WorldState w, Character c, bool died) =>
+            Add(w, nameof(QiDeviation), c.Id == w.PlayerCharacterId ? 2 : 1, died
+                ? $"{Josa.IGa(c.FullName)} 돌파를 꾀하다 주화입마에 빠져 숨을 거두었다."
+                : $"{Josa.IGa(c.FullName)} 돌파를 꾀하다 주화입마에 빠졌다.", c.Id);
+
+        public static void TrainingEnded(WorldState w, Character c, int months) =>
+            Add(w, nameof(TrainingEnded), 1, $"{Josa.IGa(c.FullName)} {months}개월의 폐관을 마치고 세상에 나왔다.", c.Id);
+
         public static void GameOver(WorldState w, Character last) =>
             Add(w, nameof(GameOver), 2, $"{Josa.EulReul(last.FullName)} 끝으로 가문의 대가 끊겼다.", last.Id);
 

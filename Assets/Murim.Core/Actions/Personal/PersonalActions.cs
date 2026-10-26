@@ -14,10 +14,6 @@ namespace Murim.Core.Actions
         /// <summary>세력 수장이 아니면 개인 행동을 쓴다 (무소속, 객경, 장로, 제자 등).</summary>
         public static bool UsesPersonalActions(WorldState w, Character c) => Wallet.LedFaction(w, c) == null;
 
-        /// <summary>0보다 크면 a 승리.</summary>
-        public static int SparScore(Character a, Character b, int roll) =>
-            (a.Realm - b.Realm) * 25 + (a.Constitution + a.Insight - b.Constitution - b.Insight) + roll;
-
         public static bool IsNeighbor(GameData d, string from, string to) =>
             from != null && d.Regions.TryGetValue(from, out var r) && r.Neighbors.Contains(to);
 
@@ -145,7 +141,8 @@ namespace Murim.Core.Actions
         protected override void Run(WorldState w, GameData d, GameRandom rng, Character actor)
         {
             var target = w.Get(TargetId);
-            bool win = PersonalRules.SparScore(actor, target, rng.Next(-20, 21)) > 0;
+            var duel = Martial.Duel.Fight(w, d, rng, actor, target);
+            bool win = duel.Winner == actor;
             if (win)
             {
                 actor.Fame += rng.Next(2, 6);
@@ -156,7 +153,14 @@ namespace Murim.Core.Actions
                 actor.Fame = Math.Max(0, actor.Fame - 1);
                 w.Opinions.Add(target.Id, actor.Id, -10);
             }
-            Chronicle.Sparred(w, actor, target, win);
+            var detail = duel.Lines.ToArray();
+            Chronicle.Sparred(w, actor, target, win, detail);
+            // 플레이어의 비무는 결과 소식 창으로 경과를 보여 준다.
+            if (actor.Id == w.PlayerCharacterId)
+                w.Events.Pending.Add(new PendingEvent
+                {
+                    IsNotice = true, Title = "비무", Text = w.Chronicle[w.Chronicle.Count - 1].Text, Month = w.Month, Detail = detail,
+                });
         }
     }
 

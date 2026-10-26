@@ -65,6 +65,7 @@ namespace Murim.Core.Events
             var choice = ctx.Def.Choices[choiceIndex];
             body ??= EventText.Format(ctx.Def.Text, ctx);
             ctx.Log.Clear();
+            ctx.DuelLines.Clear();
             Effects.Apply(choice.Effects, ctx);
 
             var parts = new List<string>();
@@ -76,7 +77,9 @@ namespace Murim.Core.Events
             var ids = ctx.Roles.Values.Where(id => w.Characters.ContainsKey(id)).ToList();
             var faction = ctx.Decider?.FactionId;
             if (faction != null) ids.Add(faction);
-            Chronicle.EventLine(w, "Event:" + ctx.Def.Id, ctx.Def.Importance, line, ids.Distinct().ToArray());
+            // 결투 경과는 플레이어가 얽혔거나 중요한 기록에만 남긴다 (저장 크기).
+            bool keepDetail = ctx.DuelLines.Count > 0 && (ctx.Def.Importance >= 2 || EventPhase.InvolvesPlayer(ctx));
+            Chronicle.EventLine(w, "Event:" + ctx.Def.Id, ctx.Def.Importance, line, keepDetail ? ctx.DuelLines.ToArray() : null, ids.Distinct().ToArray());
 
             // 세계에 들이지 않은 새 인물은 사라진다.
             foreach (var s in ctx.Spawned)

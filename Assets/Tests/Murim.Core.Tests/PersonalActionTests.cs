@@ -73,15 +73,6 @@ namespace Murim.Core.Tests
         }
 
         [Test]
-        public void SparScore_FollowsSpecFormula()
-        {
-            var a = TestWorlds.AddCharacter(w, null, Role.None, Sex.Male, 25);
-            var b = TestWorlds.AddCharacter(w, null, Role.None, Sex.Male, 25);
-            a.Realm = 2; b.Realm = 1; b.Constitution = 12; b.Insight = 12;
-            Assert.That(PersonalRules.SparScore(a, b, -20), Is.EqualTo(1));
-        }
-
-        [Test]
         public void Spar_WinRaisesFame_LossLowersFameNotBelowZero()
         {
             var weak = TestWorlds.AddCharacter(w, "sect", Role.Disciple, Sex.Male, 20);

@@ -6,11 +6,16 @@ namespace Murim.Core.Story
     /// <summary>연대기 기록과 문장 템플릿. 날짜 접두는 화면에서 붙인다.</summary>
     public static class Chronicle
     {
-        public static void Add(WorldState w, string kind, int importance, string text, params string[] involvedIds)
+        public static void Add(WorldState w, string kind, int importance, string text, params string[] involvedIds) =>
+            AddWithDetail(w, kind, importance, text, null, involvedIds);
+
+        /// <summary>detail은 결투 경과처럼 펼쳐 볼 줄. 비었으면 남기지 않는다.</summary>
+        public static void AddWithDetail(WorldState w, string kind, int importance, string text, string[] detail, params string[] involvedIds)
         {
             w.Chronicle.Add(new ChronicleEntry
             {
                 Month = w.Month, Kind = kind, Importance = importance, Text = text, InvolvedIds = involvedIds,
+                Detail = detail != null && detail.Length > 0 ? detail : null,
             });
         }
 
@@ -45,10 +50,10 @@ namespace Murim.Core.Story
         public static void Plundered(WorldState w, Faction f, string regionName) =>
             Add(w, nameof(Plundered), 1, $"{Josa.IGa(f.Name)} {regionName} 일대를 약탈하였다.", f.Id);
 
-        public static void Sparred(WorldState w, Character actor, Character target, bool won) =>
-            Add(w, nameof(Sparred), 0, won
+        public static void Sparred(WorldState w, Character actor, Character target, bool won, string[] detail = null) =>
+            AddWithDetail(w, nameof(Sparred), actor.Id == w.PlayerCharacterId ? 1 : 0, won
                 ? $"{Josa.IGa(actor.FullName)} 비무에서 {Josa.EulReul(T(w, target))} 꺾었다."
-                : $"{Josa.IGa(actor.FullName)} 비무에서 {T(w, target)}에게 패하였다.", actor.Id, target.Id);
+                : $"{Josa.IGa(actor.FullName)} 비무에서 {T(w, target)}에게 패하였다.", detail, actor.Id, target.Id);
 
         public static void GuestRequest(WorldState w, Character actor, Faction f, bool accepted) =>
             Add(w, nameof(GuestRequest), accepted ? 1 : 0, accepted
@@ -101,8 +106,8 @@ namespace Murim.Core.Story
                 f.Id, usurper.Id, previous.Id);
 
         /// <summary>사건 한 건의 기록. kind는 "Event:{사건 id}".</summary>
-        public static void EventLine(WorldState w, string kind, int importance, string text, params string[] involvedIds) =>
-            Add(w, kind, importance, text, involvedIds);
+        public static void EventLine(WorldState w, string kind, int importance, string text, string[] detail, params string[] involvedIds) =>
+            AddWithDetail(w, kind, importance, text, detail, involvedIds);
 
         public static void Breakthrough(WorldState w, Character c) =>
             Add(w, nameof(Breakthrough), c.Realm >= 4 || c.Id == w.PlayerCharacterId ? 2 : 1,

@@ -223,11 +223,14 @@ namespace Murim.Core.Events
                     var a = Alive(ctx, x.A);
                     var b = Alive(ctx, x.B);
                     if (a == null || b == null) break;
-                    int score = PersonalRules.SparScore(a, b, ctx.Rng.Next(-20, 21)) + DuelModifier(ctx, a) - DuelModifier(ctx, b);
-                    bool aWins = score > 0;
-                    var loser = aWins ? b : a;
+                    var duel = Martial.Duel.Fight(w, ctx.D, ctx.Rng, a, b, new Martial.DuelOptions { DeathChance = x.DeathChance });
+                    bool aWins = duel.Winner == a;
+                    var loser = duel.Loser;
+                    if (ctx.DuelLines.Count > 0) ctx.DuelLines.Add("");
+                    ctx.DuelLines.AddRange(duel.Lines);
+                    ctx.Log.Add(duel.Summary + ".");
                     Apply(aWins ? x.Win : x.Lose, ctx);
-                    if (loser.IsAlive && ctx.Rng.Chance(x.DeathChance))
+                    if (loser.IsAlive && duel.LoserDied)
                     {
                         ctx.Log.Add($"{Josa.EunNeun(loser.FullName)} 그 자리에서 목숨을 잃었다.");
                         Kill(ctx, loser, DuelDeathCause);
@@ -288,14 +291,6 @@ namespace Murim.Core.Events
         }
 
         static bool Heads(WorldState w, Character c) => Wallet.LedFaction(w, c) != null || w.GetFaction(c.FactionId)?.HeirId == c.Id;
-
-        static int DuelModifier(EventContext ctx, Character c)
-        {
-            int m = 0;
-            foreach (var kv in c.Flags)
-                if (c.HasFlag(kv.Key, ctx.W.Month) && ctx.D.Flags.TryGetValue(kv.Key, out var def)) m += def.DuelModifier;
-            return m;
-        }
 
         /// <summary>세계의 인물은 1단계 사망 처리(기억 대물림, 연대기)를 그대로 탄다. 새 인물은 표시만 한다.</summary>
         static void Kill(EventContext ctx, Character c, string cause)

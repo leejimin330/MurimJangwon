@@ -19,6 +19,8 @@ namespace Murim.Core.Session
         public string Reason;
         /// <summary>선택 결과 문장 (창에 보여 준다).</summary>
         public string Text;
+        /// <summary>결투가 있었다면 그 경과. 없으면 빈 배열.</summary>
+        public string[] DuelLines = new string[0];
     }
 
     public class LoadResult
@@ -148,10 +150,11 @@ namespace Murim.Core.Session
 
             var playerBefore = World.PlayerCharacterId;
             var text = EventResolver.Resolve(ctx, choiceIndex, p.Text);
+            var duelLines = ctx.DuelLines.ToArray();
             // 사건으로 수장이 죽었다면 다음 달을 기다리지 않고 바로 잇는다.
             new SuccessionPhase().Run(NewTurnContext());
             if (World.PlayerCharacterId != playerBefore || World.GameOver) World.Events.Pending.Clear();
-            return new EventOutcome { Ok = true, Text = text };
+            return new EventOutcome { Ok = true, Text = text, DuelLines = duelLines };
         }
 
         /// <summary>대기 사건을 AI 방식으로 모두 답한다 (테스트·시뮬레이션용).</summary>

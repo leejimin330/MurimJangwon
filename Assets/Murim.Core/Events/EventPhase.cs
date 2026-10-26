@@ -81,6 +81,7 @@ namespace Murim.Core.Events
             w.Events.Pending.Add(new PendingEvent
             {
                 EventId = ctx.Def.Id, IsNotice = true, Title = ctx.Def.Name, Text = w.Chronicle[w.Chronicle.Count - 1].Text, Month = w.Month,
+                Detail = w.Chronicle[w.Chronicle.Count - 1].Detail,
             });
             noticed = true;
         }
@@ -91,7 +92,7 @@ namespace Murim.Core.Events
             if (noticed) month.Notices++;
         }
 
-        static bool InvolvesPlayer(EventContext ctx)
+        public static bool InvolvesPlayer(EventContext ctx)
         {
             var player = ctx.W.Player;
             if (player == null) return false;

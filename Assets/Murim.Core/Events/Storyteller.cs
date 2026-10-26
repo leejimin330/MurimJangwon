@@ -22,7 +22,7 @@ namespace Murim.Core.Events
 
         public static bool IsCandidate(EventDef e, EventState s, StorytellerDef def, int month)
         {
-            if (e.FollowupOnly || e.WorldOnly) return false;
+            if (e.FollowupOnly || e.WorldOnly || e.System) return false;
             if (e.Tension > s.Tension) return false;
             if (e.IsCrisis && month - s.LastCrisisMonth < def.CrisisGapMonths) return false;
             return true;
@@ -39,6 +39,8 @@ namespace Murim.Core.Events
             var picked = new List<EventContext>();
             var player = w.Player;
             if (def == null || player == null || !player.IsAlive || w.GameOver) return picked;
+            // 폐관 중에는 이야기꾼 사건이 오지 않는다 (소식은 온다).
+            if (player.InTraining(w.Month)) return picked;
             Tick(s, def);
 
             for (int attempt = 0; attempt < MaxPerMonth; attempt++)

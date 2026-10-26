@@ -20,6 +20,8 @@ namespace Murim.Core.Events
         public bool FollowupOnly;
         public bool PlayerOnly;
         public bool WorldOnly;
+        /// <summary>코드가 직접 예약하는 사건 (돌파의 기회, 출관). 이야기꾼·세계 사건으로는 고르지 않는다.</summary>
+        public bool System;
         public int Importance = 1;
         /// <summary>1~12면 그 달에만 일어난다. 0이면 언제든.</summary>
         public int Month;
@@ -66,6 +68,17 @@ namespace Murim.Core.Events
         public double? Chance;
         /// <summary>이 역할과 성별이 달라야 한다.</summary>
         public string OppositeSexOf;
+        /// <summary>이 무공을 알아야 한다 / 몰라야 한다.</summary>
+        public string KnowsArt;
+        public string NotKnowsArt;
+        /// <summary>익힌 무공 중 최고 등급.</summary>
+        public int? ArtGradeMin;
+        /// <summary>내공(년).</summary>
+        public int? QiMin;
+        /// <summary>true면 내공·깨달음이 돌파 조건을 채운 상태.</summary>
+        public bool? CanBreakthrough;
+        /// <summary>주무공 성취.</summary>
+        public int? MasteryMin;
         [JsonExtensionData] public IDictionary<string, JToken> Unknown;
     }
 
@@ -155,7 +168,7 @@ namespace Murim.Core.Events
 
     public static class EventCategories
     {
-        public static readonly string[] All = { "trait", "grudge", "debt", "faction", "region", "demonic", "wanderer", "followup" };
+        public static readonly string[] All = { "trait", "grudge", "debt", "faction", "region", "demonic", "wanderer", "followup", "martial" };
     }
 
     public static class EventPicks

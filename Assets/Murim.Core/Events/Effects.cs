@@ -287,13 +287,21 @@ namespace Murim.Core.Events
                 case "chronicle":
                     ctx.Log.Add(EventText.Format(((ChronicleFx)args).Text, ctx));
                     break;
+                case "learnArt":
+                case "mastery":
+                case "qi":
+                case "enlighten":
+                case "breakthrough":
+                case "closedTraining":
+                    ArtEffects.Apply(kind, args, ctx);
+                    break;
             }
         }
 
         static bool Heads(WorldState w, Character c) => Wallet.LedFaction(w, c) != null || w.GetFaction(c.FactionId)?.HeirId == c.Id;
 
         /// <summary>세계의 인물은 1단계 사망 처리(기억 대물림, 연대기)를 그대로 탄다. 새 인물은 표시만 한다.</summary>
-        static void Kill(EventContext ctx, Character c, string cause)
+        internal static void Kill(EventContext ctx, Character c, string cause)
         {
             if (ctx.IsSpawned(c) && !ctx.Keep.Contains(c.Id))
             {

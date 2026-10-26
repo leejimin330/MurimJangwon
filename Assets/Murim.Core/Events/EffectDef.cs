@@ -37,6 +37,12 @@ namespace Murim.Core.Events
         public ScheduleFx Schedule;
         public ChronicleFx Chronicle;
         public PairFx Marry;
+        public LearnArtFx LearnArt;
+        public MasteryFx Mastery;
+        public QiFx Qi;
+        public WhoAmountFx Enlighten;
+        public BreakthroughFx Breakthrough;
+        public ClosedTrainingFx ClosedTraining;
         [JsonExtensionData] public IDictionary<string, JToken> Unknown;
 
         IEnumerable<(string name, FxArgs args)> All()
@@ -68,6 +74,12 @@ namespace Murim.Core.Events
             yield return ("schedule", Schedule);
             yield return ("chronicle", Chronicle);
             yield return ("marry", Marry);
+            yield return ("learnArt", LearnArt);
+            yield return ("mastery", Mastery);
+            yield return ("qi", Qi);
+            yield return ("enlighten", Enlighten);
+            yield return ("breakthrough", Breakthrough);
+            yield return ("closedTraining", ClosedTraining);
         }
 
         /// <summary>값이 있는 효과들 (정상이면 정확히 하나).</summary>
@@ -250,6 +262,46 @@ namespace Murim.Core.Events
     {
         public string Text;
         public override IEnumerable<string> RoleRefs() => EventText.RoleRefs(Text);
+    }
+
+    /// <summary>무공 배우기. art로 지정하거나, from 역할이 아는 무공 중 하나, 아니면 등급·성향에 맞는 무작위 무공.</summary>
+    public class LearnArtFx : WhoFx
+    {
+        public string Art;
+        public string From;
+        public int? GradeMin;
+        public int? GradeMax;
+        public Alignment? Alignment;
+
+        public override IEnumerable<string> RoleRefs()
+        {
+            yield return Who;
+            if (From != null) yield return From;
+        }
+    }
+
+    public class MasteryFx : WhoAmountFx
+    {
+        /// <summary>없으면 주무공.</summary>
+        public string Art;
+    }
+
+    public class QiFx : WhoFx
+    {
+        public int Years;
+    }
+
+    public class BreakthroughFx : WhoFx
+    {
+        public double Bonus;
+        public List<EffectDef> Success = new List<EffectDef>();
+        public List<EffectDef> Fail = new List<EffectDef>();
+        public override IEnumerable<List<EffectDef>> Branches() { yield return Success; yield return Fail; }
+    }
+
+    public class ClosedTrainingFx : WhoFx
+    {
+        public int Months = 6;
     }
 
     public static class Stats

@@ -23,7 +23,7 @@ namespace Murim.Core.Events
             var scheduled = new HashSet<string>(StringComparer.Ordinal);
             foreach (var e in d.Events.Values) ValidateEvent(d, e, errors, scheduled);
             foreach (var e in d.Events.Values)
-                if (e.FollowupOnly && !scheduled.Contains(e.Id))
+                if (e.FollowupOnly && !e.System && !scheduled.Contains(e.Id))
                     errors.Add($"{File}: 사건 '{e.Id}'은(는) 후속 전용인데 어떤 사건도 예약하지 않습니다");
 
             if (!d.Storytellers.ContainsKey("balanced")) errors.Add("storytellers.json: 기본 이야기꾼 'balanced'가 없습니다");
@@ -146,6 +146,8 @@ namespace Murim.Core.Events
             if (c.Memory?.Target != null && !roles.ContainsKey(c.Memory.Target)) errors.Add($"{at}: 기억 대상 역할 '{c.Memory.Target}'이(가) 없습니다");
             if (c.OppositeSexOf != null && !roles.ContainsKey(c.OppositeSexOf))
                 errors.Add($"{at}: 성별 비교 역할 '{c.OppositeSexOf}'이(가) 없습니다");
+            foreach (var a in new[] { c.KnowsArt, c.NotKnowsArt })
+                if (a != null && !d.Arts.ContainsKey(a)) errors.Add($"{at}: 알 수 없는 무공 '{a}'");
             if (c.OpinionOf != null && (c.OpinionOf.Role == null || !roles.ContainsKey(c.OpinionOf.Role)))
                 errors.Add($"{at}: 호감 대상 역할 '{c.OpinionOf.Role}'이(가) 없습니다");
         }
@@ -179,6 +181,15 @@ namespace Murim.Core.Events
                         break;
                     case FlagFx f when !d.Flags.ContainsKey(f.Id ?? ""):
                         errors.Add($"{at} {name}: 알 수 없는 표식 '{f.Id}'");
+                        break;
+                    case LearnArtFx la when la.Art != null && !d.Arts.ContainsKey(la.Art):
+                        errors.Add($"{at} {name}: 알 수 없는 무공 '{la.Art}'");
+                        break;
+                    case MasteryFx mf when mf.Art != null && !d.Arts.ContainsKey(mf.Art):
+                        errors.Add($"{at} {name}: 알 수 없는 무공 '{mf.Art}'");
+                        break;
+                    case ClosedTrainingFx ct when ct.Months != 3 && ct.Months != 6 && ct.Months != 12:
+                        errors.Add($"{at} {name}: 폐관은 3·6·12개월만 됩니다");
                         break;
                     case ChronicleFx ch:
                         CheckText(ch.Text, roles, $"{at} {name}", errors);

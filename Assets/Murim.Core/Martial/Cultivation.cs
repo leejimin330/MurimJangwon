@@ -130,6 +130,14 @@ namespace Murim.Core.Martial
             if (c.MainArtId == null) c.MainArtId = ArtGranting.MainArt(d, c)?.Id;
         }
 
+        /// <summary>폐관을 시작한다: 이번 달부터 months개월 동안 내공 ×3, 행동 불가.</summary>
+        public static void BeginTraining(WorldState w, Character c, int months)
+        {
+            c.TrainingUntil = w.Month + months;
+            c.TrainingMonths = months;
+            c.BusyUntilMonth = Math.Max(c.BusyUntilMonth, c.TrainingUntil);
+        }
+
         /// <summary>폐관을 마쳤을 때 깨달음 보너스.</summary>
         public static int TrainingEnlightenment(int months) => months >= 12 ? 40 : months >= 6 ? 25 : 15;
     }

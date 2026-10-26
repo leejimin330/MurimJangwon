@@ -105,6 +105,23 @@ namespace Murim.Core.Events
                 var other = ctx.Get(c.OppositeSexOf);
                 if (other == null ? !deferUnbound : other.Sex == ch.Sex) return "조건이 맞지 않습니다";
             }
+            if (c.KnowsArt != null && ch.KnownArt(c.KnowsArt) == null)
+                return $"{Josa.EulReul(d.Arts.TryGetValue(c.KnowsArt, out var known) ? known.Name : c.KnowsArt)} 알아야 합니다";
+            if (c.NotKnowsArt != null && ch.KnownArt(c.NotKnowsArt) != null) return "이미 익힌 무공입니다";
+            if (c.ArtGradeMin != null)
+            {
+                int best = ch.Arts.Select(k => d.Arts.TryGetValue(k.ArtId, out var a) ? a.Grade : 0).DefaultIfEmpty(0).Max();
+                if (best < c.ArtGradeMin) return $"{Martial.ArtNames.Grade(c.ArtGradeMin.Value)} 이상의 무공이 필요합니다";
+            }
+            if (c.QiMin != null && Martial.Cultivation.QiYears(ch) < c.QiMin) return $"내공 {c.QiMin}년이 필요합니다";
+            if (c.CanBreakthrough != null && Martial.Cultivation.CanBreakthrough(ch) != c.CanBreakthrough)
+                return c.CanBreakthrough.Value ? "아직 돌파할 때가 아닙니다" : "조건이 맞지 않습니다";
+            if (c.MasteryMin != null)
+            {
+                var main = Martial.ArtGranting.MainArt(d, ch);
+                int m = main == null ? 0 : ch.KnownArt(main.Id)?.Mastery ?? 0;
+                if (m < c.MasteryMin) return $"주무공 성취 {c.MasteryMin}성이 필요합니다";
+            }
             if (c.Chance != null && !skipChance && !ctx.Rng.Chance(c.Chance.Value)) return "때가 아닙니다";
             return null;
         }

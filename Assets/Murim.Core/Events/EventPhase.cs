@@ -35,7 +35,7 @@ namespace Murim.Core.Events
                 else ResolveWorld(ctx, month);
             }
 
-            var pool = d.Events.Values.Where(e => !e.FollowupOnly && !e.PlayerOnly).ToList();
+            var pool = d.Events.Values.Where(e => !e.FollowupOnly && !e.PlayerOnly && !e.System).ToList();
             for (int i = 0; i < WorldAttemptsPerMonth && pool.Count > 0; i++)
             {
                 var e = Storyteller.WeightedPick(pool, x => x.Weight, t.Rng);

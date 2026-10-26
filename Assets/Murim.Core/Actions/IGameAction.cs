@@ -59,6 +59,8 @@ namespace Murim.Core.Actions
         public const string FoundSect = "found_sect";
         public const string LeaveFaction = "leave_faction";
         public const string AcceptMarriage = "accept_marriage";
+        public const string ClosedTraining = "closed_training";
+        public const string TeachArt = "teach_art";
     }
 
     public static class ActionBudget

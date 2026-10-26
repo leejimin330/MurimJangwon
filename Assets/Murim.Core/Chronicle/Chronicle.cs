@@ -118,6 +118,13 @@ namespace Murim.Core.Story
                 ? $"{Josa.IGa(c.FullName)} 돌파를 꾀하다 주화입마에 빠져 숨을 거두었다."
                 : $"{Josa.IGa(c.FullName)} 돌파를 꾀하다 주화입마에 빠졌다.", c.Id);
 
+        public static void TrainingStarted(WorldState w, Character c, int months) =>
+            Add(w, nameof(TrainingStarted), 1, $"{Josa.IGa(c.FullName)} {months}개월의 폐관에 들어갔다.", c.Id);
+
+        public static void ArtTaught(WorldState w, Character master, Character student, string artName) =>
+            Add(w, nameof(ArtTaught), master.Id == w.PlayerCharacterId ? 1 : 0,
+                $"{Josa.IGa(master.FullName)} {student.FullName}에게 {Josa.EulReul(artName)} 전수하였다.", master.Id, student.Id);
+
         public static void TrainingEnded(WorldState w, Character c, int months) =>
             Add(w, nameof(TrainingEnded), 1, $"{Josa.IGa(c.FullName)} {months}개월의 폐관을 마치고 세상에 나왔다.", c.Id);
 

@@ -90,6 +90,18 @@ namespace Murim.Core.Session
             return ActionCheck.Pass;
         }
 
+        /// <summary>주무공 바꾸기. 행동을 쓰지 않는다.</summary>
+        public ActionCheck SetMainArt(string artId)
+        {
+            var p = Player;
+            if (p == null || !p.IsAlive) return ActionCheck.Fail("행동할 수 없는 인물입니다");
+            var art = Martial.ArtGranting.Def(Data, artId);
+            if (art == null || p.KnownArt(artId) == null) return ActionCheck.Fail("익히지 않은 무공입니다");
+            if (art.IsInner) return ActionCheck.Fail("내공심법은 주무공이 될 수 없습니다");
+            p.MainArtId = artId;
+            return ActionCheck.Pass;
+        }
+
         public void Unqueue(int index)
         {
             if (index >= 0 && index < pending.Count) pending.RemoveAt(index);
